@@ -5,7 +5,7 @@ Be sure to have [Node.js](https://nodejs.org/) installed before proceeding.
 
 ```shell
 # Clone the repo
-git clone https://github.com/twbs/bootstrap-npm-starter
+git clone https://github.com/sammcanany/560Group21Project.git
 cd bootstrap-npm-starter
 
 # Install dependencies
