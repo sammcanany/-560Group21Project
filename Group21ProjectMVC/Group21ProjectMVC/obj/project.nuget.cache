@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "t0aLx7YkbLDrIc8aORTauG2F7tVy7P/SlFtYazkGQYoJjSk7PWNT3MyqzK2o+omWPUJJryz4kaoB42jH4QkkBA==",
+  "dgSpecHash": "Yr2jdAEv+F0SkmU9w9sIWMsUJ5NWZjE3NN824sPqBjdYR1ylIgPomIE7E7v4ONcr4RqdWBQ3/hKiD7cEWuLYlA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Sam\\source\\repos\\Group21ProjectMVC\\Group21ProjectMVC\\Group21ProjectMVC.csproj",
+  "projectFilePath": "C:\\Users\\Sam\\source\\repos\\560Group21Project\\Group21ProjectMVC\\Group21ProjectMVC\\Group21ProjectMVC.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Sam\\.nuget\\packages\\humanizer.core\\2.2.0\\humanizer.core.2.2.0.nupkg.sha512",
     "C:\\Users\\Sam\\.nuget\\packages\\messagepack\\2.1.152\\messagepack.2.1.152.nupkg.sha512",
