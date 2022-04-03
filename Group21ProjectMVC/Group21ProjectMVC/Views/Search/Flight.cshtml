@@ -1,0 +1,11 @@
+﻿@model FlightSearchModel;
+@{
+    ViewData["Title"] = "Flight";
+}
+
+<h1>@Model.FromLocation</h1>
+<h1>@Model.ToLocation</h1>
+<h1>@Model.SeatsRequired</h1>
+<h1>@Model.DepartureDate.Date.ToString("MM/dd/yyyy")</h1>
+<h1>@Model.ReturnDate.Date.ToString("MM/dd/yyyy")</h1>
+
