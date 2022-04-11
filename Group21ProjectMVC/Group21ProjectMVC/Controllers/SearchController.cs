@@ -29,7 +29,7 @@ namespace Group21ProjectMVC.Controllers
             return View();
         }
 
-        public IActionResult Flight(string FromLocation, string ToLocation, int SeatsRequired, string DepartureDate)
+        /*public IActionResult Flight(string FromLocation, string ToLocation, int SeatsRequired, string DepartureDate)
         {
             //IEnumerable<FlightViewModel> departureFlights = GetFlights(FromLocation, ToLocation, SeatsRequired, DepartureDate);
             //IEnumerable<FlightViewModel> returnFlights = GetFlights(ToLocation, FromLocation, SeatsRequired, ReturnDate);
@@ -44,12 +44,27 @@ namespace Group21ProjectMVC.Controllers
             };
 
             return View(flightSearchModel);
-        }
+        }*/
 
-        public IActionResult Flight(string FromLocation,string ToLocation, int SeatsRequired, string DepartureDate, string ReturnDate)
+        public IActionResult Flight(string FromLocation,string ToLocation, int SeatsRequired, string DepartureDate, string? ReturnDate)
         {
             //IEnumerable<FlightViewModel> departureFlights = GetFlights(FromLocation, ToLocation, SeatsRequired, DepartureDate);
             //IEnumerable<FlightViewModel> returnFlights = GetFlights(ToLocation, FromLocation, SeatsRequired, ReturnDate);
+                if(ReturnDate == null)
+            {
+                FlightSearchModel flightSearchModel = new FlightSearchModel
+                {
+                    //DepartureFlights = departureFlights,
+                    FromLocation = FromLocation,
+                    ToLocation = ToLocation,
+                    SeatsRequired = SeatsRequired,
+                    DepartureDate = DateTime.Parse(DepartureDate)
+                };
+
+                return View(flightSearchModel);
+            }
+            else
+            {
                 FlightSearchModel flightSearchModel = new FlightSearchModel
                 {
                     //DepartureFlights = departureFlights,
@@ -62,6 +77,7 @@ namespace Group21ProjectMVC.Controllers
                 };
 
                 return View(flightSearchModel);
+            }
         }
 
         public IEnumerable<FlightViewModel> GetFlights(string FromLocation, string ToLocation, int SeatsRequired, string DepartureDate)
