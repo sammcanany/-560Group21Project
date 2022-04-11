@@ -9,8 +9,8 @@ namespace Group21ProjectMVC.Models
 {
     public class FlightSearchModel:PageModel
     {
-        [BindProperty(SupportsGet = true)]
-        public string Airline { get; set; } = "";
+        public IEnumerable<FlightViewModel> DepartureFlights { get; set; }
+        public IEnumerable<FlightViewModel> ReturnFlights { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public string ToLocation { get; set; } = "";
@@ -28,12 +28,6 @@ namespace Group21ProjectMVC.Models
         public DateTime ReturnDate { get; set; }
 
         [BindProperty(SupportsGet = true)]
-        public DateTime DepartureTime { get; set; }
-
-        [BindProperty(SupportsGet = true)]
-        public DateTime ArrivalTime { get; set; }
-
-        [BindProperty(SupportsGet = true)]
-        public Decimal Price { get; set; }
+        public int DepartureFlightID { get; set; } = 0;
     }
 }
