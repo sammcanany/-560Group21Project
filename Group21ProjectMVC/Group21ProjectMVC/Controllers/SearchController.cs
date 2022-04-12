@@ -46,12 +46,11 @@ namespace Group21ProjectMVC.Controllers
             return View(flightSearchModel);
         }*/
 
-        public IActionResult Flight(string FromLocation,string ToLocation, int SeatsRequired, string DepartureDate, string? ReturnDate)
+        public IActionResult Flight(string FromLocation, string ToLocation, int SeatsRequired, string DepartureDate, string? ReturnDate)
         {
-            //IEnumerable<FlightViewModel> departureFlights = GetFlights(FromLocation, ToLocation, SeatsRequired, DepartureDate);
-            //IEnumerable<FlightViewModel> returnFlights = GetFlights(ToLocation, FromLocation, SeatsRequired, ReturnDate);
-                if(ReturnDate == null)
+            if (ReturnDate == null)
             {
+                //IEnumerable<FlightViewModel> departureFlights = GetFlights(FromLocation, ToLocation, SeatsRequired, DepartureDate);
                 FlightSearchModel flightSearchModel = new FlightSearchModel
                 {
                     //DepartureFlights = departureFlights,
@@ -65,6 +64,8 @@ namespace Group21ProjectMVC.Controllers
             }
             else
             {
+                //IEnumerable<FlightViewModel> departureFlights = GetFlights(FromLocation, ToLocation, SeatsRequired, DepartureDate);
+                //IEnumerable<FlightViewModel> returnFlights = GetFlights(ToLocation, FromLocation, SeatsRequired, ReturnDate);
                 FlightSearchModel flightSearchModel = new FlightSearchModel
                 {
                     //DepartureFlights = departureFlights,

@@ -35,3 +35,8 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Airport]') AND type in (N'U'))
 DROP TABLE [dbo].[Airport]
 GO
+
+/****** Object:  Table [dbo].[PassengerProfile]    Script Date: 4/1/2022 1:19:19 PM ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[PassengerProfile]') AND type in (N'U'))
+DROP TABLE [dbo].[PassengerProfile]
+GO
