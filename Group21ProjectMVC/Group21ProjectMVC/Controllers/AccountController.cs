@@ -64,21 +64,25 @@ namespace Group21ProjectMVC.Controllers
         }
         public IActionResult Login(LoginViewModel vm)
         {
-            if (string.IsNullOrEmpty(vm.Email) && string.IsNullOrEmpty(vm.Password))
+            if (ModelState.IsValid)
             {
-                ViewBag.ErrorMsg = "Username and Password are Empty";
-                return View();
-            }
-            else
-            {
-                bool isfind = SignInMethod(vm.Email, vm.Password);
-                if (isfind)
+                if (string.IsNullOrEmpty(vm.Email) && string.IsNullOrEmpty(vm.Password))
                 {
-                    ViewBag.Success = "Login Successful!";
-                    return View();  //return RedirectToAction("Index","Home");
+                    ViewBag.ErrorMsg = "Username and Password are Empty";
+                    return View();
                 }
-                return View("Login");
+                else
+                {
+                    if (SignInMethod(vm.Email, vm.Password))
+                    {
+                        ViewBag.Success = "Login Successful!";
+                        return View();  //return RedirectToAction("Index","Home");
+                    }
+                    return View(vm);
+                }
+                
             }
+            return View(vm);
         }
 
         private bool SignInMethod(string email, string password)

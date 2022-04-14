@@ -15,21 +15,21 @@
                             <p class="text-black-50 mb-5">Please enter your email and password!</p>
                             <form asp-action="Login">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                <div class="col-12">
-                                    <div class="input-group mb-3">
+                                <div class="col-12 mb-3">
+                                    <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i></span>
                                         <div class="form-floating flex-grow-1">
                                             <input asp-for="Email" type="email" class="input form-control" placeholder="Email" />
                                             <label asp-for="Email">Email</label>
                                         </div>
-                                        <span asp-validation-for="Email" class="text-danger"></span>
                                     </div>
+                                        <span asp-validation-for="Email" class="text-danger"></span>
                                 </div>
-                                <div class="col-12">
-                                    <div class="input-group mb-3">
+                                <div class="col-12 mb-3">
+                                    <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="fas fa-lock"></i></span>
                                         <div class="form-floating flex-grow-1">
-                                            <input asp-for="Password" name="password" type="password" value="" class="input form-control" id="Password" placeholder="Password" />
+                                            <input asp-for="Password" type="password" value="" class="input form-control" id="password" placeholder="Password" />
                                             <label asp-for="Password" for="Password">Password</label>
                                         </div>
                                         <span class="input-group-text" onclick="password_show_hide();">
@@ -66,7 +66,7 @@
 </div>
 <script>
             function password_show_hide() {
-      var x = document.getElementById("Password");
+      var x = document.getElementById("password");
       var show_eye = document.getElementById("show_eye");
       var hide_eye = document.getElementById("hide_eye");
       hide_eye.classList.remove("d-none");
