@@ -27,7 +27,7 @@ namespace Group21ProjectMVC.Controllers
         [HttpPost]
         public IActionResult Register(RegisterViewModel vm)
         {
-            string UserExistsQuery = $"Select * from [PassengerProfile] where Email='{vm.EmailAddress}'";
+            string UserExistsQuery = $"Select * from [PassengerProfile] where Email='{vm.Email}'";
             bool userExists = _helper.UserAlreadyExists(UserExistsQuery);
             if (userExists)
             {
@@ -37,11 +37,11 @@ namespace Group21ProjectMVC.Controllers
 
             string passwordHash = BCrypt.Net.BCrypt.HashPassword(vm.Password);
             string Query = "Insert into [PassengerProfile](FirstName,LastName,Email,PhoneNumber,Password)values" +
-                $"('{vm.FirstName}','{vm.LastName}','{vm.EmailAddress}','{vm.PhoneNumber}','{passwordHash}')";
+                $"('{vm.FirstName}','{vm.LastName}','{vm.Email}','{vm.PhoneNumber}','{passwordHash}')";
             int result = _helper.DMLTransaction(Query);
             if (result > 0)
             {
-                EntryIntoSession(vm.EmailAddress);
+                EntryIntoSession(vm.Email, vm.FirstName, vm.LastName);
                 //return RedirectToAction("Index", "Home");
                 ViewBag.Success = "Thanks for Registering!";
                 return View();
@@ -49,11 +49,12 @@ namespace Group21ProjectMVC.Controllers
             return View();
         }
 
-
-
-        private void EntryIntoSession(string Email)
+        private void EntryIntoSession(string Email,string FirstName, string LastName)
         {
+
             HttpContext.Session.SetString("Email", Email);
+            HttpContext.Session.SetString("FirstName", FirstName);
+            HttpContext.Session.SetString("LastName", LastName);
         }
 
         [HttpGet]
@@ -88,7 +89,7 @@ namespace Group21ProjectMVC.Controllers
             if (userDetails.Email != null && BCrypt.Net.BCrypt.Verify(password, userDetails.Password))
             {
                 Result = true;
-                HttpContext.Session.SetString("Email", userDetails.Email);
+                EntryIntoSession(userDetails.Email, userDetails.FirstName, userDetails.LastName);
             }
             else
             {

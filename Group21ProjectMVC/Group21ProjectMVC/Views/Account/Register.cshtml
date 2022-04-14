@@ -4,45 +4,84 @@
     ViewData["Title"] = "Register";
 }
 
-<h1>Register</h1>
+<section>
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card" style="border-radius: 1rem;">
+                    <div class="card-body p-5 text-center">
+                        <div class="mb-md-4 mt-md-4">
+                            <h2 class="fw-bold mb-5">Register</h2>
+                            <form asp-action="Register">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="col-12 mb-3">
+                                    <div class="row">
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                            <div class="form-floating">
+                                                <input asp-for="FirstName" type="text" class="input form-control" placeholder="First" />
+                                                <label asp-for="FirstName">First</label>
+                                            </div>
+                                            <div class="form-floating">
+                                                <input asp-for="LastName" type="text" class="input form-control" placeholder="Last" />
+                                                <label asp-for="LastName">Last</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col ms-2">
+                                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                                        </div>
+                                        <div class="col">
+                                            <span asp-validation-for="LastName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
 
-<h4>RegisterViewModel</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Register">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group mb-3">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
+                                <div class="col-12 mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                        <div class="form-floating flex-grow-1">
+                                            <input asp-for="Email" type="email" class="input form-control" placeholder="Email" />
+                                            <label asp-for="Email">Email</label>
+                                        </div>
+                                    </div>
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                        <div class="form-floating flex-grow-1">
+                                            <input asp-for="Password" type="password" value="" class="input form-control" id="password" placeholder="Password" />
+                                            <label asp-for="Password">Password</label>
+                                        </div>
+                                        <span class="input-group-text" onclick="password_show_hide();">
+                                            <i class="fas fa-eye" id="show_eye"></i>
+                                            <i class="fas fa-eye-slash d-none" id="hide_eye"></i>
+                                        </span>
+                                    </div>
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="fa-solid fa-phone"></i></span>
+                                        <div class="form-floating flex-grow-1">
+                                            <input asp-for="PhoneNumber" class="form-control" placeholder="Phone Number" />
+                                            <label asp-for="PhoneNumber" class="control-label"></label>
+                                        </div>
+                                    </div>
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                </div>
+                                <button class="btn btn-primary w-100 pb-3 pt-3" type="submit">Login</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group mb-3">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="EmailAddress" class="control-label"></label>
-                <input asp-for="EmailAddress" class="form-control" />
-                <span asp-validation-for="EmailAddress" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <input type="submit" value="Register" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
+</section>
+
 <div class="row">
     @if (ViewBag.Error != null)
     {
@@ -53,10 +92,23 @@
         <span class="alert alert-success">@ViewBag.Success</span>
     }
 </div>
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
+<script>
+    function password_show_hide() {
+      var x = document.getElementById("password");
+      var show_eye = document.getElementById("show_eye");
+      var hide_eye = document.getElementById("hide_eye");
+      hide_eye.classList.remove("d-none");
+      if (x.type === "password") {
+        x.type = "text";
+        show_eye.style.display = "none";
+        hide_eye.style.display = "block";
+      } else {
+        x.type = "password";
+        show_eye.style.display = "block";
+        hide_eye.style.display = "none";
+      }
+    }
+</script>
 
 
 @section Scripts {

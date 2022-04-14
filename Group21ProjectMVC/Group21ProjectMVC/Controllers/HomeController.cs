@@ -28,27 +28,6 @@ namespace Group21ProjectMVC.Controllers
         {
             return View();
         }
-        /*[HttpPost]
-        public IActionResult Index(int id, [Bind("FromLocation,ToLocation,SeatsRequired,DepartureDate,ReturnDate")] FlightSearchModel flightSearchModel)
-        {
-            if (ModelState.IsValid)
-            {
-                using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
-                {
-                    sqlConnection.Open();
-                    SqlCommand sqlCmd = new SqlCommand("FlightSearch", sqlConnection);
-                    sqlCmd.CommandType = CommandType.StoredProcedure;
-                    sqlCmd.Parameters.AddWithValue("FromLocation", flightSearchModel.FromLocation);
-                    sqlCmd.Parameters.AddWithValue("ToLocation", flightSearchModel.ToLocation);
-                    sqlCmd.Parameters.AddWithValue("SeatsRequired", flightSearchModel.SeatsRequired);
-                    sqlCmd.Parameters.AddWithValue("DepartureDate", flightSearchModel.DepartureDate);
-                    sqlCmd.Parameters.AddWithValue("ReturnDate", flightSearchModel.ReturnDate);
-                    sqlCmd.ExecuteNonQuery();
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(flightSearchModel);
-        }*/
 
         private List<FlightSearchModel> GetFlights()
         {

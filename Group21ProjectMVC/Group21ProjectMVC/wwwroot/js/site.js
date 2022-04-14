@@ -1,8 +1,4 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
-new tempusDominus.TempusDominus(document.getElementById('datetimepicker1'), {
+﻿new tempusDominus.TempusDominus(document.getElementById('datetimepicker1'), {
     display: {
         viewMode: 'calendar',
         components: {
@@ -40,7 +36,7 @@ new tempusDominus.TempusDominus(document.getElementById('datetimepicker4'), {
 });
 
 // Disables form submissions if there are invalid fields
-(function () {
+/*(function () {
     'use strict'
 
     var forms = document.querySelectorAll('.needs-validation')
@@ -55,7 +51,7 @@ new tempusDominus.TempusDominus(document.getElementById('datetimepicker4'), {
                 form.classList.add('was-validated')
             }, false)
         })
-})()
+})()*/
 
 var airports = ["ATL - Hartsfield-Jackson International Airport, GA", "DFW - Hartsfield-Jackson International Airport, TX", "DEN - Denver International Airport, CO", "ORD - O'Hare International Airport, IL", "LAX - Los Angeles International Airport, CA", "CLT - Charlotte Douglas International Airport, NC", "LAS - Harry Reid International Airport, NV", "PHX - Phoenix Sky Harbor International Airport, AZ", "MCO - Orlando International Airport, FL", "MHK - Manhattan Regional Airport, KS"];
 

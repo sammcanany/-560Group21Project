@@ -1,21 +1,23 @@
 ﻿html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    /*background-color: #070E27;*/
 }
+
 .autocomplete {
     /*the container must be positioned relative:*/
     position: relative;
@@ -51,14 +53,49 @@ body {
     background-color: DodgerBlue !important;
     color: #ffffff;
 }
- 
-.small-text{
+
+.small-text {
     font-size: 14px;
 }
-.medium-text{
-    font-size:20px;
-}
-.large-text{
-    font-size:24px;
+
+.medium-text {
+    font-size: 20px;
 }
 
+.large-text {
+    font-size: 24px;
+}
+
+/*.form-floating-group input {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
+.input-group-icon-left {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+}*/
+.input-group:not(.has-validation) .form-floating:not(:last-child) > :not(.dropdown-toggle):not(.dropdown-menu),
+.input-group:not(.has-validation) .form-floating > .dropdown-toggle:nth-last-child(n+3) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.input-group.has-validation .form-floating:nth-last-child(n+3) > :not(.dropdown-toggle):not(.dropdown-menu),
+.input-group.has-validation .form-floating > .dropdown-toggle:nth-last-child(n+4) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.input-group .form-floating:not(:first-child) > :not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+    /*margin-left: -1px;*/
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* for form to be responsive */
+.input-group > .form-floating {
+    position: relative;
+    flex: 1 1 auto;
+    width: 1%;
+    min-width: 0;
+}

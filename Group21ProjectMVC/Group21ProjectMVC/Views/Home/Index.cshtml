@@ -1,235 +1,247 @@
-﻿@{
+﻿@model FlightSearchModel
+@{
     ViewData["Title"] = "Home page";
 }
 
 <link href="https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/css/tempus-dominus.css"
-          rel="stylesheet" crossorigin="anonymous">
+      rel="stylesheet" crossorigin="anonymous">
 <div class="col-md-8 py-5 px-3 mx-auto">
     <div class="card">
-      <div class="card-header">
-        <ul class="nav nav-tabs card-header-tabs" data-bs-tabs="tabs">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="true" data-bs-toggle="tab" href="#findflights">Find Flights</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" aria-current="true" data-bs-toggle="tab" href="#mytrips">My Trips</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" aria-current="true" data-bs-toggle="tab" href="#checkin">Check-In</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="tab" href="#flightstatus">Flight Status</a>
-          </li>
-        </ul>
-      </div>
-      <div class="card-body tab-content">
-        <div class="tab-pane active" id="findflights">
-          <div class="row ps-3">
-            <ul class="nav nav-pills">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" data-bs-toggle="tab" href="#roundtrip">Round Trip</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#oneway">One Way</a>
-              </li>
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" data-bs-tabs="tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="true" data-bs-toggle="tab" href="#findflights">Find Flights</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="true" data-bs-toggle="tab" href="#mytrips">My Trips</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="true" data-bs-toggle="tab" href="#checkin">Check-In</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#flightstatus">Flight Status</a>
+                </li>
             </ul>
-            <div class="tab-content">
-              <div class="tab-pane active" id="roundtrip">
-                <form class="needs-validation" novalidate autocomplete="off" >
-                  <div>
-                    <div class="row">
-                      <div class="col-md autocomplete">
-                        <label for="FromLBL">From</label>
-                        <input type="text" class="form-control" id="FromLBL" aria-describedby="From"
-                          placeholder="City or Airport" required name="FromLocation">
-                      </div>
-                      <div class="col-md autocomplete">
-                        <label for="ToLBL">To</label>
-                        <input type="text" class="form-control" id="ToLBL" aria-describedby="To"
-                          placeholder="City or Airport" required name="ToLocation">
-                      </div>
-                      <div class="col-md">
-                        <div class="form-group">
-                          <label for="AdultsSelect">Adults (12+)</label>
-                          <select class="form-select" id="AdultsSelect" name="SeatsRequired">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                            <option>6</option>
-                            <option>7</option>
-                            <option>8</option>
-                            <option>9</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="row pt-2">
-                      <div class="col-md">
-                        <label for="datetimepicker1Input">Depart</label>
-                        <div class='input-group' id='datetimepicker1' data-td-target-input='nearest'
-                          data-td-target-toggle='nearest'>
-                          <input id='datetimepicker1Input' type='text' class='form-control'
-                            data-td-target='#datetimepicker1' required name="DepartureDate"/>
-                          <span class='input-group-text' data-td-target='#datetimepicker1'
-                            data-td-toggle='datetimepicker'>
-                            <span class='fas fa-calendar'></span>
-                          </span>
-                        </div>
-                      </div>
-                      <div class="col-md">
-                        <label for="datetimepicker2Input">Return</label>
-                        <div class='input-group' id='datetimepicker2' data-td-target-input='nearest'
-                          data-td-target-toggle='nearest'>
-                          <input id='datetimepicker2Input' type='text' class='form-control'
-                            data-td-target='#datetimepicker2' required name="ReturnDate"/>
-                          <span class='input-group-text' data-td-target='#datetimepicker2'
-                            data-td-toggle='datetimepicker'>
-                            <span class='fas fa-calendar'></span>
-                          </span>
-                        </div>
-                      </div>
-                      <div class="col-md pt-4">
-                        <button class="btn btn-primary w-100" type="submit" asp-controller="Search" asp-action="Flight">Search</button>
-                      </div>
-                    </div>
-                  </div>
-                  <script>
+        </div>
+        <div class="card-body tab-content">
+            <div class="tab-pane active" id="findflights">
+                <div class="row ps-3">
+                    <ul class="nav nav-pills">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" data-bs-toggle="tab" href="#roundtrip">Round Trip</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#oneway">One Way</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="roundtrip">
+                            <form autocomplete="off">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div>
+                                    <div class="row">
+                                        <div class="col-md autocomplete form-group">
+                                            <label asp-for="FromLocation">From</label>
+                                            <input asp-for="FromLocation" type="text" class="form-control" aria-describedby="From"
+                                                   placeholder="City or Airport" name="FromLocation" id="FromLBL">
+                                            <span asp-validation-for="FromLocation" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md autocomplete form-group">
+                                            <label asp-for="ToLocation">To</label>
+                                            <input asp-for="ToLocation" type="text" class="form-control" aria-describedby="To"
+                                                   placeholder="City or Airport" name="ToLocation" id="ToLBL">
+                                            <span asp-validation-for="ToLocation" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md">
+                                            <div class="form-group">
+                                                <label asp-for="SeatsRequired">Adults (12+)</label>
+                                                <select asp-for="SeatsRequired" class="form-select" name="SeatsRequired">
+                                                    <option>1</option>
+                                                    <option>2</option>
+                                                    <option>3</option>
+                                                    <option>4</option>
+                                                    <option>5</option>
+                                                    <option>6</option>
+                                                    <option>7</option>
+                                                    <option>8</option>
+                                                    <option>9</option>
+                                                </select>
+                                                <span asp-validation-for="SeatsRequired" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-md form-group">
+                                            <label asp-for="DepartureDate">Depart</label>
+                                            <div class='input-group' id='datetimepicker1' data-td-target-input='nearest'
+                                                 data-td-target-toggle='nearest'>
+                                                <input asp-for="DepartureDate" id='datetimepicker1Input' type='text' class='form-control'
+                                                       data-td-target='#datetimepicker1' name="DepartureDate" />
+                                                <span class='input-group-text' data-td-target='#datetimepicker1'
+                                                      data-td-toggle='datetimepicker'>
+                                                    <span class='fas fa-calendar'></span>
+                                                </span>
+                                                <span asp-validation-for="DepartureDate" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md form-group">
+                                            <label asp-for="ReturnDate">Return</label>
+                                            <div class='input-group' id='datetimepicker2' data-td-target-input='nearest'
+                                                 data-td-target-toggle='nearest'>
+                                                <input asp-for="ReturnDate" id='datetimepicker2Input' type='text' class='form-control'
+                                                       data-td-target='#datetimepicker2' name="ReturnDate" />
+                                                <span class='input-group-text' data-td-target='#datetimepicker2'
+                                                      data-td-toggle='datetimepicker'>
+                                                    <span class='fas fa-calendar'></span>
+                                                </span>
+                                                <span asp-validation-for="ReturnDate" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md pt-4">
+                                            <button class="btn btn-primary w-100" type="submit" asp-controller="Search" asp-action="Flight">Search</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <script>
 
-                  </script>
-                </form>
-              </div>
-              <div class="tab-pane" id="oneway">
-                <form class="needs-validation" novalidate autocomplete="off">
-                  <div class="row">
-                    <div class="col-md autocomplete">
-                      <label for="FromLBL1W">From</label>
-                      <input type="text" class="form-control" id="FromLBL1W" aria-describedby="From"
-                        placeholder="City or Airport" required>
+                                </script>
+                            </form>
+                        </div>
+                        <div class="tab-pane" id="oneway">
+                            <form class="needs-validation" novalidate autocomplete="off">
+                                <div class="row">
+                                    <div class="col-md autocomplete">
+                                        <label for="FromLBL1W">From</label>
+                                        <input type="text" class="form-control" id="FromLBL1W" aria-describedby="From"
+                                               placeholder="City or Airport" required>
+                                    </div>
+                                    <div class="col-md autocomplete">
+                                        <label for="ToLBL1W">To</label>
+                                        <input type="text" class="form-control" id="ToLBL1W" aria-describedby="To"
+                                               placeholder="City or Airport" required>
+                                    </div>
+                                    <div class="col-md">
+                                        <div class="form-group">
+                                            <label for="AdultsSelect">Adults (12+)</label>
+                                            <select class="form-select" id="AdultsSelect">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                                <option>6</option>
+                                                <option>7</option>
+                                                <option>8</option>
+                                                <option>9</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row pt-2">
+                                    <div class="col-md">
+                                        <label for="datetimepicker3Input">Depart</label>
+                                        <div class='input-group' id='datetimepicker3' data-td-target-input='nearest'
+                                             data-td-target-toggle='nearest'>
+                                            <input id='datetimepicker3Input' type='text' class='form-control'
+                                                   data-td-target='#datetimepicker3' required />
+                                            <span class='input-group-text' data-td-target='#datetimepicker3'
+                                                  data-td-toggle='datetimepicker'>
+                                                <span class='fas fa-calendar'></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md"></div>
+                                    <div class="col-md pt-4">
+                                        <button class="btn btn-primary w-100" type="submit">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    <div class="col-md autocomplete">
-                      <label for="ToLBL1W">To</label>
-                      <input type="text" class="form-control" id="ToLBL1W" aria-describedby="To"
-                        placeholder="City or Airport" required>
-                    </div>
-                    <div class="col-md">
-                      <div class="form-group">
-                        <label for="AdultsSelect">Adults (12+)</label>
-                        <select class="form-select" id="AdultsSelect">
-                          <option>1</option>
-                          <option>2</option>
-                          <option>3</option>
-                          <option>4</option>
-                          <option>5</option>
-                          <option>6</option>
-                          <option>7</option>
-                          <option>8</option>
-                          <option>9</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row pt-2">
-                    <div class="col-md">
-                      <label for="datetimepicker3Input">Depart</label>
-                      <div class='input-group' id='datetimepicker3' data-td-target-input='nearest'
-                        data-td-target-toggle='nearest'>
-                        <input id='datetimepicker3Input' type='text' class='form-control'
-                          data-td-target='#datetimepicker3' required />
-                        <span class='input-group-text' data-td-target='#datetimepicker3'
-                          data-td-toggle='datetimepicker'>
-                          <span class='fas fa-calendar'></span>
-                        </span>
-                      </div>
-                    </div>
-                    <div class="col-md"></div>
-                    <div class="col-md pt-4">
-                      <button class="btn btn-primary w-100" type="submit">Search</button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="tab-pane" id="mytrips">
-          <form class="needs-validation" novalidate>
-            <div class="row">
-              <div class="col-md">
-                <label for="FnLBL">Passenger First Name</label>
-                <input type="text" class="form-control" id="FnLBL" aria-describedby="First Name" required>
-              </div>
-              <div class="col-md">
-                <label for="LnLBL">Passenger Last Name</label>
-                <input type="text" class="form-control" id="LnLBL" aria-describedby="Last Name" required>
-              </div>
-              <div class="col-md">
-                <label for="RefIDLBL">Booking Reference</label>
-                <input type="text" class="form-control" id="RefIDLBL" aria-describedby="Booking Reference ID" required>
-              </div>
-            </div>
-            <div class="row pt-4">
-              <button class="btn btn-primary" type="submit">Find Your Trip</button>
-            </div>
-          </form>
-        </div>
-        <div class="tab-pane" id="checkin">
-          <form class="needs-validation" novalidate>
-            <div class="row">
-              <div class="col-md">
-                <label for="FnLBL">Passenger First Name</label>
-                <input type="text" class="form-control" id="FnLBL" aria-describedby="First Name" required>
-              </div>
-              <div class="col-md">
-                <label for="LnLBL">Passenger Last Name</label>
-                <input type="text" class="form-control" id="LnLBL" aria-describedby="Last Name" required>
-              </div>
-              <div class="col-md">
-                <label for="RefIDLBL">Booking Reference</label>
-                <input type="text" class="form-control" id="RefIDLBL" aria-describedby="Booking Reference ID" required>
-              </div>
-            </div>
-            <div class="row pt-4">
-              <button class="btn btn-primary" type="submit">Check-In</button>
-            </div>
-          </form>
-        </div>
-        <div class="tab-pane" id="flightstatus">
-          <form class="needs-validation" novalidate autocomplete="off">
-            <div class="row">
-              <div class="col-md autocomplete">
-                <label for="FromLBLFS">From</label>
-                <input type="text" class="form-control" id="FromLBLFS" aria-describedby="From"
-                  placeholder="City or Airport" required>
-              </div>
-              <div class="col-md autocomplete">
-                <label for="ToLBLFS">To</label>
-                <input type="text" class="form-control" id="ToLBLFS" aria-describedby="To"
-                  placeholder="City or Airport" required>
-              </div>
-              <div class="col-md">
-                <label for="datetimepicker4Input">Date</label>
-                <div class='input-group' id='datetimepicker4' data-td-target-input='nearest'
-                  data-td-target-toggle='nearest'>
-                  <input id='datetimepicker4Input' type='text' class='form-control' data-td-target='#datetimepicker4'
-                    required />
-                  <span class='input-group-text' data-td-target='#datetimepicker4' data-td-toggle='datetimepicker'>
-                    <span class='fas fa-calendar'></span>
-                  </span>
                 </div>
-              </div>
             </div>
-            <div class="row pt-4">
-              <button class="btn btn-primary" type="submit">Search</button>
+            <div class="tab-pane" id="mytrips">
+                <form class="needs-validation" novalidate>
+                    <div class="row">
+                        <div class="col-md">
+                            <label for="FnLBL">Passenger First Name</label>
+                            <input type="text" class="form-control" id="FnLBL" aria-describedby="First Name" required>
+                        </div>
+                        <div class="col-md">
+                            <label for="LnLBL">Passenger Last Name</label>
+                            <input type="text" class="form-control" id="LnLBL" aria-describedby="Last Name" required>
+                        </div>
+                        <div class="col-md">
+                            <label for="RefIDLBL">Booking Reference</label>
+                            <input type="text" class="form-control" id="RefIDLBL" aria-describedby="Booking Reference ID" required>
+                        </div>
+                    </div>
+                    <div class="row pt-4">
+                        <button class="btn btn-primary" type="submit">Find Your Trip</button>
+                    </div>
+                </form>
             </div>
-          </form>
+            <div class="tab-pane" id="checkin">
+                <form class="needs-validation" novalidate>
+                    <div class="row">
+                        <div class="col-md">
+                            <label for="FnLBL">Passenger First Name</label>
+                            <input type="text" class="form-control" id="FnLBL" aria-describedby="First Name" required>
+                        </div>
+                        <div class="col-md">
+                            <label for="LnLBL">Passenger Last Name</label>
+                            <input type="text" class="form-control" id="LnLBL" aria-describedby="Last Name" required>
+                        </div>
+                        <div class="col-md">
+                            <label for="RefIDLBL">Booking Reference</label>
+                            <input type="text" class="form-control" id="RefIDLBL" aria-describedby="Booking Reference ID" required>
+                        </div>
+                    </div>
+                    <div class="row pt-4">
+                        <button class="btn btn-primary" type="submit">Check-In</button>
+                    </div>
+                </form>
+            </div>
+            <div class="tab-pane" id="flightstatus">
+                <form class="needs-validation" novalidate autocomplete="off">
+                    <div class="row">
+                        <div class="col-md autocomplete">
+                            <label for="FromLBLFS">From</label>
+                            <input type="text" class="form-control" id="FromLBLFS" aria-describedby="From"
+                                   placeholder="City or Airport" required>
+                        </div>
+                        <div class="col-md autocomplete">
+                            <label for="ToLBLFS">To</label>
+                            <input type="text" class="form-control" id="ToLBLFS" aria-describedby="To"
+                                   placeholder="City or Airport" required>
+                        </div>
+                        <div class="col-md">
+                            <label for="datetimepicker4Input">Date</label>
+                            <div class='input-group' id='datetimepicker4' data-td-target-input='nearest'
+                                 data-td-target-toggle='nearest'>
+                                <input id='datetimepicker4Input' type='text' class='form-control' data-td-target='#datetimepicker4'
+                                       required />
+                                <span class='input-group-text' data-td-target='#datetimepicker4' data-td-toggle='datetimepicker'>
+                                    <span class='fas fa-calendar'></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pt-4">
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </div>
+                </form>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/&#64;popperjs/core&#64;2.11.2/dist/umd/popper.min.js"
-            crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/js/tempus-dominus.js"
-            crossorigin="anonymous"></script>
-  <script src="~/js/site.js" asp-append-version="true"></script>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/&#64;popperjs/core&#64;2.11.2/dist/umd/popper.min.js"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/js/tempus-dominus.js"
+        crossorigin="anonymous"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@section Scripts {
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+}

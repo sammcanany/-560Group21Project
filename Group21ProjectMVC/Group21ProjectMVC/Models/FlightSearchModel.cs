@@ -2,32 +2,36 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Group21ProjectMVC.Models
 {
-    public class FlightSearchModel:PageModel
+    public class FlightSearchModel
     {
         public IEnumerable<FlightViewModel> DepartureFlights { get; set; }
         public IEnumerable<FlightViewModel> ReturnFlights { get; set; }
 
-        [BindProperty(SupportsGet = true)]
+        [BindProperty]
+        [Required(ErrorMessage = "Destination location is required!")]
         public string ToLocation { get; set; } = "";
 
-        [BindProperty(SupportsGet = true)]
+        [BindProperty]
+        [Required(ErrorMessage = "Departure location is required!")]
         public string FromLocation { get; set; } = "";
 
-        [BindProperty(SupportsGet = true)]
+        [BindProperty]
         public int SeatsRequired { get; set; } = 0;
 
-        [BindProperty(SupportsGet = true)]
+        [BindProperty]
+        [Required(ErrorMessage = "Departure date is required!")]
         public DateTime DepartureDate { get; set; }
 
-        [BindProperty(SupportsGet = true)]
-        public DateTime ReturnDate { get; set; }
+        [BindProperty]
+        [Required(ErrorMessage = "Departure date is required!")]
+        public DateTime? ReturnDate { get; set; } = null;
 
-        [BindProperty(SupportsGet = true)]
         public int DepartureFlightID { get; set; } = 0;
     }
 }

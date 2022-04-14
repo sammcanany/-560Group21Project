@@ -24,64 +24,24 @@ namespace Group21ProjectMVC.Controllers
             _configuration = Configuration;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
         }
 
-        /*public IActionResult Flight(string FromLocation, string ToLocation, int SeatsRequired, string DepartureDate)
+        [HttpGet]
+        public IActionResult Flight(FlightSearchModel fsm)
         {
-            //IEnumerable<FlightViewModel> departureFlights = GetFlights(FromLocation, ToLocation, SeatsRequired, DepartureDate);
-            //IEnumerable<FlightViewModel> returnFlights = GetFlights(ToLocation, FromLocation, SeatsRequired, ReturnDate);
-            FlightSearchModel flightSearchModel = new FlightSearchModel
+            //fsm.DepartureFlights = GetFlights(fsm.FromLocation, fsm.ToLocation, fsm.SeatsRequired, fsm.DepartureDate);
+            if (fsm.ReturnDate.HasValue)
             {
-                //DepartureFlights = departureFlights,
-                //ReturnFlights = returnFlights,
-                FromLocation = FromLocation,
-                ToLocation = ToLocation,
-                SeatsRequired = SeatsRequired,
-                DepartureDate = DateTime.Parse(DepartureDate)
-            };
-
-            return View(flightSearchModel);
-        }*/
-
-        public IActionResult Flight(string FromLocation, string ToLocation, int SeatsRequired, string DepartureDate, string? ReturnDate)
-        {
-            if (ReturnDate == null)
-            {
-                //IEnumerable<FlightViewModel> departureFlights = GetFlights(FromLocation, ToLocation, SeatsRequired, DepartureDate);
-                FlightSearchModel flightSearchModel = new FlightSearchModel
-                {
-                    //DepartureFlights = departureFlights,
-                    FromLocation = FromLocation,
-                    ToLocation = ToLocation,
-                    SeatsRequired = SeatsRequired,
-                    DepartureDate = DateTime.Parse(DepartureDate)
-                };
-
-                return View(flightSearchModel);
+                //fsm.ReturnFlights = GetFlights(fsm.ToLocation, fsm.FromLocation, fsm.SeatsRequired, fsm.ReturnDate);
             }
-            else
-            {
-                //IEnumerable<FlightViewModel> departureFlights = GetFlights(FromLocation, ToLocation, SeatsRequired, DepartureDate);
-                //IEnumerable<FlightViewModel> returnFlights = GetFlights(ToLocation, FromLocation, SeatsRequired, ReturnDate);
-                FlightSearchModel flightSearchModel = new FlightSearchModel
-                {
-                    //DepartureFlights = departureFlights,
-                    //ReturnFlights = returnFlights,
-                    FromLocation = FromLocation,
-                    ToLocation = ToLocation,
-                    SeatsRequired = SeatsRequired,
-                    DepartureDate = DateTime.Parse(DepartureDate),
-                    ReturnDate = DateTime.Parse(ReturnDate)
-                };
-
-                return View(flightSearchModel);
-            }
+            return View();
         }
 
-        public IEnumerable<FlightViewModel> GetFlights(string FromLocation, string ToLocation, int SeatsRequired, string DepartureDate)
+        public IEnumerable<FlightViewModel> GetFlights(string FromLocation, string ToLocation, int SeatsRequired, DateTime? DepartureDate)
         {
             List<FlightViewModel> flights = new List<FlightViewModel>();
             if (ModelState.IsValid)
@@ -103,8 +63,8 @@ namespace Group21ProjectMVC.Controllers
                             {
                                 FlightId = Convert.ToInt32(reader["FlightID"]),
                                 Airline = reader["Airline"].ToString(),
-                                DepartureTime = DateTime.Parse(reader["DepartureTime"].ToString()),
-                                ArrivalTime = DateTime.Parse(reader["ArrivalTime"].ToString()),
+                                DepartureTime = Convert.ToDateTime(reader["DepartureTime"].ToString()),
+                                ArrivalTime = Convert.ToDateTime(reader["ArrivalTime"].ToString()),
                                 Price = Convert.ToInt32(reader["Price"])
                             });
                         }
