@@ -1,44 +1,44 @@
+USE [master];
 -- Drops '560Project' database if it already exists
 IF EXISTS
    (
       SELECT *
       FROM sys.databases d
-      WHERE d.name = N'`$(560Project)'
+      WHERE d.name = N'560Project'
    )
 BEGIN
-   ALTER DATABASE [`$(560Project)]
-   SET SINGLE_USER
-   WITH ROLLBACK IMMEDIATE;
+   --ALTER DATABASE [560Project]
+   --SET SINGLE_USER
+   --WITH ROLLBACK IMMEDIATE;
 
-   DROP DATABASE [`$(560Project)];
+   DROP DATABASE [560Project];
 END;
 
 -- Creates database automatically, after dropping it if it already existed
-USE [master];
-
 IF EXISTS
    (
       SELECT *
       FROM sys.databases d
-      WHERE d.name = N'$(560Project)'
+      WHERE d.name = N'560Project'
    )
 BEGIN
-   DECLARE @Msg varchar(256) = 'Database [$(560Project)] already exists.';
+   DECLARE @Msg varchar(256) = 'Database [560Project] already exists.';
    PRINT @Msg;
    RETURN;
 END;
 
 -- The file has to be provided to work around a known bug
 -- with SqlLocalDB 2017.
-CREATE DATABASE [$(560Project)]
-ON PRIMARY 
-(
-   NAME = N'PrimaryData',
-   FILENAME = N'$(jayja)\$(560Project).mdf'
-)
-COLLATE SQL_Latin1_General_CP1_CI_AS;
+CREATE DATABASE [560Project] 
+ CONTAINMENT = NONE
+ ON PRIMARY 
+ (NAME = N'560Project', FILENAME = N'/var/opt/mssql/data/560Project.mdf', SIZE = 8192 KB, MAXSIZE = UNLIMITED, FILEGROWTH = 65536 KB)
+ LOG ON
+ (NAME = N'560Project_log', FILENAME = N'/var/opt/mssql/data/560Project_log.ldf', SIZE = 8192 KB, MAXSIZE = 2048 GB, FILEGROWTH = 65536 KB)
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT
+GO
 
-ALTER DATABASE [$(560Project)]
+ALTER DATABASE [560Project]
 SET
    ANSI_NULLS ON,
    ANSI_PADDING ON,
@@ -55,14 +55,17 @@ SET
    ALLOW_SNAPSHOT_ISOLATION ON,
    RECOVERY SIMPLE;
 GO
-
+USE [560Project]
+GO
 -- Creates schema if it doesn't already exist
 IF SCHEMA_ID(N'Flights') IS NULL
 	EXEC(N'CREATE SCHEMA [Flights];');
 GO
 
 DROP TABLE IF EXISTS Flights.TicketInfo
-DROP TABLE IF EXISTS Flights.PassengerProfile
+DROP TABLE IF EXISTS Flights.ApplicationUser
+DROP TABLE IF EXISTS Flights.ApplicationRole
+DROP TABLE IF EXISTS Flights.ApplicationUserRole
 DROP TABLE IF EXISTS Flights.FlightClass
 DROP TABLE IF EXISTS Flights.Class
 DROP TABLE IF EXISTS Flights.Flight
@@ -82,18 +85,18 @@ BEGIN
 		Location NVARCHAR(128) NOT NULL
 	);
 END
-INSERT INTO Flights.Airport(AirportID, Abbreviation, [Name], AirportCode, [Location])
+INSERT INTO Flights.Airport(Abbreviation, [Name], AirportCode, [Location])
 VALUES
-	('1', 'ATL','Hartsfield-Jackson International Airport', '1000', 'GA'),
-	('2', 'DFW','Dallas/Fort Worth International Airport', '2000', 'TX'),
-	('3', 'DEN','Denver International Airport','3000','CO'),
-	('4', 'ORD','O''Hare International Airport','4000','IL'),
-	('5', 'LAX','Los Angeles International Airport','5000','CA'),
-	('6', 'CLT','Charlotte Douglas International Airport','6000','NC'),
-	('7', 'LAS','Harry Reid International Airport','7000','NV'),
-	('8', 'PHX','Phoenix Sky Harbor International Airport','8000', 'AZ'),
-	('9', 'MCO','Orlando International Airport','9000', 'FL'),
-	('10', 'MHK','Manhattan Regional Airport','9001', 'KS');
+	('ATL','Hartsfield-Jackson International Airport', '1000', 'GA'),
+	('DFW','Dallas/Fort Worth International Airport', '2000', 'TX'),
+	('DEN','Denver International Airport','3000','CO'),
+	('ORD','O''Hare International Airport','4000','IL'),
+	('LAX','Los Angeles International Airport','5000','CA'),
+	('CLT','Charlotte Douglas International Airport','6000','NC'),
+	('LAS','Harry Reid International Airport','7000','NV'),
+	('PHX','Phoenix Sky Harbor International Airport','8000', 'AZ'),
+	('MCO','Orlando International Airport','9000', 'FL'),
+	('MHK','Manhattan Regional Airport','9001', 'KS');
 GO
 
 -- Checks that table doesn't already exist, then creates it
@@ -106,14 +109,15 @@ BEGIN
 		Country NVARCHAR(64) NOT NULL
 	);
 END
-INSERT INTO Flights.Airline(AirlineID, [Name], Country)
+INSERT INTO Flights.Airline([Name], Country)
 VALUES
-	('1', 'Southwest Airlines', 'United States of America'),
-	('2', 'American Airlines', 'United States of America'),
-	('3', 'Spirit Airlines', 'United States of America'),
-	('4', 'Delta Air Lines', 'United States of America'),
-	('5', 'United Airlines', 'United States of America'),
-	('6', 'Allegiant Air', 'United States of America')
+	('Southwest Airlines', 'United States of America'),
+	('American Airlines', 'United States of America'),
+	('Spirit Airlines', 'United States of America'),
+	('Delta Air Lines', 'United States of America'),
+	('United Airlines', 'United States of America'),
+	('Allegiant Air', 'United States of America');
+GO
 
 -- Checks that table doesn't already exist, then creates it
 IF OBJECT_ID(N'Flights.Flight') IS NULL
@@ -121,7 +125,7 @@ BEGIN
 	CREATE TABLE Flights.Flight
 	(
 		FlightID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-		FlightNumber INT NOT NULL UNIQUE,
+		FlightNumber NVARCHAR(6) NOT NULL UNIQUE,
 		DepartingAirportID INT NOT NULL FOREIGN KEY REFERENCES Flights.Airport(AirportID),
 		DestinationAirportID INT NOT NULL FOREIGN KEY REFERENCES Flights.Airport(AirportID),
 		AirlineID INT NOT NULL FOREIGN KEY REFERENCES Flights.Airline(AirlineID),
@@ -131,17 +135,18 @@ BEGIN
 		Capacity INT NOT NULL
 	);
 END
-INSERT INTO Flights.Flight(FlightID, FlightNumber, DepartingAirportID, DestinationAirportID, AirlineID, DepartureDate, DepartureTime, ArrivalTime, Capacity)
+INSERT INTO Flights.Flight(FlightNumber, DepartingAirportID, DestinationAirportID, AirlineID, DepartureDate, DepartureTime, ArrivalTime, Capacity)
 VALUES
-	(1, 'IGTGD', '1', '2', 'AIRLINE', '2021-10-03','1:52:00',261),
-	(2, 'JTRLT', '1', '3', 'AIRLINE', '2023-02-07','23:08:00',262),
-	(3, 'JQOWL', '1', '4', 'AIRLINE', '2021-12-08','12:22:00',147),
-	(4, 'PJVFY', '1', '5', 'AIRLINE', '2022-10-18','10:51:00',223),
-	(5, 'MUNNG', '1', '6', 'AIRLINE', '2023-01-04','18:31:00',231),
-	(6, 'LYMXL', '1', '7', 'AIRLINE', '2022-11-21','11:54:00',238),
-	(7, 'NOBCK', '1', '8', 'AIRLINE', '2021-09-04','8:44:00',290),
-	(8, 'LTYWK', '1', '9', 'AIRLINE', '2022-04-17','5:23:00',135),
-	(9, 'ZJTBB', '1', '10', 'AIRLINE', '2022-05-13','19:52:00',252)
+	('IGTGD', '1', '2', 1, '2021-10-03','12:00:00','1:52:00',261),
+	('JTRLT', '1', '3', 1, '2023-02-07','12:00:00','23:08:00',262),
+	('JQOWL', '1', '4', 2, '2021-12-08','12:00:00','12:22:00',147),
+	('PJVFY', '1', '5', 2, '2022-10-18','12:00:00','10:51:00',223),
+	('MUNNG', '1', '6', 3, '2023-01-04','12:00:00','18:31:00',231),
+	('LYMXL', '1', '7', 4, '2022-11-21','12:00:00','11:54:00',238),
+	('NOBCK', '1', '8', 4, '2021-09-04','12:00:00','8:44:00',290),
+	('LTYWK', '1', '9', 5, '2022-04-17','12:00:00','5:23:00',135),
+	('ZJTBB', '1', '10', 6, '2022-05-13','12:00:00','19:52:00',252);
+GO
 
 -- Checks that table doesn't already exist, then creates it
 IF OBJECT_ID(N'Flights.Class') IS NULL
@@ -152,12 +157,12 @@ BEGIN
 		Name NVARCHAR(32) NOT NULL UNIQUE
 	);
 END
-INSERT INTO Flights.Class(ClassID, [Name])
+INSERT INTO Flights.Class([Name])
 VALUES
-	('1', 'First Class'),
-	('2', 'Business Class'),
-	('3', 'Economy Class')
-
+	('First Class'),
+	('Business Class'),
+	('Economy Class')
+GO
 -- Checks that table doesn't already exist, then creates it
 IF OBJECT_ID(N'Flights.FlightClass') IS NULL
 BEGIN
@@ -170,7 +175,7 @@ BEGIN
 		PRIMARY KEY(FlightID, ClassID)
 	);
 END
-INSERT INTO Flights.FlightClass(FLightID, ClassID, Price)
+INSERT INTO Flights.FlightClass(FlightID, ClassID, Price)
 VALUES
 	('1', '1', '1300'),
 	('1', '2', '600'),
@@ -180,8 +185,8 @@ VALUES
 	('2', '3', '200'),
 	('3', '1', '1200'),
 	('3', '2', '700'),
-	('3', '3', '350')
-
+	('3', '3', '350');
+GO
 -- Checks that table doesn't already exist, then creates it	
 IF OBJECT_ID(N'Flights.ApplicationUser') IS NULL
 BEGIN
@@ -210,19 +215,19 @@ CREATE INDEX [IX_ApplicationUser_NormalizedEmail] ON Flights.[ApplicationUser] (
 
 GO
 
-INSERT INTO Flights.ApplicationUser([Id], [UserName], [NormalizedUserName], [Email], [NormalizedEmail], [EmailConfirmed], [FirstName], [LastName], [Address], [PasswordHash], [PhoneNumber], [PhoneNumberConfirmed])
+INSERT INTO Flights.ApplicationUser([UserName], [NormalizedUserName], [Email], [NormalizedEmail], [EmailConfirmed], [FirstName], [LastName], [Address], [PasswordHash], [PhoneNumber], [PhoneNumberConfirmed])
 VALUES
-	(1,'leo.cras@icloud.couk','LEO.CRAS@ICLOUD.COUK','leo.cras@icloud.couk','LEO.CRAS@ICLOUD.COUK',1,'Quamar','Roy','P.O. Box 962, 9214 Magna. St.','AQAAAAEAACcQAAAAEC8drUhJkaVG1yRbw38h1gAw3wyXjAvha8zTCZ5eb1n5eE+mGzCFGdX9ypnJz6E2BA==','(661) 858-9563',0),
-	(2,'malesuada@yahoo.couk',	'MALESUADA@YAHOO.COUK',	'malesuada@yahoo.couk',	'MALESUADA@YAHOO.COUK',	0,'Calista','Hill','P.O. Box 559, 6066 Lectus Avenue','AQAAAAEAACcQAAAAEDJShDJYCSYiqh9iz2OqMsLydSMKdK7Gipj3OTseNxG+hd06TGAhHrpgmJa2sVTaxQ==','(687) 183-5211',0),
-	(3,'hendrerit@hotmail.org', 'HENDRERIT@HOTMAIL.ORG', 'hendrerit@hotmail.org', 'HENDRERIT@HOTMAIL.ORG', 0, 'Salvador','Huffman','986-3229 Urna Street','AQAAAAEAACcQAAAAEKVWi0gVJqXHx69TzKJRfiaC4sH5fq3fNKFf6FXmTLjQfH90l4awh5+FbTwvsFUvVA==','(356) 158-2672',0),
-	(4,'donec.tempus@outlook.org','DONEC.TEMPUS@OUTLOOK.ORG','donec.tempus@outlook.org','DONEC.TEMPUS@OUTLOOK.ORG', 0,'Slade','Martin','Ap #278-4822 Nec St.','AQAAAAEAACcQAAAAEJ/JBT6Lb1mYqaKB98HluKt8g+d7H6veX+dyFwOWCX2r7CHep2+HxJ+3t6Oq5lxe+g==','(475) 562-3885',0),
-	(5,'mollis.phasellus@outlook.ca','MOLLIS.PHASELLUS@OUTLOOK.CA','mollis.phasellus@outlook.ca','MOLLIS.PHASELLUS@OUTLOOK.CA', 0,'Hollee','Pruitt','991-4470 Scelerisque St.','AQAAAAEAACcQAAAAEJ//l5lmLm0u0Cck7A1+dYU5giSDznt/JH0kakZUmmxDfwZHGMZ6GoKNvYPMMhghmQ==','(644) 232-5558',0),
-	(6,'lobortis.tellus@protonmail.org','LOBORTIS.TELLUS@PROTONMAIL.ORG','lobortis.tellus@protonmail.org','LOBORTIS.TELLUS@PROTONMAIL.ORG',0,'Hilda','Snow','389-8048 Dui. Road','AQAAAAEAACcQAAAAEBmjPRmla2LnHzqmaRuKxRrHGWb9hvpkHRNGSmZHVcnS/mVIYhueg1pcaecN2kexZA==','(798) 663-9127',0),
-	(7,'nisi.aenean@protonmail.ca','NISI.AENEAN@PROTONMAIL.CA','nisi.aenean@protonmail.ca','NISI.AENEAN@PROTONMAIL.CA', 0, 'Alexandra','Kaufman','P.O. Box 735, 7494 Pellentesque St.','AQAAAAEAACcQAAAAEIZJ6ND8YPjQm4UiKSVimK2ceyaEGRiGghvtlWgmhlGh9tlcYxfvkt02Q9OglOjDsg==','(547) 648-7568',0),
-	(8,'est.nunc@yahoo.couk','EST.NUNC@YAHOO.COUK','est.nunc@yahoo.couk','EST.NUNC@YAHOO.COUK',0,'Jillian','Hicks','Ap #571-3597 Pellentesque Rd.','AQAAAAEAACcQAAAAEGKHHbwh2N9Kub5juHrjWzuLcOwH4jOyZTbuxvnMRqxqlYfUkSK8o7LZGevaTV56Fw==','(741) 404-6778',0),
-	(9,'quisque@icloud.edu','QUISQUE@ICLOUD.EDU','quisque@icloud.edu','QUISQUE@ICLOUD.EDU',0,'Drew','Henson','P.O. Box 689, 5479 Proin Rd.','AQAAAAEAACcQAAAAEB7Q1tJFb5/Lo5ZqDZ/1wKQHp1iyoxcnxocZJtYO5PW7ENFpBnesCR/G/C/2hX0a3A==','(618) 143-9354',0),
-	(10,'a.neque@yahoo.ca','A.NEQUE@YAHOO.CA','a.neque@yahoo.ca','A.NEQUE@YAHOO.CA',0,'Jelani','Franks','Ap #974-9581 Lacus, Street','AQAAAAEAACcQAAAAEDvzSjcekOME+wcu/VuuzfGBbeeFOYyBIZt/yanC6Npz5Ia4vdQzKablnpbBnU0h9w==','(401) 214-5419',0);
-
+	('leo.cras@icloud.couk','LEO.CRAS@ICLOUD.COUK','leo.cras@icloud.couk','LEO.CRAS@ICLOUD.COUK',1,'Quamar','Roy','P.O. Box 962, 9214 Magna. St.','AQAAAAEAACcQAAAAEC8drUhJkaVG1yRbw38h1gAw3wyXjAvha8zTCZ5eb1n5eE+mGzCFGdX9ypnJz6E2BA==','(661) 858-9563',0),
+	('malesuada@yahoo.couk',	'MALESUADA@YAHOO.COUK',	'malesuada@yahoo.couk',	'MALESUADA@YAHOO.COUK',	0,'Calista','Hill','P.O. Box 559, 6066 Lectus Avenue','AQAAAAEAACcQAAAAEDJShDJYCSYiqh9iz2OqMsLydSMKdK7Gipj3OTseNxG+hd06TGAhHrpgmJa2sVTaxQ==','(687) 183-5211',0),
+	('hendrerit@hotmail.org', 'HENDRERIT@HOTMAIL.ORG', 'hendrerit@hotmail.org', 'HENDRERIT@HOTMAIL.ORG', 0, 'Salvador','Huffman','986-3229 Urna Street','AQAAAAEAACcQAAAAEKVWi0gVJqXHx69TzKJRfiaC4sH5fq3fNKFf6FXmTLjQfH90l4awh5+FbTwvsFUvVA==','(356) 158-2672',0),
+	('donec.tempus@outlook.org','DONEC.TEMPUS@OUTLOOK.ORG','donec.tempus@outlook.org','DONEC.TEMPUS@OUTLOOK.ORG', 0,'Slade','Martin','Ap #278-4822 Nec St.','AQAAAAEAACcQAAAAEJ/JBT6Lb1mYqaKB98HluKt8g+d7H6veX+dyFwOWCX2r7CHep2+HxJ+3t6Oq5lxe+g==','(475) 562-3885',0),
+	('mollis.phasellus@outlook.ca','MOLLIS.PHASELLUS@OUTLOOK.CA','mollis.phasellus@outlook.ca','MOLLIS.PHASELLUS@OUTLOOK.CA', 0,'Hollee','Pruitt','991-4470 Scelerisque St.','AQAAAAEAACcQAAAAEJ//l5lmLm0u0Cck7A1+dYU5giSDznt/JH0kakZUmmxDfwZHGMZ6GoKNvYPMMhghmQ==','(644) 232-5558',0),
+	('lobortis.tellus@protonmail.org','LOBORTIS.TELLUS@PROTONMAIL.ORG','lobortis.tellus@protonmail.org','LOBORTIS.TELLUS@PROTONMAIL.ORG',0,'Hilda','Snow','389-8048 Dui. Road','AQAAAAEAACcQAAAAEBmjPRmla2LnHzqmaRuKxRrHGWb9hvpkHRNGSmZHVcnS/mVIYhueg1pcaecN2kexZA==','(798) 663-9127',0),
+	('nisi.aenean@protonmail.ca','NISI.AENEAN@PROTONMAIL.CA','nisi.aenean@protonmail.ca','NISI.AENEAN@PROTONMAIL.CA', 0, 'Alexandra','Kaufman','P.O. Box 735, 7494 Pellentesque St.','AQAAAAEAACcQAAAAEIZJ6ND8YPjQm4UiKSVimK2ceyaEGRiGghvtlWgmhlGh9tlcYxfvkt02Q9OglOjDsg==','(547) 648-7568',0),
+	('est.nunc@yahoo.couk','EST.NUNC@YAHOO.COUK','est.nunc@yahoo.couk','EST.NUNC@YAHOO.COUK',0,'Jillian','Hicks','Ap #571-3597 Pellentesque Rd.','AQAAAAEAACcQAAAAEGKHHbwh2N9Kub5juHrjWzuLcOwH4jOyZTbuxvnMRqxqlYfUkSK8o7LZGevaTV56Fw==','(741) 404-6778',0),
+	('quisque@icloud.edu','QUISQUE@ICLOUD.EDU','quisque@icloud.edu','QUISQUE@ICLOUD.EDU',0,'Drew','Henson','P.O. Box 689, 5479 Proin Rd.','AQAAAAEAACcQAAAAEB7Q1tJFb5/Lo5ZqDZ/1wKQHp1iyoxcnxocZJtYO5PW7ENFpBnesCR/G/C/2hX0a3A==','(618) 143-9354',0),
+	('a.neque@yahoo.ca','A.NEQUE@YAHOO.CA','a.neque@yahoo.ca','A.NEQUE@YAHOO.CA',0,'Jelani','Franks','Ap #974-9581 Lacus, Street','AQAAAAEAACcQAAAAEDvzSjcekOME+wcu/VuuzfGBbeeFOYyBIZt/yanC6Npz5Ia4vdQzKablnpbBnU0h9w==','(401) 214-5419',0);
+GO
 -- Checks that table doesn't already exist, then creates it
 IF OBJECT_ID(N'Flights.ApplicationRole') IS NULL
 BEGIN
@@ -246,8 +251,8 @@ BEGIN
 		[UserId] INT NOT NULL,
 		[RoleId] INT NOT NULL
 		PRIMARY KEY ([UserId], [RoleId]),
-		CONSTRAINT [FK_ApplicationUserRole_User] FOREIGN KEY ([UserId]) REFERENCES [ApplicationUser]([Id]),
-		CONSTRAINT [FK_ApplicationUserRole_Role] FOREIGN KEY ([RoleId]) REFERENCES [ApplicationRole]([Id])
+		CONSTRAINT [FK_ApplicationUserRole_User] FOREIGN KEY ([UserId]) REFERENCES [Flights].[ApplicationUser]([Id]),
+		CONSTRAINT [FK_ApplicationUserRole_Role] FOREIGN KEY ([RoleId]) REFERENCES [Flights].[ApplicationRole]([Id])
 	);
 END
 
@@ -257,7 +262,7 @@ BEGIN
 	CREATE TABLE Flights.TicketInfo
 	(
 		TicketInfoID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-		ProfileID INT NOT NULL FOREIGN KEY REFERENCES Flights.PassengerProfile(ProfileID),
+		ProfileID INT NOT NULL FOREIGN KEY REFERENCES Flights.[ApplicationUser](Id),
 		FlightID INT NOT NULL FOREIGN KEY REFERENCES Flights.Flight(FlightID),
 		ClassID	INT NOT NULL FOREIGN KEY REFERENCES Flights.Class(ClassID),
 		SeatNumber INT NOT NULL
@@ -265,15 +270,16 @@ BEGIN
 		UNIQUE(FlightID, SeatNumber)
 	);
 END
-INSERT INTO Flights.TicketInfo(TicketInfoID, ProfileID, FlightID, ClassID, SeatNumber)
+INSERT INTO Flights.TicketInfo(ProfileID, FlightID, ClassID, SeatNumber)
 VALUES
-	('1', '1', '1', '3', '70'),
-	('2', '2', '1', '3', '71'),
-	('3', '3', '2', '3', '10'),
-	('4', '4', '3', '3', '20'),
-	('5', '5', '4', '3', '30'),
-	('6', '6', '5', '3', '40'),
-	('7', '7', '6', '3', '50'),
-	('8', '8', '7', '3', '60'),
-	('9', '9', '8', '3', '70'),
-	('10', '10', '9', '3', '80')
+	('1', '1', '3', '70'),
+	('2', '1', '3', '71'),
+	('3', '2', '3', '10'),
+	('4', '3', '3', '20'),
+	('5', '4', '3', '30'),
+	('6', '5', '3', '40'),
+	('7', '6', '3', '50'),
+	('8', '7', '3', '60'),
+	('9', '8', '3', '70'),
+	('10', '9', '3', '80');
+GO
