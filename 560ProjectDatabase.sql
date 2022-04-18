@@ -11,7 +11,7 @@ BEGIN
    WITH ROLLBACK IMMEDIATE;
 
    DROP DATABASE [`$(560Project)];
-END;x
+END;
 
 -- Creates database automatically, after dropping it if it already existed
 USE [master];

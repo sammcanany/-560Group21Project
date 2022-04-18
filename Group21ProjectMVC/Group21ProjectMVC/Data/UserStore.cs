@@ -12,7 +12,7 @@ using Group21ProjectMVC.Models;
 namespace Group21ProjectMVC.Data
 {
     public class UserStore : IUserStore<ApplicationUser>, IUserEmailStore<ApplicationUser>, IUserPhoneNumberStore<ApplicationUser>,
-        IUserTwoFactorStore<ApplicationUser>, IUserPasswordStore<ApplicationUser>, IUserRoleStore<ApplicationUser>
+        IUserPasswordStore<ApplicationUser>, IUserRoleStore<ApplicationUser>
     {
         private readonly string _connectionString;
 
@@ -245,17 +245,6 @@ namespace Group21ProjectMVC.Data
             return Task.FromResult(0);
         }
 
-        public Task SetTwoFactorEnabledAsync(ApplicationUser user, bool enabled, CancellationToken cancellationToken)
-        {
-            user.TwoFactorEnabled = enabled;
-            return Task.FromResult(0);
-        }
-
-        public Task<bool> GetTwoFactorEnabledAsync(ApplicationUser user, CancellationToken cancellationToken)
-        {
-            return Task.FromResult(user.TwoFactorEnabled);
-        }
-
         public Task SetPasswordHashAsync(ApplicationUser user, string passwordHash, CancellationToken cancellationToken)
         {
             user.PasswordHash = passwordHash;
@@ -307,7 +296,7 @@ namespace Group21ProjectMVC.Data
             using var connection = new SqlConnection(_connectionString);
             using SqlCommand cmd = new("GetUserRoles", connection);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("Id", user.Id);
+            cmd.Parameters.AddWithValue("UserId", user.Id);
             await connection.OpenAsync(cancellationToken);
             IList<string> roles = new List<string>();
             using (var reader = await cmd.ExecuteReaderAsync(cancellationToken))
