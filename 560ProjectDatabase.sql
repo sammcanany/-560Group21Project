@@ -63,9 +63,9 @@ IF SCHEMA_ID(N'Flights') IS NULL
 GO
 
 DROP TABLE IF EXISTS Flights.TicketInfo
+DROP TABLE IF EXISTS Flights.ApplicationUserRole
 DROP TABLE IF EXISTS Flights.ApplicationUser
 DROP TABLE IF EXISTS Flights.ApplicationRole
-DROP TABLE IF EXISTS Flights.ApplicationUserRole
 DROP TABLE IF EXISTS Flights.FlightClass
 DROP TABLE IF EXISTS Flights.Class
 DROP TABLE IF EXISTS Flights.Flight
@@ -195,14 +195,14 @@ CREATE TABLE Flights.[ApplicationUser]
 		[ID] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 		[UserName] NVARCHAR(256) NOT NULL UNIQUE,
 		[NormalizedUserName] NVARCHAR(256) NOT NULL UNIQUE,
-		[Email] NVARCHAR(256) NULL UNIQUE,
-		[NormalizedEmail] NVARCHAR(256) NULL UNIQUE,
+		[Email] NVARCHAR(256) NOT NULL UNIQUE,
+		[NormalizedEmail] NVARCHAR(256) NOT NULL UNIQUE,
 		[EmailConfirmed] BIT NOT NULL,
 		[FirstName] NVARCHAR(32) NOT NULL,
 		[LastName] NVARCHAR(32) NOT NULL,
-		[Address] NVARCHAR(64) NOT NULL,
+		[Address] NVARCHAR(64) NULL,
 		[PasswordHash] NVARCHAR(MAX) NOT NULL,
-		[PhoneNumber] NVARCHAR(50),
+		[PhoneNumber] NVARCHAR(50) NULL,
 		[PhoneNumberConfirmed] BIT NOT NULL
 	);
 END
