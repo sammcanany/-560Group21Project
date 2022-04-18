@@ -183,36 +183,78 @@ VALUES
 	('3', '3', '350')
 
 -- Checks that table doesn't already exist, then creates it	
-IF OBJECT_ID(N'Flights.PassengerProfile') IS NULL
+IF OBJECT_ID(N'Flights.ApplicationUser') IS NULL
 BEGIN
-CREATE TABLE Flights.PassengerProfile
+CREATE TABLE Flights.[ApplicationUser]
 	(
-		ProfileID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-		FirstName NVARCHAR(32) NOT NULL,
-		LastName NVARCHAR(32) NOT NULL,
-		EmailAddress NVARCHAR(64) NOT NULL UNIQUE,
+		[ID] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+		[UserName] NVARCHAR(256) NOT NULL UNIQUE,
+		[NormalizedUserName] NVARCHAR(256) NOT NULL UNIQUE,
+		[Email] NVARCHAR(256) NULL UNIQUE,
+		[NormalizedEmail] NVARCHAR(256) NULL UNIQUE,
+		[EmailConfirmed] BIT NOT NULL,
+		[FirstName] NVARCHAR(32) NOT NULL,
+		[LastName] NVARCHAR(32) NOT NULL,
 		[Address] NVARCHAR(64) NOT NULL,
-		[Password] NVARCHAR(32) NOT NULL,
-		PhoneNumber NVARCHAR(32)
+		[PasswordHash] NVARCHAR(MAX) NOT NULL,
+		[PhoneNumber] NVARCHAR(50),
+		[PhoneNumberConfirmed] BIT NOT NULL
 	);
 END
-INSERT INTO Flights.PassengerProfile(ProfileID, FirstName, LastName, EmailAdress, [Address], [Password], PhoneNumber)
+
+CREATE INDEX [IX_ApplicationUser_NormalizedUserName] ON Flights.[ApplicationUser] ([NormalizedUserName])
+
+GO
+
+CREATE INDEX [IX_ApplicationUser_NormalizedEmail] ON Flights.[ApplicationUser] ([NormalizedEmail])
+
+GO
+
+INSERT INTO Flights.PassengerProfile([Id], [UserName], [NormalizedUserName], [Email], [NormalizedEmail], [EmailConfirmed], [FirstName], [LastName], [Address], [PasswordHash], [PhoneNumber], [PhoneNumberConfirmed])
 VALUES
-	(1,'Quamar','Roy','leo.cras@icloud.couk','P.O. Box 962, 9214 Magna. St.','LCS87NTV5ZF','(661) 858-9563'),
-	(2,'Calista','Hill','malesuada@yahoo.couk','P.O. Box 559, 6066 Lectus Avenue','TKK81QBQ2OQ','(687) 183-5211'),
-	(3,'Salvador','Huffman','hendrerit@hotmail.org','986-3229 Urna Street','NEL53LPV8UM','(356) 158-2672'),
-	(4,'Slade','Martin','donec.tempus@outlook.org','Ap #278-4822 Nec St.','LKC66MVH5MO','(475) 562-3885'),
-	(5,'Hollee','Pruitt','mollis.phasellus@outlook.ca','991-4470 Scelerisque St.','LCA83XSN9FQ','(644) 232-5558'),
-	(6,'Hilda','Snow','lobortis.tellus@protonmail.org','389-8048 Dui. Road','EVF70IFJ4RW','(798) 663-9127'),
-	(7,'Alexandra','Kaufman','nisi.aenean@protonmail.ca','P.O. Box 735, 7494 Pellentesque St.','GCM46NYH4JH','(547) 648-7568'),
-	(8,'Jillian','Hicks','est.nunc@yahoo.couk','Ap #571-3597 Pellentesque Rd.','CDY76KXQ4LX','(741) 404-6778'),
-	(9,'Drew','Henson','quisque@icloud.edu','P.O. Box 689, 5479 Proin Rd.','NLX82BNJ6IU','(618) 143-9354'),
-	(10,'Jelani','Franks','a.neque@yahoo.ca','Ap #974-9581 Lacus, Street','JZP88JPQ7HP','(401) 214-5419');
+	(1,'leo.cras@icloud.couk','LEO.CRAS@ICLOUD.COUK','leo.cras@icloud.couk','LEO.CRAS@ICLOUD.COUK',1,'Quamar','Roy','P.O. Box 962, 9214 Magna. St.','AQAAAAEAACcQAAAAEC8drUhJkaVG1yRbw38h1gAw3wyXjAvha8zTCZ5eb1n5eE+mGzCFGdX9ypnJz6E2BA==','(661) 858-9563',0),
+	(2,'malesuada@yahoo.couk',	'MALESUADA@YAHOO.COUK',	'malesuada@yahoo.couk',	'MALESUADA@YAHOO.COUK',	0,'Calista','Hill','P.O. Box 559, 6066 Lectus Avenue','AQAAAAEAACcQAAAAEDJShDJYCSYiqh9iz2OqMsLydSMKdK7Gipj3OTseNxG+hd06TGAhHrpgmJa2sVTaxQ==','(687) 183-5211',0),
+	(3,'hendrerit@hotmail.org', 'HENDRERIT@HOTMAIL.ORG', 'hendrerit@hotmail.org', 'HENDRERIT@HOTMAIL.ORG', 0, 'Salvador','Huffman','986-3229 Urna Street','AQAAAAEAACcQAAAAEKVWi0gVJqXHx69TzKJRfiaC4sH5fq3fNKFf6FXmTLjQfH90l4awh5+FbTwvsFUvVA==','(356) 158-2672',0),
+	(4,'donec.tempus@outlook.org','DONEC.TEMPUS@OUTLOOK.ORG','donec.tempus@outlook.org','DONEC.TEMPUS@OUTLOOK.ORG', 0,'Slade','Martin','Ap #278-4822 Nec St.','AQAAAAEAACcQAAAAEJ/JBT6Lb1mYqaKB98HluKt8g+d7H6veX+dyFwOWCX2r7CHep2+HxJ+3t6Oq5lxe+g==','(475) 562-3885',0),
+	(5,'mollis.phasellus@outlook.ca','MOLLIS.PHASELLUS@OUTLOOK.CA','mollis.phasellus@outlook.ca','MOLLIS.PHASELLUS@OUTLOOK.CA', 0,'Hollee','Pruitt','991-4470 Scelerisque St.','AQAAAAEAACcQAAAAEJ//l5lmLm0u0Cck7A1+dYU5giSDznt/JH0kakZUmmxDfwZHGMZ6GoKNvYPMMhghmQ==','(644) 232-5558',0),
+	(6,'lobortis.tellus@protonmail.org','LOBORTIS.TELLUS@PROTONMAIL.ORG','lobortis.tellus@protonmail.org','LOBORTIS.TELLUS@PROTONMAIL.ORG',0,'Hilda','Snow','389-8048 Dui. Road','AQAAAAEAACcQAAAAEBmjPRmla2LnHzqmaRuKxRrHGWb9hvpkHRNGSmZHVcnS/mVIYhueg1pcaecN2kexZA==','(798) 663-9127',0),
+	(7,'nisi.aenean@protonmail.ca','NISI.AENEAN@PROTONMAIL.CA','nisi.aenean@protonmail.ca','NISI.AENEAN@PROTONMAIL.CA', 0, 'Alexandra','Kaufman','P.O. Box 735, 7494 Pellentesque St.','AQAAAAEAACcQAAAAEIZJ6ND8YPjQm4UiKSVimK2ceyaEGRiGghvtlWgmhlGh9tlcYxfvkt02Q9OglOjDsg==','(547) 648-7568',0),
+	(8,'est.nunc@yahoo.couk','EST.NUNC@YAHOO.COUK','est.nunc@yahoo.couk','EST.NUNC@YAHOO.COUK',0,'Jillian','Hicks','Ap #571-3597 Pellentesque Rd.','AQAAAAEAACcQAAAAEGKHHbwh2N9Kub5juHrjWzuLcOwH4jOyZTbuxvnMRqxqlYfUkSK8o7LZGevaTV56Fw==','(741) 404-6778',0),
+	(9,'quisque@icloud.edu','QUISQUE@ICLOUD.EDU','quisque@icloud.edu','QUISQUE@ICLOUD.EDU',0,'Drew','Henson','P.O. Box 689, 5479 Proin Rd.','AQAAAAEAACcQAAAAEB7Q1tJFb5/Lo5ZqDZ/1wKQHp1iyoxcnxocZJtYO5PW7ENFpBnesCR/G/C/2hX0a3A==','(618) 143-9354',0),
+	(10,'a.neque@yahoo.ca','A.NEQUE@YAHOO.CA','a.neque@yahoo.ca','A.NEQUE@YAHOO.CA',0,'Jelani','Franks','Ap #974-9581 Lacus, Street','AQAAAAEAACcQAAAAEDvzSjcekOME+wcu/VuuzfGBbeeFOYyBIZt/yanC6Npz5Ia4vdQzKablnpbBnU0h9w==','(401) 214-5419',0);
+
+-- Checks that table doesn't already exist, then creates it
+IF OBJECT_ID(N'Flights.ApplicationRole') IS NULL
+BEGIN
+	CREATE TABLE Flights.[ApplicationRole]
+	(
+		[Id] INT NOT NULL PRIMARY KEY IDENTITY,
+		[Name] NVARCHAR(256) NOT NULL UNIQUE,
+		[NormalizedName] NVARCHAR(256) NOT NULL
+	);
+END
+
+CREATE INDEX [IX_ApplicationRole_NormalizedName] ON [Flights].[ApplicationRole] ([NormalizedName])
+
+GO
+
+-- Checks that table doesn't already exist, then creates it
+IF OBJECT_ID(N'Flights.ApplicationUserRole') IS NULL
+BEGIN
+	CREATE TABLE Flights.[ApplicationUserRole]
+	(
+		[UserId] INT NOT NULL,
+		[RoleId] INT NOT NULL
+		PRIMARY KEY ([UserId], [RoleId]),
+		CONSTRAINT [FK_ApplicationUserRole_User] FOREIGN KEY ([UserId]) REFERENCES [ApplicationUser]([Id]),
+		CONSTRAINT [FK_ApplicationUserRole_Role] FOREIGN KEY ([RoleId]) REFERENCES [ApplicationRole]([Id])
+	);
+END
 
 -- Checks that table doesn't already exist, then creates it
 IF OBJECT_ID(N'Flights.TicketInfo') IS NULL
 BEGIN
-	CREATE TABLE TicketInfo
+	CREATE TABLE Flights.TicketInfo
 	(
 		TicketInfoID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 		ProfileID INT NOT NULL FOREIGN KEY REFERENCES Flights.PassengerProfile(ProfileID),

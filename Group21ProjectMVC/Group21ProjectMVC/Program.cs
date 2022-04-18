@@ -1,4 +1,16 @@
+using Microsoft.AspNetCore.Identity;
+using Group21ProjectMVC.Data;
+using Group21ProjectMVC.Models;
+
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("Group21ProjectMVCContextConnection");;
+
+builder.Services.AddTransient<IUserStore<ApplicationUser>, UserStore>();
+builder.Services.AddTransient<IRoleStore<ApplicationRole>, RoleStore>();
+
+builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddDefaultTokenProviders();
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -22,6 +34,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();;
 
 app.UseAuthorization();
 

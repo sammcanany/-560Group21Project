@@ -43,34 +43,32 @@ namespace Group21ProjectMVC.Controllers
 
         public IEnumerable<FlightViewModel> GetFlights(string FromLocation, string ToLocation, int SeatsRequired, DateTime? DepartureDate)
         {
-            List<FlightViewModel> flights = new List<FlightViewModel>();
+            List<FlightViewModel> flights = new();
             if (ModelState.IsValid)
             {
-                using (SqlConnection sqlConnection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+                using SqlConnection sqlConnection = new(_configuration.GetConnectionString("DefaultConnection"));
+                sqlConnection.Open();
+                SqlCommand sqlCmd = new("FlightSearch", sqlConnection);
+                sqlCmd.CommandType = CommandType.StoredProcedure;
+                sqlCmd.Parameters.AddWithValue("FromLocation", FromLocation);
+                sqlCmd.Parameters.AddWithValue("ToLocation", ToLocation);
+                sqlCmd.Parameters.AddWithValue("SeatsRequired", SeatsRequired);
+                sqlCmd.Parameters.AddWithValue("DepartureDate", DepartureDate);
+                using (SqlDataReader reader = sqlCmd.ExecuteReader())
                 {
-                    sqlConnection.Open();
-                    SqlCommand sqlCmd = new SqlCommand("FlightSearch", sqlConnection);
-                    sqlCmd.CommandType = CommandType.StoredProcedure;
-                    sqlCmd.Parameters.AddWithValue("FromLocation", FromLocation);
-                    sqlCmd.Parameters.AddWithValue("ToLocation", ToLocation);
-                    sqlCmd.Parameters.AddWithValue("SeatsRequired", SeatsRequired);
-                    sqlCmd.Parameters.AddWithValue("DepartureDate", DepartureDate);
-                    using (SqlDataReader reader = sqlCmd.ExecuteReader())
+                    while (reader.Read())
                     {
-                        while (reader.Read())
+                        flights.Add(new FlightViewModel
                         {
-                            flights.Add(new FlightViewModel
-                            {
-                                FlightId = Convert.ToInt32(reader["FlightID"]),
-                                Airline = reader["Airline"].ToString(),
-                                DepartureTime = Convert.ToDateTime(reader["DepartureTime"].ToString()),
-                                ArrivalTime = Convert.ToDateTime(reader["ArrivalTime"].ToString()),
-                                Price = Convert.ToInt32(reader["Price"])
-                            });
-                        }
+                            FlightId = Convert.ToInt32(reader["FlightID"]),
+                            Airline = reader["Airline"].ToString(),
+                            DepartureTime = Convert.ToDateTime(reader["DepartureTime"].ToString()),
+                            ArrivalTime = Convert.ToDateTime(reader["ArrivalTime"].ToString()),
+                            Price = Convert.ToInt32(reader["Price"])
+                        });
                     }
-                    sqlConnection.Close();
                 }
+                sqlConnection.Close();
             }
             return flights;
         }
