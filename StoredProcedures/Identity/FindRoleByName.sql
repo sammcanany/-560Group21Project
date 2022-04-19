@@ -1,0 +1,12 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE OR ALTER PROCEDURE [Flights].[FindRoleByName]
+	@NormalizedName  NVARCHAR(256)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT [Id] FROM [ApplicationRole] WHERE [NormalizedName] = @NormalizedName
+END
+GO

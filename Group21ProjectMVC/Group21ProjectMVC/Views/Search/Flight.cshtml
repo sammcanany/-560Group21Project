@@ -3,8 +3,8 @@
     ViewData["Title"] = "Flight";
 }
 <ul class="departure-flights">
-    @*@foreach(FlightViewModel flight in Model.DepartureFlights)
-    {*@
+    @foreach(FlightViewModel flight in Model.DepartureFlights)
+    {
         <li id="slice0Flight1" class="flight-search-results js-moreflights " data-triptime="113" data-tripstops="0" data-departuretime="04-04-2022 07:45:00" data-arrivaltime="04-04-2022 09:38:00" data-tripprice="779.00" data-lowestfare="779.00" data-flightindex="1">
         <div class="row border-bottom pb-4 ps-4 pe-4">
             <div class="col">
@@ -40,7 +40,7 @@
             </div>
         </div>
     </li>
-    @*}*@
+    }
 </ul>
 <input type="hidden" name="">
 @*@if(@Model.ReturnDate != null)

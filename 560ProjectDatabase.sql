@@ -79,24 +79,23 @@ BEGIN
 	CREATE TABLE Flights.Airport
 	(
 		AirportID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-		Abbreviation NVARCHAR(32) NOT NULL UNIQUE,
+		AirportCode NVARCHAR(3) NOT NULL UNIQUE,
 		Name NVARCHAR(64) NOT NULL UNIQUE,
-		AirportCode INT NOT NULL UNIQUE,
 		Location NVARCHAR(128) NOT NULL
 	);
 END
-INSERT INTO Flights.Airport(Abbreviation, [Name], AirportCode, [Location])
+INSERT INTO Flights.Airport(AirportCode, [Name], [Location])
 VALUES
-	('ATL','Hartsfield-Jackson International Airport', '1000', 'GA'),
-	('DFW','Dallas/Fort Worth International Airport', '2000', 'TX'),
-	('DEN','Denver International Airport','3000','CO'),
-	('ORD','O''Hare International Airport','4000','IL'),
-	('LAX','Los Angeles International Airport','5000','CA'),
-	('CLT','Charlotte Douglas International Airport','6000','NC'),
-	('LAS','Harry Reid International Airport','7000','NV'),
-	('PHX','Phoenix Sky Harbor International Airport','8000', 'AZ'),
-	('MCO','Orlando International Airport','9000', 'FL'),
-	('MHK','Manhattan Regional Airport','9001', 'KS');
+	('ATL','Hartsfield-Jackson International Airport', 'GA'),
+	('DFW','Dallas/Fort Worth International Airport', 'TX'),
+	('DEN','Denver International Airport','CO'),
+	('ORD','O''Hare International Airport','IL'),
+	('LAX','Los Angeles International Airport','CA'),
+	('CLT','Charlotte Douglas International Airport','NC'),
+	('LAS','Harry Reid International Airport','NV'),
+	('PHX','Phoenix Sky Harbor International Airport', 'AZ'),
+	('MCO','Orlando International Airport', 'FL'),
+	('MHK','Manhattan Regional Airport', 'KS');
 GO
 
 -- Checks that table doesn't already exist, then creates it
@@ -132,61 +131,24 @@ BEGIN
 		DepartureDate DATE NOT NULL,
 		DepartureTime TIME NOT NULL,
 		ArrivalTime TIME NOT NULL,
-		Capacity INT NOT NULL
+		Capacity INT NOT NULL,
+		SeatsTaken INT NOT NULL,
+		Price MONEY NOT NULL
 	);
 END
-INSERT INTO Flights.Flight(FlightNumber, DepartingAirportID, DestinationAirportID, AirlineID, DepartureDate, DepartureTime, ArrivalTime, Capacity)
+INSERT INTO Flights.Flight(FlightNumber, DepartingAirportID, DestinationAirportID, AirlineID, DepartureDate, DepartureTime, ArrivalTime, Capacity,SeatsTaken,Price)
 VALUES
-	('IGTGD', '1', '2', 1, '2021-10-03','12:00:00','1:52:00',261),
-	('JTRLT', '1', '3', 1, '2023-02-07','12:00:00','23:08:00',262),
-	('JQOWL', '1', '4', 2, '2021-12-08','12:00:00','12:22:00',147),
-	('PJVFY', '1', '5', 2, '2022-10-18','12:00:00','10:51:00',223),
-	('MUNNG', '1', '6', 3, '2023-01-04','12:00:00','18:31:00',231),
-	('LYMXL', '1', '7', 4, '2022-11-21','12:00:00','11:54:00',238),
-	('NOBCK', '1', '8', 4, '2021-09-04','12:00:00','8:44:00',290),
-	('LTYWK', '1', '9', 5, '2022-04-17','12:00:00','5:23:00',135),
-	('ZJTBB', '1', '10', 6, '2022-05-13','12:00:00','19:52:00',252);
+	('IGTGD', '1', '2', 1, '2021-10-03','12:00:00','1:52:00',261,0,125),
+	('JTRLT', '1', '3', 1, '2023-02-07','12:00:00','23:08:00',262,0,125),
+	('JQOWL', '1', '4', 2, '2021-12-08','12:00:00','12:22:00',147,0,125),
+	('PJVFY', '1', '5', 2, '2022-10-18','12:00:00','10:51:00',223,0,125),
+	('MUNNG', '1', '6', 3, '2023-01-04','12:00:00','18:31:00',231,0,125),
+	('LYMXL', '1', '7', 4, '2022-11-21','12:00:00','11:54:00',238,0,125),
+	('NOBCK', '1', '8', 4, '2021-09-04','12:00:00','8:44:00',290,0,125),
+	('LTYWK', '1', '9', 5, '2022-04-17','12:00:00','5:23:00',135,0,125),
+	('ZJTBB', '1', '10', 6, '2022-05-13','12:00:00','19:52:00',252,0,125);
 GO
 
--- Checks that table doesn't already exist, then creates it
-IF OBJECT_ID(N'Flights.Class') IS NULL
-BEGIN
-	CREATE TABLE Flights.Class
-	(
-		ClassID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-		Name NVARCHAR(32) NOT NULL UNIQUE
-	);
-END
-INSERT INTO Flights.Class([Name])
-VALUES
-	('First Class'),
-	('Business Class'),
-	('Economy Class')
-GO
--- Checks that table doesn't already exist, then creates it
-IF OBJECT_ID(N'Flights.FlightClass') IS NULL
-BEGIN
-	CREATE TABLE Flights.FlightClass
-	(
-		FlightID INT NOT NULL FOREIGN KEY REFERENCES Flights.Flight(FlightID),
-		ClassID INT NOT NULL FOREIGN KEY REFERENCES Flights.Class(ClassID),
-		Price INT NOT NULL
-
-		PRIMARY KEY(FlightID, ClassID)
-	);
-END
-INSERT INTO Flights.FlightClass(FlightID, ClassID, Price)
-VALUES
-	('1', '1', '1300'),
-	('1', '2', '600'),
-	('1', '3', '250'),
-	('2', '1', '1200'),
-	('2', '2', '500'),
-	('2', '3', '200'),
-	('3', '1', '1200'),
-	('3', '2', '700'),
-	('3', '3', '350');
-GO
 -- Checks that table doesn't already exist, then creates it	
 IF OBJECT_ID(N'Flights.ApplicationUser') IS NULL
 BEGIN
@@ -217,6 +179,7 @@ GO
 
 INSERT INTO Flights.ApplicationUser([UserName], [NormalizedUserName], [Email], [NormalizedEmail], [EmailConfirmed], [FirstName], [LastName], [Address], [PasswordHash], [PhoneNumber], [PhoneNumberConfirmed])
 VALUES
+	('sammcanany@ksu.edu','SAMMCANANY@KSU.EDU','sammcanany@ksu.edu','SAMMCANANY@KSU.EDU',1,'Sam','McAnany','Address','AQAAAAEAACcQAAAAEC8drUhJkaVG1yRbw38h1gAw3wyXjAvha8zTCZ5eb1n5eE+mGzCFGdX9ypnJz6E2BA==','(785) 555-5555',1),
 	('leo.cras@icloud.couk','LEO.CRAS@ICLOUD.COUK','leo.cras@icloud.couk','LEO.CRAS@ICLOUD.COUK',1,'Quamar','Roy','P.O. Box 962, 9214 Magna. St.','AQAAAAEAACcQAAAAEC8drUhJkaVG1yRbw38h1gAw3wyXjAvha8zTCZ5eb1n5eE+mGzCFGdX9ypnJz6E2BA==','(661) 858-9563',0),
 	('malesuada@yahoo.couk',	'MALESUADA@YAHOO.COUK',	'malesuada@yahoo.couk',	'MALESUADA@YAHOO.COUK',	0,'Calista','Hill','P.O. Box 559, 6066 Lectus Avenue','AQAAAAEAACcQAAAAEDJShDJYCSYiqh9iz2OqMsLydSMKdK7Gipj3OTseNxG+hd06TGAhHrpgmJa2sVTaxQ==','(687) 183-5211',0),
 	('hendrerit@hotmail.org', 'HENDRERIT@HOTMAIL.ORG', 'hendrerit@hotmail.org', 'HENDRERIT@HOTMAIL.ORG', 0, 'Salvador','Huffman','986-3229 Urna Street','AQAAAAEAACcQAAAAEKVWi0gVJqXHx69TzKJRfiaC4sH5fq3fNKFf6FXmTLjQfH90l4awh5+FbTwvsFUvVA==','(356) 158-2672',0),
@@ -242,7 +205,11 @@ END
 CREATE INDEX [IX_ApplicationRole_NormalizedName] ON [Flights].[ApplicationRole] ([NormalizedName])
 
 GO
-
+INSERT INTO Flights.[ApplicationRole]([Name], [NormalizedName])
+VALUES
+	('Admin', 'ADMIN'),
+	('Default', 'DEFAULT');
+GO
 -- Checks that table doesn't already exist, then creates it
 IF OBJECT_ID(N'Flights.ApplicationUserRole') IS NULL
 BEGIN
@@ -254,8 +221,18 @@ BEGIN
 		CONSTRAINT [FK_ApplicationUserRole_User] FOREIGN KEY ([UserId]) REFERENCES [Flights].[ApplicationUser]([Id]),
 		CONSTRAINT [FK_ApplicationUserRole_Role] FOREIGN KEY ([RoleId]) REFERENCES [Flights].[ApplicationRole]([Id])
 	);
-END
-
+END;
+WITH CTE AS(
+	SELECT 
+	U.Id AS 'UserId',
+	R.Id AS 'RoleId'
+	FROM [Flights].[ApplicationUser] U,[Flights].[ApplicationRole] R
+	WHERE U.[UserName] = 'sammcanany@ksu.edu'
+	AND R.[Name] = 'Admin'
+)
+INSERT INTO Flights.[ApplicationUserRole]([RoleId], [UserId])
+SELECT * FROM CTE
+GO
 -- Checks that table doesn't already exist, then creates it
 IF OBJECT_ID(N'Flights.TicketInfo') IS NULL
 BEGIN
@@ -264,22 +241,21 @@ BEGIN
 		TicketInfoID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 		ProfileID INT NOT NULL FOREIGN KEY REFERENCES Flights.[ApplicationUser](Id),
 		FlightID INT NOT NULL FOREIGN KEY REFERENCES Flights.Flight(FlightID),
-		ClassID	INT NOT NULL FOREIGN KEY REFERENCES Flights.Class(ClassID),
 		SeatNumber INT NOT NULL
 
 		UNIQUE(FlightID, SeatNumber)
 	);
 END
-INSERT INTO Flights.TicketInfo(ProfileID, FlightID, ClassID, SeatNumber)
+INSERT INTO Flights.TicketInfo(ProfileID, FlightID, SeatNumber)
 VALUES
-	('1', '1', '3', '70'),
-	('2', '1', '3', '71'),
-	('3', '2', '3', '10'),
-	('4', '3', '3', '20'),
-	('5', '4', '3', '30'),
-	('6', '5', '3', '40'),
-	('7', '6', '3', '50'),
-	('8', '7', '3', '60'),
-	('9', '8', '3', '70'),
-	('10', '9', '3', '80');
+	('1', '1', '70'),
+	('2', '1', '71'),
+	('3', '2', '10'),
+	('4', '3', '20'),
+	('5', '4', '30'),
+	('6', '5', '40'),
+	('7', '6', '50'),
+	('8', '7', '60'),
+	('9', '8', '70'),
+	('10', '9', '80');
 GO

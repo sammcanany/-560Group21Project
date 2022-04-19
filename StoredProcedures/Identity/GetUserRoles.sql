@@ -1,0 +1,14 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE OR ALTER PROCEDURE [Flights].[GetUserRoles]
+	@UserId INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT R.[Id] FROM [ApplicationRole] R
+	INNER JOIN [ApplicationUserRole] UR ON UR.[RoleId] = R.[Id]
+	WHERE UR.[UserId] = @UserId
+END
+GO

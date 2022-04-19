@@ -1,0 +1,13 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE OR ALTER PROCEDURE [Flights].[IsUserInRole]
+	@RoleId INT,
+	@UserId INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT COUNT(*) FROM [ApplicationUserRole] WHERE [UserId] = @UserId AND [RoleId] = @RoleId
+END
+GO

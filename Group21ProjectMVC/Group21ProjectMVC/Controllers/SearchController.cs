@@ -33,12 +33,12 @@ namespace Group21ProjectMVC.Controllers
         [HttpGet]
         public IActionResult Flight(FlightSearchModel fsm)
         {
-            //fsm.DepartureFlights = GetFlights(fsm.FromLocation, fsm.ToLocation, fsm.SeatsRequired, fsm.DepartureDate);
+            fsm.DepartureFlights = GetFlights(fsm.FromLocation, fsm.ToLocation, fsm.SeatsRequired, fsm.DepartureDate);
             if (fsm.ReturnDate.HasValue)
             {
-                //fsm.ReturnFlights = GetFlights(fsm.ToLocation, fsm.FromLocation, fsm.SeatsRequired, fsm.ReturnDate);
+                fsm.ReturnFlights = GetFlights(fsm.ToLocation, fsm.FromLocation, fsm.SeatsRequired, fsm.ReturnDate);
             }
-            return View();
+            return View(fsm);
         }
 
         public IEnumerable<FlightViewModel> GetFlights(string FromLocation, string ToLocation, int SeatsRequired, DateTime? DepartureDate)

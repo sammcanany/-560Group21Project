@@ -1,0 +1,12 @@
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE OR ALTER PROCEDURE [Flights].[FindUserByEmail]
+	@NormalizedEmail  NVARCHAR(256)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT * FROM [ApplicationUser] WHERE [NormalizedEmail] = @NormalizedEmail
+END
+GO
