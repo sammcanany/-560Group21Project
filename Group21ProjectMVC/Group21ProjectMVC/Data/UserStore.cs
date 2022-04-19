@@ -26,7 +26,7 @@ namespace Group21ProjectMVC.Data
             cancellationToken.ThrowIfCancellationRequested();
             using (var connection = new SqlConnection(_connectionString))
             {
-                using SqlCommand cmd = new("CreateOrUpdateUser", connection);
+                using SqlCommand cmd = new("Flights.CreateOrUpdateUser", connection);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("Id", user.Id);
                 cmd.Parameters.AddWithValue("UserName", user.UserName);
@@ -34,6 +34,9 @@ namespace Group21ProjectMVC.Data
                 cmd.Parameters.AddWithValue("Email", user.Email);
                 cmd.Parameters.AddWithValue("NormalizedEmail", user.NormalizedEmail);
                 cmd.Parameters.AddWithValue("EmailConfirmed", user.EmailConfirmed);
+                cmd.Parameters.AddWithValue("FirstName", user.FirstName);
+                cmd.Parameters.AddWithValue("LastName", user.LastName);
+                cmd.Parameters.AddWithValue("Address", user.Address);
                 cmd.Parameters.AddWithValue("PasswordHash", user.PasswordHash);
                 cmd.Parameters.AddWithValue("PhoneNumber", user.PhoneNumber);
                 cmd.Parameters.AddWithValue("PhoneNumberConfirmed", user.PhoneNumberConfirmed);
@@ -50,7 +53,7 @@ namespace Group21ProjectMVC.Data
 
             using (var connection = new SqlConnection(_connectionString))
             {
-                using SqlCommand cmd = new("DeleteUser", connection);
+                using SqlCommand cmd = new("Flights.DeleteUser", connection);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("Id", user.Id);
                 await connection.OpenAsync(cancellationToken);
@@ -65,7 +68,7 @@ namespace Group21ProjectMVC.Data
             cancellationToken.ThrowIfCancellationRequested();
 
             using var connection = new SqlConnection(_connectionString);
-            using SqlCommand cmd = new("FindUserById", connection);
+            using SqlCommand cmd = new("Flights.FindUserById", connection);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("Id", userId);
             ApplicationUser response = null;
@@ -91,6 +94,9 @@ namespace Group21ProjectMVC.Data
                 Email = reader["Email"].ToString(),
                 NormalizedEmail = reader["NormalizedEmail"].ToString(),
                 EmailConfirmed = Convert.ToBoolean(reader["EmailConfirmed"]),
+                FirstName = reader["FirstName"].ToString(),
+                LastName = reader["LastName"].ToString(),
+                Address = reader["Address"].ToString(),
                 PasswordHash = reader["PasswordHash"].ToString(),
                 PhoneNumber = reader["PhoneNumber"].ToString(),
                 PhoneNumberConfirmed = Convert.ToBoolean(reader["PhoneNumberConfirmed"])
@@ -102,7 +108,7 @@ namespace Group21ProjectMVC.Data
             cancellationToken.ThrowIfCancellationRequested();
 
             using var connection = new SqlConnection(_connectionString);
-            using SqlCommand cmd = new("FindUserByName", connection);
+            using SqlCommand cmd = new("Flights.FindUserByName", connection);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("NormalizedUserName", normalizedUserName);
             ApplicationUser response = null;
@@ -151,7 +157,7 @@ namespace Group21ProjectMVC.Data
 
             using (var connection = new SqlConnection(_connectionString))
             {
-                using SqlCommand cmd = new("CreateOrUpdateUser", connection);
+                using SqlCommand cmd = new("Flights.CreateOrUpdateUser", connection);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("Id", user.Id);
                 cmd.Parameters.AddWithValue("UserName", user.UserName);
@@ -159,6 +165,9 @@ namespace Group21ProjectMVC.Data
                 cmd.Parameters.AddWithValue("Email", user.Email);
                 cmd.Parameters.AddWithValue("NormalizedEmail", user.NormalizedEmail);
                 cmd.Parameters.AddWithValue("EmailConfirmed", user.EmailConfirmed);
+                cmd.Parameters.AddWithValue("FirstName", user.FirstName);
+                cmd.Parameters.AddWithValue("LastName", user.LastName);
+                cmd.Parameters.AddWithValue("Address", user.Address);
                 cmd.Parameters.AddWithValue("PasswordHash", user.PasswordHash);
                 cmd.Parameters.AddWithValue("PhoneNumber", user.PhoneNumber);
                 cmd.Parameters.AddWithValue("PhoneNumberConfirmed", user.PhoneNumberConfirmed);
@@ -196,7 +205,7 @@ namespace Group21ProjectMVC.Data
             cancellationToken.ThrowIfCancellationRequested();
 
             using var connection = new SqlConnection(_connectionString);
-            using SqlCommand cmd = new("FindUserByEmail", connection);
+            using SqlCommand cmd = new("Flights.FindUserByEmail", connection);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("NormalizedUserName", normalizedEmail);
             ApplicationUser? response = null;
@@ -266,7 +275,7 @@ namespace Group21ProjectMVC.Data
             cancellationToken.ThrowIfCancellationRequested();
 
             using var connection = new SqlConnection(_connectionString);
-            using SqlCommand cmd = new("AddRoleToUser", connection);
+            using SqlCommand cmd = new("Flights.AddRoleToUser", connection);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("Name", roleName);
             cmd.Parameters.AddWithValue("NormalizedName", roleName.ToUpper());
@@ -280,7 +289,7 @@ namespace Group21ProjectMVC.Data
             cancellationToken.ThrowIfCancellationRequested();
 
             using var connection = new SqlConnection(_connectionString);
-            using SqlCommand cmd = new("RemoveRoleFromUser", connection);
+            using SqlCommand cmd = new("Flights.RemoveRoleFromUser", connection);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("Name", roleName);
             cmd.Parameters.AddWithValue("NormalizedName", roleName.ToUpper());
@@ -294,7 +303,7 @@ namespace Group21ProjectMVC.Data
             cancellationToken.ThrowIfCancellationRequested();
 
             using var connection = new SqlConnection(_connectionString);
-            using SqlCommand cmd = new("GetUserRoles", connection);
+            using SqlCommand cmd = new("Flights.GetUserRoles", connection);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("UserId", user.Id);
             await connection.OpenAsync(cancellationToken);
@@ -322,7 +331,7 @@ namespace Group21ProjectMVC.Data
             using var connection = new SqlConnection(_connectionString);
             int? roleId = 0;
             int matchingRoles = 0;
-            using (SqlCommand cmd = new("FindRoleByName", connection))
+            using (SqlCommand cmd = new("Flights.FindRoleByName", connection))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("NormalizedName", roleName.ToUpper());
@@ -347,7 +356,7 @@ namespace Group21ProjectMVC.Data
             cancellationToken.ThrowIfCancellationRequested();
 
             using var connection = new SqlConnection(_connectionString);
-            using SqlCommand cmd = new("GetUsersInRole", connection);
+            using SqlCommand cmd = new("Flights.GetUsersInRole", connection);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("NormalizedName", roleName.ToUpper());
             await connection.OpenAsync(cancellationToken);

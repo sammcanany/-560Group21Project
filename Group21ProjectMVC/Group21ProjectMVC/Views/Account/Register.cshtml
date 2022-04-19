@@ -1,9 +1,8 @@
-﻿@model Group21ProjectMVC.ViewModels.RegisterViewModel
-
+﻿@using Group21ProjectMVC.Models.AccountViewModels
+@model RegisterViewModel
 @{
     ViewData["Title"] = "Register";
 }
-
 <section>
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -12,7 +11,7 @@
                     <div class="card-body p-5 text-center">
                         <div class="mb-md-4 mt-md-4">
                             <h2 class="fw-bold mb-5">Register</h2>
-                            <form asp-action="Register">
+                            <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <div class="col-12 mb-3">
                                     <div class="row">
@@ -52,7 +51,7 @@
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="fas fa-lock"></i></span>
                                         <div class="form-floating flex-grow-1">
-                                            <input asp-for="Password" type="password" value="" class="input form-control" id="password" placeholder="Password" />
+                                            <input asp-for="Password" class="input form-control" id="password" placeholder="Password" />
                                             <label asp-for="Password">Password</label>
                                         </div>
                                         <span class="input-group-text" onclick="password_show_hide();">
@@ -72,7 +71,7 @@
                                     </div>
                                     <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                                 </div>
-                                <button class="btn btn-primary w-100 pb-3 pt-3" type="submit">Login</button>
+                                <button class="btn btn-primary w-100 pb-3 pt-3" type="submit">Register</button>
                             </form>
                         </div>
                     </div>
@@ -110,9 +109,6 @@
     }
 </script>
 
-
 @section Scripts {
-    @{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
-}
+    @await Html.PartialAsync("_ValidationScriptsPartial")
 }

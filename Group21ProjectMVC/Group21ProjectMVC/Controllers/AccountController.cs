@@ -1,105 +1,267 @@
-﻿using Group21ProjectMVC.Helpers;
-using Group21ProjectMVC.Models;
-using Group21ProjectMVC.ViewModels;
-using System.Security.Cryptography;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Group21ProjectMVC.Models;
+using Group21ProjectMVC.Models.AccountViewModels;
+using Group21ProjectMVC.Services;
 
 namespace Group21ProjectMVC.Controllers
 {
+    [Authorize]
+    [Route("[controller]/[action]")]
     public class AccountController : Controller
     {
-        private IConfiguration _configuration;
-        CommonHelper _helper;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IEmailSender _emailSender;
+        private readonly ILogger _logger;
 
-        public AccountController(IConfiguration configuration)
+        public AccountController(
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            IEmailSender emailSender,
+            ILogger<AccountController> logger)
         {
-            _configuration = configuration;
-            _helper = new CommonHelper(_configuration);
+            _userManager = userManager;
+            _signInManager = signInManager;
+            _emailSender = emailSender;
+            _logger = logger;
+        }
+
+        [TempData]
+        public string ErrorMessage { get; set; }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(string returnUrl = null)
+        {
+            // Clear the existing external cookie to ensure a clean login process
+            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+                // This doesn't count login failures towards account lockout
+                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User logged in.");
+                    return RedirectToLocal(returnUrl);
+                }
+                if (result.IsLockedOut)
+                {
+                    _logger.LogWarning("User account locked out.");
+                    return RedirectToAction(nameof(Lockout));
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    return View(model);
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
         }
 
         [HttpGet]
-        public IActionResult Register()
+        [AllowAnonymous]
+        public IActionResult Lockout()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Register(string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, PhoneNumber = model.PhoneNumber};//, new Claim("FullName", user.FirstName + " " + user.LastName) 
+                var result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    await _userManager.AddClaimAsync(user, new Claim("FullName", user.FirstName + " " + user.LastName));
+                    _logger.LogInformation("User created a new account with password.");
+
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    _logger.LogInformation("User created a new account with password.");
+                    return RedirectToLocal(returnUrl);
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation("User logged out.");
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ConfirmEmail(string userId, string code)
+        {
+            if (userId == null || code == null)
+            {
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                throw new ApplicationException($"Unable to load user with ID '{userId}'.");
+            }
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            return View(result.Succeeded ? "ConfirmEmail" : "Error");
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgotPassword()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Register(RegisterViewModel vm)
-        {
-            string UserExistsQuery = $"Select * from [PassengerProfile] where Email='{vm.Email}'";
-            bool userExists = _helper.UserAlreadyExists(UserExistsQuery);
-            if (userExists)
-            {
-                ViewBag.Error = "Email Already Exists!";
-                return View("Register", "Account");
-            }
-
-            string passwordHash = BCrypt.Net.BCrypt.HashPassword(vm.Password);
-            string Query = "Insert into [PassengerProfile](FirstName,LastName,Email,PhoneNumber,Password)values" +
-                $"('{vm.FirstName}','{vm.LastName}','{vm.Email}','{vm.PhoneNumber}','{passwordHash}')";
-            int result = _helper.DMLTransaction(Query);
-            if (result > 0)
-            {
-                EntryIntoSession(vm.Email, vm.FirstName, vm.LastName);
-                //return RedirectToAction("Index", "Home");
-                ViewBag.Success = "Thanks for Registering!";
-                return View();
-            }
-            return View();
-        }
-
-        private void EntryIntoSession(string Email,string FirstName, string LastName)
-        {
-
-            HttpContext.Session.SetString("Email", Email);
-            HttpContext.Session.SetString("FirstName", FirstName);
-            HttpContext.Session.SetString("LastName", LastName);
-        }
-
-        [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
-        }
-        public IActionResult Login(LoginViewModel vm)
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
             if (ModelState.IsValid)
             {
-                if (string.IsNullOrEmpty(vm.Email) && string.IsNullOrEmpty(vm.Password))
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
-                    ViewBag.ErrorMsg = "Username and Password are Empty";
-                    return View();
+                    return RedirectToAction(nameof(ForgotPasswordConfirmation));
                 }
-                else
-                {
-                    if (SignInMethod(vm.Email, vm.Password))
-                    {
-                        ViewBag.Success = "Login Successful!";
-                        return View();  //return RedirectToAction("Index","Home");
-                    }
-                    return View(vm);
-                }
-                
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
+                await _emailSender.SendEmailAsync(model.Email, "Reset Password",
+                   $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
+                return RedirectToAction(nameof(ForgotPasswordConfirmation));
             }
-            return View(vm);
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
         }
 
-        private bool SignInMethod(string email, string password)
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ForgotPasswordConfirmation()
         {
-            bool Result = false;
-            string Query = $"SELECT * FROM [PassengerProfile] WHERE Email='{email}'";
-            var userDetails = _helper.GetUserByEmail(Query);
-            if (userDetails.Email != null && BCrypt.Net.BCrypt.Verify(password, userDetails.Password))
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPassword(string code = null)
+        {
+            if (code == null)
             {
-                Result = true;
-                EntryIntoSession(userDetails.Email, userDetails.FirstName, userDetails.LastName);
+                throw new ApplicationException("A code must be supplied for password reset.");
+            }
+            var model = new ResetPasswordViewModel { Code = code };
+            return View(model);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                return RedirectToAction(nameof(ResetPasswordConfirmation));
+            }
+            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction(nameof(ResetPasswordConfirmation));
+            }
+            AddErrors(result);
+            return View();
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult ResetPasswordConfirmation()
+        {
+            return View();
+        }
+
+
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
+        #region Helpers
+
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+        }
+
+        private IActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
             }
             else
             {
-                ViewBag.ErrorMsg = "UserName & Password Are Incorrect!";
+                return RedirectToAction(nameof(HomeController.Index), "Home");
             }
-            return Result;
         }
+
+        #endregion
     }
 }

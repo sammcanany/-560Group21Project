@@ -10,11 +10,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Group21ProjectAuth.Models;
-using Group21ProjectAuth.Models.ManageViewModels;
-using Group21ProjectAuth.Services;
+using Group21ProjectMVC.Models;
+using Group21ProjectMVC.Models.ManageViewModels;
+using Group21ProjectMVC.Services;
 
-namespace Group21ProjectAuth.Controllers
+namespace Group21ProjectMVC.Controllers
 {
     [Authorize]
     [Route("[controller]/[action]")]

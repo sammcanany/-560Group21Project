@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Group21ProjectMVC.Data;
 using Group21ProjectMVC.Models;
+using Group21ProjectMVC.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("Group21ProjectMVCContextConnection");;
@@ -13,11 +14,23 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
 
 
 // Add services to the container.
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddControllers(
     options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
 builder.Services.AddMvc().AddSessionStateTempDataProvider();
 builder.Services.AddSession();
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Default Password settings.
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = true;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 1;
+});
 
 var app = builder.Build();
 
