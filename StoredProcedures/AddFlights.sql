@@ -1,3 +1,5 @@
+USE [560Project]
+GO
 DROP PROCEDURE [Flights].[AddFlights]
 GO
 
