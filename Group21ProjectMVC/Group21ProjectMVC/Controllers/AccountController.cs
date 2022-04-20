@@ -110,7 +110,6 @@ namespace Group21ProjectMVC.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await _userManager.AddClaimAsync(user, new Claim("FullName", user.FirstName + " " + user.LastName));
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

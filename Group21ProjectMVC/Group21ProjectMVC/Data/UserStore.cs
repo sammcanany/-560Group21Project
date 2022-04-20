@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Group21ProjectMVC.Models;
+using Group21ProjectMVC.Models.ManageViewModels;
 
 namespace Group21ProjectMVC.Data
 {
@@ -373,7 +374,7 @@ namespace Group21ProjectMVC.Data
 
         public void Dispose()
         {
-            GC.SuppressFinalize(this);
+            // Nothing to dispose.
         }
     }
 }

@@ -170,7 +170,7 @@ namespace Group21ProjectMVC.Data
 
         public void Dispose()
         {
-            GC.SuppressFinalize(this);
+            // Nothing to dispose.
         }
     }
 }

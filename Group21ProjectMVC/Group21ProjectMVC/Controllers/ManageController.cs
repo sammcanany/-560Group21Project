@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using Group21ProjectMVC.Models;
 using Group21ProjectMVC.Models.ManageViewModels;
 using Group21ProjectMVC.Services;
+using Group21ProjectMVC.Data;
 
 namespace Group21ProjectMVC.Controllers
 {
@@ -22,21 +23,27 @@ namespace Group21ProjectMVC.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IFlightStore<ApplicationFlight> _flightStore;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly UrlEncoder _urlEncoder;
 
         private const string AuthenicatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
 
+
+        private CancellationTokenSource source = new CancellationTokenSource();
+
         public ManageController(
           UserManager<ApplicationUser> userManager,
           SignInManager<ApplicationUser> signInManager,
+          IFlightStore<ApplicationFlight> flightStore,
           IEmailSender emailSender,
           ILogger<ManageController> logger,
           UrlEncoder urlEncoder)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _flightStore = flightStore;
             _emailSender = emailSender;
             _logger = logger;
             _urlEncoder = urlEncoder;
@@ -225,8 +232,162 @@ namespace Group21ProjectMVC.Controllers
             return RedirectToAction(nameof(SetPassword));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> AddFlights()
+        {
+            List<string> strings = new() { "6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM" };
+            List<DateTime> Times = strings.Select(date => DateTime.Parse(date)).ToList();
+            List<string> Airports = new() { "ATL - Hartsfield-Jackson International Airport, GA", "DFW - Hartsfield-Jackson International Airport, TX", "DEN - Denver International Airport, CO", "ORD - O'Hare International Airport, IL", "LAX - Los Angeles International Airport, CA", "CLT - Charlotte Douglas International Airport, NC", "LAS - Harry Reid International Airport, NV", "PHX - Phoenix Sky Harbor International Airport, AZ", "MCO - Orlando International Airport, FL", "MHK - Manhattan Regional Airport, KS" };
+            var model = new AddFlightsViewModel { Times = Times, Airports = Airports };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddFlights(AddFlightsViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            
+            var success = await _flightStore.AddOrEditFlightsAsync(GenFlights(model), source.Token);
+            if (!success)
+            {
+                throw new ApplicationException($"Unable to add flights.");
+            }
+            return View(model);
+        }
+
         #region Helpers
 
+        private IEnumerable<ApplicationFlight> GenFlights(AddFlightsViewModel model)
+        {
+            IList<ApplicationFlight> Flights = new List<ApplicationFlight>();
+            Dictionary<string, double> dic = new Dictionary<string, double>
+            {
+                { "ATLToDFW", 1.30725572451624 },
+                { "ATLToDEN", 2.14277369488298 },
+                { "ATLToORD", 1.08555689404232 },
+                { "ATLToLAX", 3.47703881172972 },
+                { "ATLToCLT", 0.404457030679804 },
+                { "ATLToLAS", 3.1200264269319 },
+                { "ATLToPHX", 2.83505944218935 },
+                { "ATLToMCO", 0.723430371758545 },
+                { "ATLToMHK", 1.3946579707286 },
+                { "DFWToATL", 1.30725572451624 },
+                { "DFWToDEN", 1.14648906852173 },
+                { "DFWToORD", 1.43537463591358 },
+                { "DFWToLAX", 2.20537374697025 },
+                { "DFWToCLT", 1.67189997986523 },
+                { "DFWToLAS", 1.8847514660962 },
+                { "DFWToPHX", 1.54937003452177 },
+                { "DFWToMCO", 1.75997783848851 },
+                { "DFWToMHK", 0.772957335795331 },
+                { "DENToATL", 2.14277369488298 },
+                { "DENToDFW", 1.14648906852173 },
+                { "DENToORD", 1.58631543509905 },
+                { "DENToLAX", 1.53983461791215 },
+                { "DENToCLT", 2.38886976857147 },
+                { "DENToLAS", 1.1216902167879 },
+                { "DENToPHX", 1.07537771608774 },
+                { "DENToMCO", 2.7643288235683 },
+                { "DENToMHK", 0.768316122264706 },
+                { "ORDToATL", 1.08555689404232 },
+                { "ORDToDFW", 1.43537463591358 },
+                { "ORDToDEN", 1.58631543509905 },
+                { "ORDToLAX", 3.11632645413679 },
+                { "ORDToCLT", 1.07268950225617 },
+                { "ORDToLAS", 2.70410349949855 },
+                { "ORDToPHX", 2.57213717738108 },
+                { "ORDToMCO", 1.80138179698141 },
+                { "ORDToMHK", 0.89468348426939 },
+                { "LAXToATL", 3.47703881172972 },
+                { "LAXToDFW", 2.20537374697025 },
+                { "LAXToDEN", 1.53983461791215 },
+                { "LAXToORD", 3.11632645413679 },
+                { "LAXToCLT", 3.79518071339672 },
+                { "LAXToLAS", 0.423011407621394 },
+                { "LAXToPHX", 0.661567966144413 },
+                { "LAXToMCO", 3.96172336722519 },
+                { "LAXToMHK", 2.2469664778604 },
+                { "CLTToATL", 0.404457030679804 },
+                { "CLTToDFW", 1.67189997986523 },
+                { "CLTToDEN", 2.38886976857147 },
+                { "CLTToORD", 1.07268950225617 },
+                { "CLTToLAX", 3.79518071339672 },
+                { "CLTToLAS", 3.42147670118808 },
+                { "CLTToPHX", 3.16710251920464 },
+                { "CLTToMCO", 0.83951540869202 },
+                { "CLTToMHK", 1.62150185160082 },
+                { "LASToATL", 3.1200264269319 },
+                { "LASToDFW", 1.8847514660962 },
+                { "LASToDEN", 1.1216902167879 },
+                { "LASToORD", 2.70410349949855 },
+                { "LASToLAX", 0.423011407621394 },
+                { "LASToCLT", 3.42147670118808 },
+                { "LASToPHX", 0.457579020373236 },
+                { "LASToMCO", 3.64345441439641 },
+                { "LASToMHK", 1.84593454014099 },
+                { "PHXToATL", 2.83505944218935 },
+                { "PHXToDFW", 1.54937003452177 },
+                { "PHXToDEN", 1.07537771608774 },
+                { "PHXToORD", 2.57213717738108 },
+                { "PHXToLAX", 0.661567966144413 },
+                { "PHXToCLT", 3.16710251920464 },
+                { "PHXToLAS", 0.457579020373236 },
+                { "PHXToMCO", 3.3020571975155 },
+                { "PHXToMHK", 1.68049203295766 },
+                { "MCOToATL", 0.723430371758545 },
+                { "MCOToDFW", 1.75997783848851 },
+                { "MCOToDEN", 2.7643288235683 },
+                { "MCOToORD", 1.80138179698141 },
+                { "MCOToLAX", 3.96172336722519 },
+                { "MCOToCLT", 0.83951540869202 },
+                { "MCOToLAS", 3.64345441439641 },
+                { "MCOToPHX", 3.3020571975155 },
+                { "MCOToMHK", 2.05550742495893 },
+                { "MHKToATL", 1.3946579707286 },
+                { "MHKToDFW", 0.772957335795331 },
+                { "MHKToDEN", 0.768316122264706 },
+                { "MHKToORD", 0.89468348426939 },
+                { "MHKToLAX", 2.2469664778604 },
+                { "MHKToCLT", 1.62150185160082 },
+                { "MHKToLAS", 1.84593454014099 },
+                { "MHKToPHX", 1.68049203295766 },
+                { "MHKToMCO", 2.05550742495893 }
+            };
+            foreach (DateTime day in EachDay(model.StartingDate, model.EndingDate))
+            {
+                foreach (string airport in model.AirportsSelected)
+                {
+                    for (int i = 0; i < model.AirportsSelected.Count; i++)
+                    {
+                        if (model.AirportsSelected[i] != airport)
+                        {
+                            foreach (var time in model.TimesSelected)
+                            {
+                                dic.TryGetValue(airport + "To" + model.AirportsSelected[i], out double flightTime);
+                                Flights.Add(new ApplicationFlight
+                                {
+                                    FlightNumber = "0000",
+                                    DepartingAirportCode = airport,
+                                    DestinationAirportCode = model.AirportsSelected[i],
+                                    Airline = model.Airline,
+                                    DepartureDate = day,
+                                    DepartureTime = time,
+                                    ArrivalTime = time.AddHours(flightTime),
+                                    Capacity = 245,
+                                    SeatsTaken = 0,
+                                    Price = 175
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            return Flights;
+        }
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
@@ -235,32 +396,11 @@ namespace Group21ProjectMVC.Controllers
             }
         }
 
-        private string FormatKey(string unformattedKey)
+        public IEnumerable<DateTime> EachDay(DateTime from, DateTime thru)
         {
-            var result = new StringBuilder();
-            int currentPosition = 0;
-            while (currentPosition + 4 < unformattedKey.Length)
-            {
-                result.Append(unformattedKey.Substring(currentPosition, 4)).Append(" ");
-                currentPosition += 4;
-            }
-            if (currentPosition < unformattedKey.Length)
-            {
-                result.Append(unformattedKey.Substring(currentPosition));
-            }
-
-            return result.ToString().ToLowerInvariant();
+            for (var day = from.Date; day.Date <= thru.Date; day = day.AddDays(1))
+                yield return day;
         }
-
-        private string GenerateQrCodeUri(string email, string unformattedKey)
-        {
-            return string.Format(
-                AuthenicatorUriFormat,
-                _urlEncoder.Encode("WebApp"),
-                _urlEncoder.Encode(email),
-                unformattedKey);
-        }
-
         #endregion
     }
 }

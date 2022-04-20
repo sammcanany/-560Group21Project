@@ -179,7 +179,7 @@ GO
 
 INSERT INTO Flights.ApplicationUser([UserName], [NormalizedUserName], [Email], [NormalizedEmail], [EmailConfirmed], [FirstName], [LastName], [Address], [PasswordHash], [PhoneNumber], [PhoneNumberConfirmed])
 VALUES
-	('sammcanany@ksu.edu','SAMMCANANY@KSU.EDU','sammcanany@ksu.edu','SAMMCANANY@KSU.EDU',1,'Sam','McAnany','Address','AQAAAAEAACcQAAAAEC8drUhJkaVG1yRbw38h1gAw3wyXjAvha8zTCZ5eb1n5eE+mGzCFGdX9ypnJz6E2BA==','(785) 555-5555',1),
+	('sammcanany@ksu.edu','SAMMCANANY@KSU.EDU','sammcanany@ksu.edu','SAMMCANANY@KSU.EDU',1,'Sam','McAnany','Address','AQAAAAEAACcQAAAAEAPABFsmgdk0oze/asltFwOWWRuNw7sGRVFHj/FIk2h2Rrm44S9v6BtsvDgKEkY+Rg==','(785) 555-5555',1),
 	('leo.cras@icloud.couk','LEO.CRAS@ICLOUD.COUK','leo.cras@icloud.couk','LEO.CRAS@ICLOUD.COUK',1,'Quamar','Roy','P.O. Box 962, 9214 Magna. St.','AQAAAAEAACcQAAAAEC8drUhJkaVG1yRbw38h1gAw3wyXjAvha8zTCZ5eb1n5eE+mGzCFGdX9ypnJz6E2BA==','(661) 858-9563',0),
 	('malesuada@yahoo.couk',	'MALESUADA@YAHOO.COUK',	'malesuada@yahoo.couk',	'MALESUADA@YAHOO.COUK',	0,'Calista','Hill','P.O. Box 559, 6066 Lectus Avenue','AQAAAAEAACcQAAAAEDJShDJYCSYiqh9iz2OqMsLydSMKdK7Gipj3OTseNxG+hd06TGAhHrpgmJa2sVTaxQ==','(687) 183-5211',0),
 	('hendrerit@hotmail.org', 'HENDRERIT@HOTMAIL.ORG', 'hendrerit@hotmail.org', 'HENDRERIT@HOTMAIL.ORG', 0, 'Salvador','Huffman','986-3229 Urna Street','AQAAAAEAACcQAAAAEKVWi0gVJqXHx69TzKJRfiaC4sH5fq3fNKFf6FXmTLjQfH90l4awh5+FbTwvsFUvVA==','(356) 158-2672',0),

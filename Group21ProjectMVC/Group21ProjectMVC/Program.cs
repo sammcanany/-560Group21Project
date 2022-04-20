@@ -8,6 +8,7 @@ var connectionString = builder.Configuration.GetConnectionString("Group21Project
 
 builder.Services.AddTransient<IUserStore<ApplicationUser>, UserStore>();
 builder.Services.AddTransient<IRoleStore<ApplicationRole>, RoleStore>();
+builder.Services.AddTransient<IFlightStore<ApplicationFlight>, FlightStore>();
 
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddDefaultTokenProviders();

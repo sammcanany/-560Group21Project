@@ -9,3 +9,13 @@ C:\Users\Sam\source\repos\datageneratorGUI\datageneratorGUI\obj\Debug\datagenera
 C:\Users\Sam\source\repos\datageneratorGUI\datageneratorGUI\obj\Debug\datageneratorGUI.csproj.CoreCompileInputs.cache
 C:\Users\Sam\source\repos\datageneratorGUI\datageneratorGUI\obj\Debug\datageneratorGUI.exe
 C:\Users\Sam\source\repos\datageneratorGUI\datageneratorGUI\obj\Debug\datageneratorGUI.pdb
+C:\Users\Sam\source\repos\560Group21Project\Database Stuff\datageneratorGUI\datageneratorGUI\bin\Debug\datageneratorGUI.exe.config
+C:\Users\Sam\source\repos\560Group21Project\Database Stuff\datageneratorGUI\datageneratorGUI\bin\Debug\datageneratorGUI.exe
+C:\Users\Sam\source\repos\560Group21Project\Database Stuff\datageneratorGUI\datageneratorGUI\bin\Debug\datageneratorGUI.pdb
+C:\Users\Sam\source\repos\560Group21Project\Database Stuff\datageneratorGUI\datageneratorGUI\obj\Debug\datageneratorGUI.csproj.AssemblyReference.cache
+C:\Users\Sam\source\repos\560Group21Project\Database Stuff\datageneratorGUI\datageneratorGUI\obj\Debug\datageneratorGUI.Properties.Resources.resources
+C:\Users\Sam\source\repos\560Group21Project\Database Stuff\datageneratorGUI\datageneratorGUI\obj\Debug\datageneratorGUI.csproj.GenerateResource.cache
+C:\Users\Sam\source\repos\560Group21Project\Database Stuff\datageneratorGUI\datageneratorGUI\obj\Debug\datageneratorGUI.csproj.CoreCompileInputs.cache
+C:\Users\Sam\source\repos\560Group21Project\Database Stuff\datageneratorGUI\datageneratorGUI\obj\Debug\datageneratorGUI.exe
+C:\Users\Sam\source\repos\560Group21Project\Database Stuff\datageneratorGUI\datageneratorGUI\obj\Debug\datageneratorGUI.pdb
+C:\Users\Sam\source\repos\560Group21Project\Database Stuff\datageneratorGUI\datageneratorGUI\obj\Debug\datageneratorGUI.ApplicationFlight.resources
