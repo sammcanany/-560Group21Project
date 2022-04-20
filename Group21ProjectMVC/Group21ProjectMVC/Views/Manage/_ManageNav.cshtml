@@ -2,15 +2,15 @@
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 @{
-    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+    var isAdmin = User.IsInRole("Admin");
 }
 
-<ul class="nav nav-pills nav-stacked">
-    <li class="@ManageNavPages.IndexNavClass(ViewContext)"><a asp-action="Index">Profile</a></li>
-    <li class="@ManageNavPages.ChangePasswordNavClass(ViewContext)"><a asp-action="ChangePassword">Password</a></li>
-    @if (User.IsInRole("Admin") )
+<ul class="nav nav-pills flex-column">
+    <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-action="Index">Profile</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" asp-action="ChangePassword">Password</a></li>
+    @if (isAdmin)
     {
-        
+        <li class="nav-item"><a class="nav-link @ManageNavPages.AddFlightsNavClass(ViewContext)" asp-action="Addflights">Add Flights</a></li>
     }
 </ul>
 

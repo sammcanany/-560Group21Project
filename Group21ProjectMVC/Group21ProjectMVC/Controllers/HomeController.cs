@@ -1,4 +1,5 @@
 ﻿using Group21ProjectMVC.Models;
+using Group21ProjectMVC.Models.FlightViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
@@ -29,10 +30,10 @@ namespace Group21ProjectMVC.Controllers
             return View();
         }
 
-        private List<FlightSearchModel> GetFlights()
+        private List<FlightSearchViewModel> GetFlights()
         {
             string constr = _configuration.GetConnectionString("DefaultConnection");
-            List<FlightSearchModel> flights = new List<FlightSearchModel>();
+            List<FlightSearchViewModel> flights = new List<FlightSearchViewModel>();
             using (SqlConnection con = new SqlConnection(constr))
             {
                 //FileInfo file = new FileInfo(Server.MapPath("App_Datageneratescript.sql"));
@@ -47,7 +48,7 @@ namespace Group21ProjectMVC.Controllers
                     {
                         while (sdr.Read())
                         {
-                            flights.Add(new FlightSearchModel
+                            flights.Add(new FlightSearchViewModel
                             {
                                 //Airline = sdr["Airline"].ToString(),
                                 ToLocation = sdr["ToLocation"].ToString(),

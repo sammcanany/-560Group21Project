@@ -14,6 +14,7 @@ using Group21ProjectMVC.Models;
 using Group21ProjectMVC.Models.ManageViewModels;
 using Group21ProjectMVC.Services;
 using Group21ProjectMVC.Data;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Group21ProjectMVC.Controllers
 {
@@ -233,12 +234,22 @@ namespace Group21ProjectMVC.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddFlights()
+        public IActionResult AddFlights()
         {
-            List<string> strings = new() { "6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM" };
-            List<DateTime> Times = strings.Select(date => DateTime.Parse(date)).ToList();
-            List<string> Airports = new() { "ATL - Hartsfield-Jackson International Airport, GA", "DFW - Hartsfield-Jackson International Airport, TX", "DEN - Denver International Airport, CO", "ORD - O'Hare International Airport, IL", "LAX - Los Angeles International Airport, CA", "CLT - Charlotte Douglas International Airport, NC", "LAS - Harry Reid International Airport, NV", "PHX - Phoenix Sky Harbor International Airport, AZ", "MCO - Orlando International Airport, FL", "MHK - Manhattan Regional Airport, KS" };
+            List<string> times = new() { "6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM" };
+            List<string> airports = new() { "ATL", "DFW", "DEN", "ORD", "LAX", "CLT", "LAS", "PHX", "MCO", "MHK" };
+            List<SelectListItem> Times = new();
+            List<SelectListItem> Airports = new();
+            for (int i = 0; i < times.Count; i++)
+            {
+                Times.Add(new SelectListItem { Text = times[i], Value = i.ToString() });
+            }
+            for (int j = 0; j < airports.Count; j++)
+            {
+                Airports.Add(new SelectListItem { Text = airports[j], Value = j.ToString() });
+            }
             var model = new AddFlightsViewModel { Times = Times, Airports = Airports };
+
             return View(model);
         }
 
@@ -250,20 +261,51 @@ namespace Group21ProjectMVC.Controllers
             {
                 return View(model);
             }
-            
-            var success = await _flightStore.AddOrEditFlightsAsync(GenFlights(model), source.Token);
+            List<string> stringTimes = new() { "6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM" };
+            List<string> Airports = new() { "ATL", "DFW", "DEN", "ORD", "LAX", "CLT", "LAS", "PHX", "MCO", "MHK" };
+            List<DateTime> selectedTimes = new();
+            List<string> selectedAirports = new();
+            foreach (var x in model.TimesIdSelected)
+            {
+                selectedTimes.Add(Convert.ToDateTime(stringTimes[x]));
+            }
+            foreach (var y in model.AirportsIdSelected)
+            {
+                selectedAirports.Add(Airports[y]);
+            }
+            model.TimesSelected = selectedTimes;
+            model.AirportsSelected = selectedAirports;
+            var success = await _flightStore.AddFlightsAsync(GenFlights(model), source.Token);
             if (!success)
             {
                 throw new ApplicationException($"Unable to add flights.");
             }
-            return View(model);
+            return RedirectToAction(nameof(AddFlights)); ;
         }
-
+        private IActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+        }
         #region Helpers
+        private static Random random = new Random();
 
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
         private IEnumerable<ApplicationFlight> GenFlights(AddFlightsViewModel model)
         {
             IList<ApplicationFlight> Flights = new List<ApplicationFlight>();
+            List<string> Airports = model.AirportsSelected.ToList();
             Dictionary<string, double> dic = new Dictionary<string, double>
             {
                 { "ATLToDFW", 1.30725572451624 },
@@ -357,22 +399,25 @@ namespace Group21ProjectMVC.Controllers
                 { "MHKToPHX", 1.68049203295766 },
                 { "MHKToMCO", 2.05550742495893 }
             };
+            Random r = new Random();
             foreach (DateTime day in EachDay(model.StartingDate, model.EndingDate))
             {
+                int rInt = r.Next(100, 999);
                 foreach (string airport in model.AirportsSelected)
                 {
-                    for (int i = 0; i < model.AirportsSelected.Count; i++)
+                    for (int i = 0; i < Airports.Count; i++)
                     {
-                        if (model.AirportsSelected[i] != airport)
+                        if (Airports[i] != airport)
                         {
                             foreach (var time in model.TimesSelected)
                             {
-                                dic.TryGetValue(airport + "To" + model.AirportsSelected[i], out double flightTime);
+                                r.Next(100, 999);
+                                dic.TryGetValue(airport + "To" + Airports[i], out double flightTime);
                                 Flights.Add(new ApplicationFlight
                                 {
-                                    FlightNumber = "0000",
+                                    FlightNumber = RandomString(3) + rInt,
                                     DepartingAirportCode = airport,
-                                    DestinationAirportCode = model.AirportsSelected[i],
+                                    DestinationAirportCode = Airports[i],
                                     Airline = model.Airline,
                                     DepartureDate = day,
                                     DepartureTime = time,

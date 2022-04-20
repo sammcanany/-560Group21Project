@@ -6,12 +6,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Group21ProjectMVC.Models
+namespace Group21ProjectMVC.Models.FlightViewModels
 {
-    public class FlightSearchModel
+    public class FlightSearchViewModel
     {
-        public IEnumerable<FlightViewModel> DepartureFlights { get; set; }
-        public IEnumerable<FlightViewModel> ReturnFlights { get; set; }
+        public IEnumerable<ApplicationFlight> DepartureFlights { get; set; }
+        public IEnumerable<ApplicationFlight> ReturnFlights { get; set; }
 
         [BindProperty]
         [Required(ErrorMessage = "Destination location is required!")]
@@ -31,7 +31,5 @@ namespace Group21ProjectMVC.Models
         [BindProperty]
         [Required(ErrorMessage = "Departure date is required!")]
         public DateTime? ReturnDate { get; set; } = null;
-
-        public int DepartureFlightID { get; set; } = 0;
     }
 }

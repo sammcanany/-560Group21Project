@@ -4,32 +4,25 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE PROCEDURE [Flights].[FlightSearch] 
-	-- Add the parameters for the stored procedure here
+CREATE OR ALTER PROCEDURE [Flights].[FlightSearch]
 	@FromLocation CHAR(3),
 	@ToLocation CHAR(3),
 	@SeatsRequired INT,
 	@DepartureDate DATE
 AS
 BEGIN
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
-
-    -- TODO: update SELECT statement to return all from flight where:
-	--DepartingAirportID == the AirportID of the code given by @FromLocation
-	--DestinationAirportID == the AirportID of the code given by @ToLocation
-	--Capacity >= @SeatsRequired
-	--DepartureDate == @DepartureDate
 	SELECT 
+		F.[FlightID] AS N'Id',
 		F.[FlightNumber],
-		DEP.[AirportCode],
-		DEST.[AirportCode],
-		A.[Name],
+		DEP.[AirportCode] AS N'DepartingAirportCode',
+		DEST.[AirportCode] AS N'DestinationAirportCode',
+		A.[Name] AS N'Airline',
 		F.[DepartureDate],
 		F.[DepartureTime],
 		F.[ArrivalTime],
-		[SeatsRemaining] = F.[Capacity] - F.[SeatsTaken],
+		F.[Capacity],
+		F.[SeatsTaken],
 		F.[Price]
 	FROM [Flights].[Flight] F
 	INNER JOIN [Flights].[Airport] DEP ON DEP.[AirportID] = F.[DepartingAirportID]
