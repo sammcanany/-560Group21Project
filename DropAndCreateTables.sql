@@ -5,6 +5,8 @@ IF SCHEMA_ID(N'Flights') IS NULL
 	EXEC(N'CREATE SCHEMA [Flights];');
 GO
 
+
+
 DROP TABLE IF EXISTS Flights.TicketInfo
 DROP TABLE IF EXISTS Flights.ApplicationUserRole
 DROP TABLE IF EXISTS Flights.ApplicationUser
@@ -22,7 +24,7 @@ BEGIN
 	CREATE TABLE Flights.Airport
 	(
 		AirportID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-		AirportCode NVARCHAR(3) NOT NULL UNIQUE,
+		AirportCode NVARCHAR(4) NOT NULL UNIQUE,
 		[Name] NVARCHAR(64) NOT NULL UNIQUE,
 		Location NVARCHAR(128) NOT NULL
 	);
