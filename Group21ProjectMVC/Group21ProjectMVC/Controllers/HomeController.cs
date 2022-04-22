@@ -18,7 +18,7 @@ namespace Group21ProjectMVC.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IConfiguration _configuration;
-
+        List<string> airports = new List<string> { "ATL - Hartsfield-Jackson International Airport, GA", "DFW - Dallas/Fort Worth International Airport, TX", "DEN - Denver International Airport, CO", "ORD - O'Hare International Airport, IL", "LAX - Los Angeles International Airport, CA", "CLT - Charlotte Douglas International Airport, NC", "LAS - Harry Reid International Airport, NV", "PHX - Phoenix Sky Harbor International Airport, AZ", "MCO - Orlando International Airport, FL", "MHK - Manhattan Regional Airport, KS" };
         public HomeController(ILogger<HomeController> logger, IConfiguration Configuration)
         {
             _logger = logger;
@@ -30,41 +30,6 @@ namespace Group21ProjectMVC.Controllers
             return View();
         }
 
-        private List<FlightSearchViewModel> GetFlights()
-        {
-            string constr = _configuration.GetConnectionString("DefaultConnection");
-            List<FlightSearchViewModel> flights = new List<FlightSearchViewModel>();
-            using (SqlConnection con = new SqlConnection(constr))
-            {
-                //FileInfo file = new FileInfo(Server.MapPath("App_Datageneratescript.sql"));
-                //string query = file.OpenText().ReadToEnd();
-                //string prequery = $"DECLARE @FromLocation AS NVARCHAR(30) = '{model.FromLocation}';\nDECLARE @ToLocation AS NVARCHAR(30) = '{model.ToLocation}';\nDECLARE @SeatsRequired AS INT = {model.SeatsRequired};\nDECLARE @DepartureDate AS DATE = '{model.DepartureDate}';\nDECLARE @ReturnDate AS DATE = '{model.ReturnDate}';\n";
-                string query = "SELECT [ToLocation],[FromLocation] FROM Flight";
-                using (SqlCommand cmd = new SqlCommand(query))
-                {
-                    cmd.Connection = con;
-                    con.Open();
-                    using (SqlDataReader sdr = cmd.ExecuteReader())
-                    {
-                        while (sdr.Read())
-                        {
-                            flights.Add(new FlightSearchViewModel
-                            {
-                                //Airline = sdr["Airline"].ToString(),
-                                ToLocation = sdr["ToLocation"].ToString(),
-                                FromLocation = sdr["FromLocation"].ToString(),
-                                //DepartureTime = DateTime.Parse(sdr["DepartureTime"].ToString()),
-                                //ArrivalTime = DateTime.Parse(sdr["ArrivalTime"].ToString()),
-                                //Price = Convert.ToDecimal(sdr["Price"])
-
-                            });
-                        }
-                    }
-                    con.Close();
-                }
-            }
-            return flights;
-        }
         public IActionResult Privacy()
         {
             return View();

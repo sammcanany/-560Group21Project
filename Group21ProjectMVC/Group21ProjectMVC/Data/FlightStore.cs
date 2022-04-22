@@ -52,6 +52,48 @@ namespace Group21ProjectMVC.Data
             return response;
         }
 
+        public async Task<ApplicationFlight> GetFlightByIdAsync(int ID, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            using var connection = new SqlConnection(_connectionString);
+            using SqlCommand cmd = new("Flights.GetFlightByID", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("FlightID", ID);
+            ApplicationFlight response = new();
+            await connection.OpenAsync(cancellationToken);
+            using (var reader = await cmd.ExecuteReaderAsync(cancellationToken))
+            {
+                while (await reader.ReadAsync(cancellationToken))
+                {
+                    response=MapToValue(reader);
+                }
+            }
+
+            return response;
+        }
+
+        public async Task<IEnumerable<int>> GetSeatsAvailableByFlightIdAsync(int ID, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            using var connection = new SqlConnection(_connectionString);
+            using SqlCommand cmd = new("Flights.GetSeatsAvailableByFlightId", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("FlightID", ID);
+            IList<int> response = new List<int>();
+            await connection.OpenAsync(cancellationToken);
+            using (var reader = await cmd.ExecuteReaderAsync(cancellationToken))
+            {
+                while (await reader.ReadAsync(cancellationToken))
+                {
+                    response.Add((int)reader["SeatNumber"]);
+                }
+            }
+
+            return response;
+        }
+
         public void Dispose()
         {
             // Nothing to dispose.
@@ -82,7 +124,7 @@ namespace Group21ProjectMVC.Data
             var properties = objectReference.GetProperties();
             foreach (var prop in properties)
             {
-                if (prop.Name != "Id")
+                if (prop.Name != "Id" && prop.Name != "SeatsNotAvailable")
                 {
                     dtData.Columns.Add(prop.Name, prop.PropertyType);
                 }
@@ -93,7 +135,7 @@ namespace Group21ProjectMVC.Data
                 var dataArray = new List<object>();
                 foreach (var prop in properties)
                 {
-                    if (prop.Name != "Id")
+                    if (prop.Name != "Id" && prop.Name != "SeatsNotAvailable")
                     {
                         dataArray.Add(prop.GetValue(item));
                     }

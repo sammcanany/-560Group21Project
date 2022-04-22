@@ -34,22 +34,43 @@ namespace Group21ProjectMVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Flight(FlightSearchViewModel fsm)
         {
-            fsm.DepartureFlights = await _flightStore.GetFlightsAsync(fsm.FromLocation, fsm.ToLocation, fsm.SeatsRequired, fsm.DepartureDate, source.Token);
-            if (fsm.ReturnDate.HasValue)
+            if (ModelState.IsValid)
             {
-                fsm.ReturnFlights = await _flightStore.GetFlightsAsync(fsm.ToLocation, fsm.FromLocation, fsm.SeatsRequired, fsm.ReturnDate, source.Token);
+                fsm.DepartureFlights = await _flightStore.GetFlightsAsync(fsm.FromLocation, fsm.ToLocation, fsm.SeatsRequired, fsm.DepartureDate, source.Token);
+                if (fsm.TabName == "roundtrip")
+                {
+                    fsm.ReturnFlights = await _flightStore.GetFlightsAsync(fsm.ToLocation, fsm.FromLocation, fsm.SeatsRequired, fsm.ReturnDate, source.Token);
+                }
+                return View(fsm);
             }
-            return View(fsm);
+            return View("../Home/Index", fsm);
         }
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Checkout()
+        public async Task<IActionResult> Checkout(int DepartureFlightID, int ReturnFlightID, int SeatsRequired)
         {
-            return View();
+            IList<ApplicationFlight> flights = new List<ApplicationFlight>();
+            var departureFlights = await _flightStore.GetFlightByIdAsync(DepartureFlightID, source.Token);
+            departureFlights.SeatsNotAvailable = await _flightStore.GetSeatsAvailableByFlightIdAsync(DepartureFlightID, source.Token);
+            flights.Add(departureFlights);
+            if (ReturnFlightID != 0)
+            {
+                var returnFlights = await _flightStore.GetFlightByIdAsync(ReturnFlightID, source.Token);
+                returnFlights.SeatsNotAvailable = await _flightStore.GetSeatsAvailableByFlightIdAsync(ReturnFlightID, source.Token);
+                flights.Add(returnFlights);
+            }
+            return View(new CheckoutViewModel
+            {
+                DepartureFlightID = DepartureFlightID,
+                ReturnFlightID = ReturnFlightID,
+                SeatsRequired = SeatsRequired,
+                Flights = flights
+            });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> CheckOut(CheckoutViewModel cvm)
         {
             

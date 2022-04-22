@@ -422,7 +422,7 @@ namespace Group21ProjectMVC.Controllers
                                     DepartureDate = day,
                                     DepartureTime = time,
                                     ArrivalTime = time.AddHours(flightTime),
-                                    Capacity = 245,
+                                    Capacity = 126,
                                     SeatsTaken = 0,
                                     Price = 175
                                 });

@@ -4,55 +4,140 @@
 @{
     ViewData["Title"] = "Flight";
 }
-<ul class="departure-flights">
-    @foreach (ApplicationFlight flight in Model.DepartureFlights)
-    {
-        TimeSpan diff = flight.ArrivalTime - flight.DepartureTime;
-        string formatted = string.Format(CultureInfo.CurrentCulture,"{0}h {1}m",diff.Hours,diff.Minutes);
-        <li id="@flight.FlightNumber" class="pt-4">
-            <div class="row border-bottom pb-4 ps-4 pe-4">
-                <div class="col">
-                    <div class="row">
-                        <div class="col">
-                            <p class="medium-text mb-0">@flight.DepartingAirportCode</p>
-                            <p class="large-text">@flight.DepartureTime.ToString("hh:mm tt")</p>
+<div id="departure-flights">
+    <h2 class="text-center">Departure Flights</h2>
+    <ul>
+        @foreach (ApplicationFlight flight in Model.DepartureFlights)
+        {
+
+            TimeSpan diff = flight.ArrivalTime - flight.DepartureTime;
+            string formatted = string.Format(CultureInfo.CurrentCulture, "{0}h {1}m", diff.Hours, diff.Minutes);
+            <li id="@flight.Id" class="pt-4">
+                <div class="row border-bottom pb-4 ps-4 pe-4">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">
+                                <p class="medium-text mb-0">@flight.DepartingAirportCode</p>
+                                <p class="large-text">@flight.DepartureTime.ToString("hh:mm tt")</p>
+                            </div>
+                            <div class="col">
+                                <i class="fas fa-arrow-right fa-xl"></i>
+                            </div>
+                            <div class="col">
+                                <p class="medium-text mb-0">@flight.DestinationAirportCode</p>
+                                <p class="large-text">@flight.ArrivalTime.ToString("hh:mm tt")</p>
+                            </div>
+                            <div class="col">
+                                <p class="medium-text">@formatted</p>
+                            </div>
+                            <div class="col">
+                                <p class="medium-text text-center">Nonstop</p>
+                            </div>
                         </div>
-                        <div class="col">
-                            <i class="fas fa-arrow-right fa-xl"></i>
+                        <div class="row">
+                            <p class="small-text">@flight.FlightNumber</p>
                         </div>
+
+                    </div>
+                    <div class="col-lg">
+                        @if (@Model.ReturnDate != null)
+                        {
+                            <button class="w-100 h-100 btn btn-light rounded border border-dark d-block" onclick="SwitchFlightView(@flight.Id)">
+                                <p class="medium-text">Round Trip</p>
+                                <p class="large-text text-primary">@String.Format("{0:C0}",flight.Price * Model.SeatsRequired)</p>
+                            </button>
+                        }
+                        else
+                        {
+                            <form class="w-100 h-100">
+                                <input type="hidden" value="@flight.Id" name="DepartureFlightID" />
+                                <input type="hidden" value="@Model.SeatsRequired" name="SeatsRequired"/>
+                                <button class="w-100 h-100 btn btn-light rounded border border-dark d-block">
+                                    <p class="medium-text">One Way</p>
+                                    <p class="large-text text-primary">@String.Format("{0:C0}",flight.Price * Model.SeatsRequired)</p>
+                                </button>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+</div>
+@if (@Model.ReturnDate != null)
+{
+    <div style="display: none;" id="return-flights">
+        <h2 class="text-center">Return Flights</h2>
+        <ul>
+            @foreach (ApplicationFlight flight in Model.ReturnFlights)
+            {
+
+                TimeSpan diff = flight.ArrivalTime - flight.DepartureTime;
+                string formatted = string.Format(CultureInfo.CurrentCulture, "{0}h {1}m", diff.Hours, diff.Minutes);
+                <li id="@flight.FlightNumber" class="pt-4">
+                    <div class="row border-bottom pb-4 ps-4 pe-4">
                         <div class="col">
-                            <p class="medium-text mb-0">@flight.DestinationAirportCode</p>
-                            <p class="large-text">@flight.ArrivalTime.ToString("hh:mm tt")</p>
+                            <div class="row">
+                                <div class="col">
+                                    <p class="medium-text mb-0">@flight.DepartingAirportCode</p>
+                                    <p class="large-text">@flight.DepartureTime.ToString("hh:mm tt")</p>
+                                </div>
+                                <div class="col">
+                                    <i class="fas fa-arrow-right fa-xl"></i>
+                                </div>
+                                <div class="col">
+                                    <p class="medium-text mb-0">@flight.DestinationAirportCode</p>
+                                    <p class="large-text">@flight.ArrivalTime.ToString("hh:mm tt")</p>
+                                </div>
+                                <div class="col">
+                                    <p class="medium-text">@formatted</p>
+                                </div>
+                                <div class="col">
+                                    <p class="medium-text text-center">Nonstop</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <p class="small-text">@flight.FlightNumber</p>
+                            </div>
+
                         </div>
-                        <div class="col">
-                            <p class="medium-text">@formatted</p>
-                        </div>
-                        <div class="col">
-                            <p class="medium-text">Nonstop</p>
+                        <div class="col-lg">
+                            <form class="w-100 h-100">
+                                <input type="hidden" class="departureFlightID" value="" name="DepartureFlightID" />
+                                <input type="hidden" value="@flight.Id" name="ReturnFlightID"/>
+                                <input type="hidden" value="@Model.SeatsRequired" name="SeatsRequired"/>
+                                <button class="w-100 h-100 btn btn-light rounded border border-dark d-block" type="submit" asp-controller="Search" asp-action="Checkout">
+                                    <p class="medium-text">Round Trip</p>
+                                    <p class="large-text text-primary">@String.Format("{0:C0}",flight.Price * Model.SeatsRequired)</p>
+                                </button>
+                            </form>
                         </div>
                     </div>
-                    <div class="row">
-                        <p class="small-text">@flight.FlightNumber</p>
-                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+}
 
-                </div>
-                <div class="col">
-                    <button class="w-100 h-100 btn btn-light rounded border border-dark">
-                        <p class="medium-text">Round Trip</p>
-                        <p class="large-text text-primary">@String.Format("{0:C0}",flight.Price)</p>
-                    </button>
-                </div>
-            </div>
-        </li>
-    }
-</ul>
-<input type="hidden" name="">
-@*@if(@Model.ReturnDate != null)
-    {
-    //show return flight div
-    }
-    else
-    {
-    <button class="btn btn-primary w-100" type="submit" asp-controller="Search" asp-action="Checkout">Search</button>
-    }*@
-
+@section Scripts {
+<script type="text/javascript">
+          function SwitchFlightView(id){
+              var depflights = document.getElementsByClassName('departureFlightID');
+              for (var i = 0; i < depflights.length; i++) {
+                depflights[i].setAttribute("value", id);
+              }
+              var x = document.getElementById("return-flights");
+              var y = document.getElementById("departure-flights");
+        if (y.style.display === "none") {
+          x.style.display = "none";
+          y.style.display = "block";
+        } else {
+          y.style.display = "none";
+          x.style.display = "block";
+        }
+          }
+</script>
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+}

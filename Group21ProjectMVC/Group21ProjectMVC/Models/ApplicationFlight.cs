@@ -23,5 +23,7 @@
         public int SeatsTaken { get; set; }
 
         public decimal Price { get; set; }
+
+        public IEnumerable<int> SeatsNotAvailable { get; set; }
     }
 }

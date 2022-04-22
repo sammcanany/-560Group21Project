@@ -6,35 +6,24 @@
 
 <link href="https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/css/tempus-dominus.css"
       rel="stylesheet" crossorigin="anonymous">
+
 <div class="col-md-8 py-5 px-3 mx-auto">
     <div class="card">
         <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs" data-bs-tabs="tabs">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="true" data-bs-toggle="tab" href="#findflights">Find Flights</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="true" data-bs-toggle="tab" href="#mytrips">My Trips</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="true" data-bs-toggle="tab" href="#checkin">Check-In</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="tab" href="#flightstatus">Flight Status</a>
-                </li>
-            </ul>
+            <div class="nav nav-tabs card-header-tabs" data-bs-tabs="tabs">
+                <a class="nav-link active" aria-current="true" data-bs-toggle="tab" href="#findflights">Find Flights</a>
+                <a class="nav-link" aria-current="true" data-bs-toggle="tab" href="#mytrips">My Trips</a>
+                <a class="nav-link" aria-current="true" data-bs-toggle="tab" href="#checkin">Check-In</a>
+                <a class="nav-link" data-bs-toggle="tab" href="#flightstatus">Flight Status</a>
+            </div>
         </div>
         <div class="card-body tab-content">
             <div class="tab-pane active" id="findflights">
                 <div class="row ps-3">
-                    <ul class="nav nav-pills">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" data-bs-toggle="tab" href="#roundtrip">Round Trip</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="tab" href="#oneway">One Way</a>
-                        </li>
-                    </ul>
+                    <div class="nav nav-pills">
+                        <a class="nav-link active" asp-for="TripType" value=0 data-bs-toggle="tab" href="#roundtrip">Round Trip</a>
+                        <a class="nav-link" asp-for="TripType" value=1 data-bs-toggle="tab" href="#oneway">One Way</a>
+                    </div>
                     <div class="tab-content">
                         <div class="tab-pane active" id="roundtrip">
                             <form autocomplete="off">
@@ -43,13 +32,13 @@
                                     <div class="row">
                                         <div class="col-md autocomplete form-group">
                                             <label asp-for="FromLocation">From</label>
-                                            <input asp-for="FromLocation" type="text" class="form-control" aria-describedby="From"
+                                            <input asp-for="FromLocation" type="text" class="form-control typeahead tt-query" aria-describedby="From"
                                                    placeholder="City or Airport" name="FromLocation" id="FromLBL">
                                             <span asp-validation-for="FromLocation" class="text-danger"></span>
                                         </div>
                                         <div class="col-md autocomplete form-group">
                                             <label asp-for="ToLocation">To</label>
-                                            <input asp-for="ToLocation" type="text" class="form-control" aria-describedby="To"
+                                            <input asp-for="ToLocation" type="text" class="form-control typeahead tt-query" aria-describedby="To"
                                                    placeholder="City or Airport" name="ToLocation" id="ToLBL">
                                             <span asp-validation-for="ToLocation" class="text-danger"></span>
                                         </div>
@@ -95,8 +84,10 @@
                                                       data-td-toggle='datetimepicker'>
                                                     <span class='fas fa-calendar'></span>
                                                 </span>
-                                                <span asp-validation-for="ReturnDate" class="text-danger"></span>
+
                                             </div>
+                                            <span asp-validation-for="ReturnDate" class="text-danger"></span>
+                                            <input asp-for="TabName" value="roundtrip" type="hidden" />
                                         </div>
                                         <div class="col-md pt-4">
                                             <button class="btn btn-primary w-100" type="submit" asp-controller="Search" asp-action="Flight">Search</button>
@@ -109,58 +100,71 @@
                             </form>
                         </div>
                         <div class="tab-pane" id="oneway">
-                            <form class="needs-validation" novalidate autocomplete="off">
-                                <div class="row">
-                                    <div class="col-md autocomplete">
-                                        <label for="FromLBL1W">From</label>
-                                        <input type="text" class="form-control" id="FromLBL1W" aria-describedby="From"
-                                               placeholder="City or Airport" required>
+                            <form autocomplete="off">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div>
+                                    <div class="row">
+                                        <div class="col-md autocomplete form-group">
+                                            <label asp-for="FromLocation">From</label>
+                                            <input asp-for="FromLocation" type="text" class="form-control typeahead tt-query" aria-describedby="From"
+                                                   placeholder="City or Airport" name="FromLocation" id="FromLBL1W">
+                                            <span asp-validation-for="FromLocation" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md autocomplete form-group">
+                                            <label asp-for="ToLocation">To</label>
+                                            <input asp-for="ToLocation" type="text" class="form-control typeahead tt-query" aria-describedby="To"
+                                                   placeholder="City or Airport" name="ToLocation" id="ToLBL1W">
+                                            <span asp-validation-for="ToLocation" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md">
+                                            <div class="form-group">
+                                                <label asp-for="SeatsRequired">Adults (12+)</label>
+                                                <select asp-for="SeatsRequired" class="form-select" name="SeatsRequired">
+                                                    <option>1</option>
+                                                    <option>2</option>
+                                                    <option>3</option>
+                                                    <option>4</option>
+                                                    <option>5</option>
+                                                    <option>6</option>
+                                                    <option>7</option>
+                                                    <option>8</option>
+                                                    <option>9</option>
+                                                </select>
+                                                <span asp-validation-for="SeatsRequired" class="text-danger"></span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md autocomplete">
-                                        <label for="ToLBL1W">To</label>
-                                        <input type="text" class="form-control" id="ToLBL1W" aria-describedby="To"
-                                               placeholder="City or Airport" required>
-                                    </div>
-                                    <div class="col-md">
-                                        <div class="form-group">
-                                            <label for="AdultsSelect">Adults (12+)</label>
-                                            <select class="form-select" id="AdultsSelect">
-                                                <option>1</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option>5</option>
-                                                <option>6</option>
-                                                <option>7</option>
-                                                <option>8</option>
-                                                <option>9</option>
-                                            </select>
+                                    <div class="row pt-2">
+                                        <div class="col-md form-group">
+                                            <label asp-for="DepartureDate">Depart</label>
+                                            <div class='input-group' id='datetimepicker3' data-td-target-input='nearest'
+                                                 data-td-target-toggle='nearest'>
+                                                <input asp-for="DepartureDate" id='datetimepicker3Input' type='text' class='form-control'
+                                                       data-td-target='#datetimepicker3' name="DepartureDate" />
+                                                <span class='input-group-text' data-td-target='#datetimepicker3'
+                                                      data-td-toggle='datetimepicker'>
+                                                    <span class='fas fa-calendar'></span>
+                                                </span>
+                                                <span asp-validation-for="DepartureDate" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md">
+                                            <input asp-for="TabName" value="oneway" type="hidden" />
+                                        </div>
+                                        <div class="col-md pt-4">
+                                            <button class="btn btn-primary w-100" type="submit" asp-controller="Search" asp-action="Flight">Search</button>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row pt-2">
-                                    <div class="col-md">
-                                        <label for="datetimepicker3Input">Depart</label>
-                                        <div class='input-group' id='datetimepicker3' data-td-target-input='nearest'
-                                             data-td-target-toggle='nearest'>
-                                            <input id='datetimepicker3Input' type='text' class='form-control'
-                                                   data-td-target='#datetimepicker3' required />
-                                            <span class='input-group-text' data-td-target='#datetimepicker3'
-                                                  data-td-toggle='datetimepicker'>
-                                                <span class='fas fa-calendar'></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md"></div>
-                                    <div class="col-md pt-4">
-                                        <button class="btn btn-primary w-100" type="submit">Search</button>
-                                    </div>
-                                </div>
+                                <script>
+
+                                </script>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
+
             <div class="tab-pane" id="mytrips">
                 <form class="needs-validation" novalidate>
                     <div class="row">
@@ -236,12 +240,42 @@
         </div>
     </div>
 </div>
+@section Scripts {
 <script src="https://cdn.jsdelivr.net/npm/&#64;popperjs/core&#64;2.11.2/dist/umd/popper.min.js"
         crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/js/tempus-dominus.js"
         crossorigin="anonymous"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
-@section Scripts {
+<script>
+                $.validator.addMethod(
+        'unlike',
+        function (value, element, params) {
+            console.debug(element);
+            if (!this.optional(element)) {
+                var otherProperty = $('#' + params.otherproperty)
+                return (otherProperty.val() != value);
+            }
+            return true;
+        });
+
+    $.validator.unobtrusive.adapters.add(
+        'unlike', ['otherproperty', 'otherpropertyname'], function (options) {
+            var params = {
+                otherproperty: options.params.otherproperty,
+                otherpropertyname: options.params.otherpropertyname
+            };
+            options.rules['unlike'] = params;
+            options.messages['unlike'] = options.message;
+        });
+</script>
+<script type="text/javascript">
+    $(function () {
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+    var target = $(e.target).attr("href")
+    document.getElementById('<%= hf_MyValue.ClientID %>').value = target;
+    });
+    })
+</script>
     @{
     await Html.RenderPartialAsync("_ValidationScriptsPartial");
 }
