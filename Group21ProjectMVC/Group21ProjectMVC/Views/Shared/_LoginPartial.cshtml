@@ -21,7 +21,7 @@
 
             <ul class="dropdown-menu list" aria-labelledby="navbarScrollingDropdown">
                 <li><a class="dropdown-item" asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Manage</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
+                @*<li><a class="dropdown-item" href="#">Another action</a></li>*@
                 <li><hr class="dropdown-divider"></li>
                 <li>
                     <form class="form-inline" asp-area="" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
