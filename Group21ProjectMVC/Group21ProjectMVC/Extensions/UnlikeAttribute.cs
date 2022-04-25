@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System.Web.Mvc;
 
 namespace System.ComponentModel.DataAnnotations
 {
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public class UnlikeAttribute : ValidationAttribute, IClientValidatable
+    public class UnlikeAttribute : ValidationAttribute
     {
         private const string DefaultErrorMessage = "{0} cannot be the same as {1}.";
 
@@ -35,19 +34,6 @@ namespace System.ComponentModel.DataAnnotations
 
             return ValidationResult.Success;
 
-        }
-        public IEnumerable<ModelClientValidationRule> GetClientValidationRules(ModelMetadata metadata, ControllerContext context)
-        {
-            var rule = new ModelClientValidationRule()
-            {
-                ValidationType = "unlike",
-                ErrorMessage = FormatErrorMessage(metadata.GetDisplayName()),
-            };
-
-            rule.ValidationParameters.Add("otherproperty", OtherProperty);
-            rule.ValidationParameters.Add("otherpropertyname", OtherPropertyName);
-
-            yield return rule;
         }
 
         public override string FormatErrorMessage(string name)

@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System.Web.Mvc;
 namespace System.ComponentModel.DataAnnotations
 {
-    public class RequiredIfAttribute : ValidationAttribute, IClientValidatable
+    public class RequiredIfAttribute : ValidationAttribute
     {
         private const string DefaultErrorMessage = "{0} is required";
 
@@ -30,18 +29,6 @@ namespace System.ComponentModel.DataAnnotations
 
             return ValidationResult.Success;
 
-        }
-        public IEnumerable<ModelClientValidationRule> GetClientValidationRules(ModelMetadata metadata, ControllerContext context)
-        {
-            var rule = new ModelClientValidationRule()
-            {
-                ValidationType = "requiredif",
-                ErrorMessage = FormatErrorMessage(metadata.GetDisplayName()),
-            };
-
-            rule.ValidationParameters.Add("otherproperty", OtherProperty);
-
-            yield return rule;
         }
 
         public override string FormatErrorMessage(string name)

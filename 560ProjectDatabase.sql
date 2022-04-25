@@ -238,15 +238,17 @@ IF OBJECT_ID(N'Flights.TicketInfo') IS NULL
 BEGIN
 	CREATE TABLE Flights.TicketInfo
 	(
-		TicketInfoID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-		ProfileID INT NOT NULL FOREIGN KEY REFERENCES Flights.[ApplicationUser](Id),
-		FlightID INT NOT NULL FOREIGN KEY REFERENCES Flights.Flight(FlightID),
-		SeatNumber INT NOT NULL
+		[TicketInfoID] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+		[ProfileID] INT NOT NULL FOREIGN KEY REFERENCES Flights.[ApplicationUser](Id),
+		[FlightID] INT NOT NULL FOREIGN KEY REFERENCES Flights.Flight(FlightID),
+		[FirstName] NVARCHAR(32) NOT NULL,
+		[LastName] NVARCHAR(32) NOT NULL,
+		[SeatNumber] INT NOT NULL
 
 		UNIQUE(FlightID, SeatNumber)
 	);
 END
-INSERT INTO Flights.TicketInfo(ProfileID, FlightID, SeatNumber)
+INSERT INTO Flights.TicketInfo(ProfileID, FlightID, FirstName, LastName, SeatNumber)
 VALUES
 	('1', '1', '70'),
 	('2', '1', '71'),

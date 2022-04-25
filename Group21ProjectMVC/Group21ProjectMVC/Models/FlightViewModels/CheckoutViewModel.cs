@@ -18,7 +18,7 @@ namespace Group21ProjectMVC.Models.FlightViewModels
 
         [CreditCard]
         public string CardNumber { get; set; }
-
+        
         public string CCFullName { get; set; }
 
         public string CCExpiration { get; set; }

@@ -4,7 +4,7 @@ using Group21ProjectMVC.Models;
 using Group21ProjectMVC.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("Group21ProjectMVCContextConnection");;
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");;
 
 builder.Services.AddTransient<IUserStore<ApplicationUser>, UserStore>();
 builder.Services.AddTransient<IRoleStore<ApplicationRole>, RoleStore>();
@@ -48,7 +48,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication();;
+app.UseAuthentication();
 
 app.UseAuthorization();
 

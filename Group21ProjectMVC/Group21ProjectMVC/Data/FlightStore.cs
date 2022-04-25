@@ -1,7 +1,7 @@
 ﻿using Group21ProjectMVC.Models;
 using Group21ProjectMVC.Services;
 using System.Data;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 
 namespace Group21ProjectMVC.Data
 {

@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using Group21ProjectMVC.Models
+@using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @using System.Globalization
@@ -147,7 +148,7 @@
         </div>
     </div>
 </div>
-<div id="seat-selection">
+<div id="seat-selection" style="display: none;">
     <div class="container">
         <div class="row mb-5">
             <div class="col-md-8 order-md-2 mb-4">
@@ -380,10 +381,10 @@
 
 @section Scripts {
 <script type="text/javascript">
-function ChangePage(name) {
+function ChangePage (name) {
     var review = document.getElementById('review');
     var passengerdetails = document.getElementById('passengerdetails');
-    var seat - selection = document.getElementById('seat-selection');
+    var seat-selection = document.getElementById('seat-selection');
     var billing = document.getElementById('billing');
     if (name === 'review') {
         billing.style.display = "none";
