@@ -5,8 +5,6 @@ IF SCHEMA_ID(N'Flights') IS NULL
 	EXEC(N'CREATE SCHEMA [Flights];');
 GO
 
-
-
 DROP TABLE IF EXISTS Flights.TicketInfo
 DROP TABLE IF EXISTS Flights.ApplicationUserRole
 DROP TABLE IF EXISTS Flights.ApplicationUser
@@ -24,7 +22,7 @@ BEGIN
 	CREATE TABLE Flights.Airport
 	(
 		AirportID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-		AirportCode NVARCHAR(4) NOT NULL UNIQUE,
+		AirportCode NVARCHAR(3) NOT NULL UNIQUE,
 		[Name] NVARCHAR(64) NOT NULL UNIQUE,
 		Location NVARCHAR(128) NOT NULL
 	);
@@ -183,24 +181,26 @@ IF OBJECT_ID(N'Flights.TicketInfo') IS NULL
 BEGIN
 	CREATE TABLE Flights.TicketInfo
 	(
-		TicketInfoID INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
-		ProfileID INT NOT NULL FOREIGN KEY REFERENCES Flights.[ApplicationUser](Id),
-		FlightID INT NOT NULL FOREIGN KEY REFERENCES Flights.Flight(FlightID),
-		SeatNumber INT NOT NULL
+		[TicketInfoID] INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
+		[ProfileID] INT NOT NULL FOREIGN KEY REFERENCES Flights.[ApplicationUser](Id),
+		[FlightID] INT NOT NULL FOREIGN KEY REFERENCES Flights.Flight(FlightID),
+		[FirstName] NVARCHAR(32) NOT NULL,
+		[LastName] NVARCHAR(32) NOT NULL,
+		[SeatNumber] INT NOT NULL
 
 		UNIQUE(FlightID, SeatNumber)
 	);
 END
-INSERT INTO Flights.TicketInfo(ProfileID, FlightID, SeatNumber)
+INSERT INTO Flights.TicketInfo(ProfileID, FlightID, FirstName, LastName, SeatNumber)
 VALUES
-	('1', '1', '70'),
-	('2', '1', '71'),
-	('3', '2', '10'),
-	('4', '3', '20'),
-	('5', '4', '30'),
-	('6', '5', '40'),
-	('7', '6', '50'),
-	('8', '7', '60'),
-	('9', '8', '70'),
-	('10', '9', '80');
+	('1', '1','Quamar','Roy', '70'),
+	('2', '1','Calista','Hill', '71'),
+	('3', '2', 'Salvador','Huffman', '10'),
+	('4', '3','Slade','Martin', '20'),
+	('5', '4','Hollee','Pruitt', '30'),
+	('6', '5','Hilda','Snow', '40'),
+	('7', '6', 'Alexandra','Kaufman', '50'),
+	('8', '7','Jillian','Hicks', '60'),
+	('9', '8','Drew','Henson', '70'),
+	('10', '9','Jelani','Franks', '80');
 GO

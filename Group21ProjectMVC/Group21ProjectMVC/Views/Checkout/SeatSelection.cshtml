@@ -1,0 +1,193 @@
+﻿@model Group21ProjectMVC.Models.CheckoutViewModels.SeatSelectionViewModel
+
+@{
+    ViewData["Title"] = "SeatSelection";
+    bool setActive = true;
+    string tabPane = "<div class=\"tab-pane active\" id=\"Departure\">";
+    string tabPane2 = "<div class=\"tab-pane\" id=\"Return\">";
+}
+
+<div id="seatselection">
+    <div class="container">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="nav nav-pills" id="flightTabs">
+            @if (Model.ReturnFlightId != 0)
+            {
+                <a class="nav-link active" asp-for="TripType" value=0 data-bs-toggle="tab" href="#Departure" id="DepartureTab">Departure Flight</a>
+                <a class="nav-link" asp-for="TripType" value=1 data-bs-toggle="tab" href="#Return" id="ReturnTab">Return Flight</a>
+            }
+            else
+            {
+                <a class="nav-link active" asp-for="TripType" value=0 data-bs-toggle="tab" href="#Departure">Departure Flight</a>
+            }
+        </div>
+        <div class="tab-content">
+            @foreach (var flight in Model.Flights)
+            {
+                if (setActive)
+                {
+                    @Html.Raw(tabPane)
+                }
+                else
+                {
+                    @Html.Raw(tabPane2)
+                }
+                <div class="row mb-5">
+                    <div class="col-8">
+                        <div class="btn-group btn-matrix" role="group">
+                            @for (int i = 0; i < flight.Capacity / 6; i++)
+                            {
+                                for (int j = 0; j < 6; j++)
+                                {
+                                    if (flight.SeatsNotAvailable.Contains(((i + 1) * 6) - (6 - (j + 1))))
+                                    {
+                                        <input type="checkbox" class="btn-check" disabled id="@(((i+1)*6)-(6-(j+1)))" />
+                                        <label class="btn btn-outline-primary taken" for="@(((i+1)*6)-(6-(j+1)))"></label>
+                                    }
+                                    else
+                                    {
+                                        if (setActive)
+                                        {
+                                            <input type="checkbox" class="btn-check" id="@("Departure" + (((i+1)*6)-(6-(j+1))))"/>
+                                            <label class="btn btn-dark" for="@(((i+1)*6)-(6-(j+1)))" onclick="SelectSeat(@("Departure" + (((i+1)*6)-(6-(j+1)))))">@(((i+1)*6)-(6-(j+1)))</label>
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" class="btn-check" id="@("Return" + (((i+1)*6)-(6-(j+1))))"/>
+                                            <label class="btn btn-dark" for="@(((i+1)*6)-(6-(j+1)))" onclick="SelectSeat(@("Return" + (((i+1)*6)-(6-(j+1)))))">@(((i+1)*6)-(6-(j+1)))</label>
+                                        }
+
+                                    }
+                                    if (j == 2)
+                                    {
+                                        <input type="checkbox" class="btn-check" disabled id="@("row"+i+1)" />
+                                        <label class="btn btn-none" for="@("row"+i+1)">@(i+1)</label>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="list-group" id="@(setActive ? "DepartureList":"ReturnList")">
+                            @for (int k = 0; k < Model.FirstNames.Count; k++)
+                            {
+                                if (k == 0)
+                                {
+                                    <a class="list-group-item list-group-item-action active" id="@(setActive ? ("DepartureList"+k):("ReturnList"+k))" onclick="SelectListItem(@(setActive ? ("DepartureList"+k):("ReturnList"+k)))">@(Model.FirstNames[k] + " " + Model.LastNames[k])</a>
+                                }
+                                else
+                                {
+                                    <a class="list-group-item list-group-item-action" id="@(setActive ? ("DepartureList"+k):("ReturnList"+k))" onclick="SelectListItem(@(setActive ? ("DepartureList"+k):("ReturnList"+k)))">@(Model.FirstNames[k] + " " + Model.LastNames[k])</a>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+                @for(int x = 0; x < Model.SeatsRequired; x++)
+                {
+                    if (setActive)
+                    {
+                        <input type="hidden" value=@(Model.DepartureFlightSeats != null ?Model.DepartureFlightSeats[x]:"") asp-for="DepartureFlightSeats" form="seatSelection" id="@("DepartureFlightSeats" + x)"/>
+                    }
+                    else
+                    {
+                        <input type="hidden" value=@(Model.ReturnFlightSeats != null ?Model.ReturnFlightSeats[x]:"") asp-for="ReturnFlightSeats" form="seatSelection" id="@("ReturnFlightSeats" + x)"/>
+                    }
+                }
+                @Html.Raw("</div>")
+                setActive = false;
+            }
+        </div>
+        <form id="seatSelection">
+            @foreach(var names in Model.FirstNames)
+            {
+                <input type="hidden" value="@names" asp-for="FirstNames" />
+            }
+            @foreach(var names in Model.LastNames)
+            {
+                <input type="hidden" value="@names" asp-for="LastNames" />
+            }
+            @foreach(var flights in Model.Flights)
+            {
+                <input type="hidden" value="@flights" asp-for="Flights" />
+            }
+            @if (@Model.ReturnFlightId != 0)
+            {
+                <input type="hidden" value="@Model.DepartureFlightId" name="DepartureFlightID" />
+                <input type="hidden" value="@Model.ReturnFlightId" name="ReturnFlightID" />
+                <input type="hidden" value="@Model.SeatsRequired" name="SeatsRequired" />
+            }
+            else
+            {
+                <input type="hidden" value="@Model.DepartureFlightId" name="DepartureFlightID" />
+                <input type="hidden" value="@Model.SeatsRequired" name="SeatsRequired" />
+            }
+            <div class="row mt-5">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary position-absolute bottom-0 end-0" asp-controller="Checkout" asp-action="Checkout">Continue</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+<script type="text/javascript">
+    function SelectSeat(id) {
+    var selectedtab = [...document.getElementById('flightTabs').children].find(
+        e =>
+        e.classList.contains("active")
+    );
+    if (selectedtab.id === 'DepartureTab') {
+        var selectedList = [...document.getElementById('DepartureList').children].find(
+            e =>
+            e.classList.contains("active")
+        );
+        console.log(selectedList.id.replace("DepartureList", ""));
+        var x = document.getElementById('DepartureFlightSeats' + selectedList.id.replace("DepartureList", ""));
+        console.log(x);
+        if (x.value === "") {
+            x.value = (id.id.replace('Departure', ''));
+            console.log(x.value);
+            id.checked = true;
+        } else {
+            document.getElementById('Departure' + x.value).checked = false;
+            x.value = (id.id.replace('Departure', ''));
+            console.log(x.value);
+            id.checked = true;
+        }
+    } else if (selectedtab.id === 'ReturnTab') {
+        var selectedList = [...document.getElementById('ReturnList').children].find(
+            e =>
+            e.classList.contains("active")
+        );
+        console.log(selectedList.id.replace("ReturnList", ""));
+        var x = document.getElementById('ReturnFlightSeats' + selectedList.id.replace("ReturnList", ""));
+        console.log(x);
+        if (x.value === "") {
+            x.value = (id.id.replace('Return', ''));
+            console.log(x.value);
+            id.checked = true;
+        } else {
+            document.getElementById('Return' + x.value).checked = false;
+            x.value = (id.id.replace('Return', ''));
+            console.log(x.value);
+            id.checked = true;
+        }
+    }
+}
+
+function SelectListItem(id){
+    var selectedList = [...document.getElementById(id.id.slice(0, -1)).children].find(
+            e =>
+            e.classList.contains("active")
+        );
+        selectedList.classList.remove("active");
+        id.classList.add("active");
+}
+</script>
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+}

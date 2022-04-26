@@ -13,22 +13,28 @@ using Microsoft.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Group21ProjectMVC.Models.CheckoutViewModels;
 
 namespace Group21ProjectMVC.Controllers
 {
-    public class SearchController : Controller
+    public class SearchController : Microsoft.AspNetCore.Mvc.Controller
     {
         private readonly ILogger<SearchController> _logger;
         private readonly IConfiguration _configuration;
         private readonly IFlightStore<ApplicationFlight> _flightStore;
+        private readonly ITicketStore<ApplicationTicket> _ticketStore;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         private CancellationTokenSource source = new CancellationTokenSource();
 
-        public SearchController(ILogger<SearchController> logger, IConfiguration Configuration, IFlightStore<ApplicationFlight> flightStore)
+        public SearchController(ILogger<SearchController> logger, IConfiguration Configuration, IFlightStore<ApplicationFlight> flightStore, ITicketStore<ApplicationTicket> ticketStore, UserManager<ApplicationUser> userManager)
         {
             _logger = logger;
             _configuration = Configuration;
             _flightStore = flightStore;
+            _ticketStore = ticketStore;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -45,36 +51,21 @@ namespace Group21ProjectMVC.Controllers
             }
             return View("../Home/Index", fsm);
         }
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> Checkout(int DepartureFlightID, int ReturnFlightID, int SeatsRequired)
-        {
-            IList<ApplicationFlight> flights = new List<ApplicationFlight>();
-            var departureFlights = await _flightStore.GetFlightByIdAsync(DepartureFlightID, source.Token);
-            departureFlights.SeatsNotAvailable = await _flightStore.GetSeatsAvailableByFlightIdAsync(DepartureFlightID, source.Token);
-            flights.Add(departureFlights);
-            if (ReturnFlightID != 0)
-            {
-                var returnFlights = await _flightStore.GetFlightByIdAsync(ReturnFlightID, source.Token);
-                returnFlights.SeatsNotAvailable = await _flightStore.GetSeatsAvailableByFlightIdAsync(ReturnFlightID, source.Token);
-                flights.Add(returnFlights);
-            }
-            return View(new CheckoutViewModel
-            {
-                DepartureFlightID = DepartureFlightID,
-                ReturnFlightID = ReturnFlightID,
-                SeatsRequired = SeatsRequired,
-                Flights = flights
-            });
-        }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize]
-        public async Task<IActionResult> CheckOut(CheckoutViewModel cvm)
+        [HttpGet]
+        public async Task<IActionResult> TicketsByUserId(TicketSearchViewModel tsm)
         {
-            
-            return View(cvm);
+            if (ModelState.IsValid)
+            {
+                tsm.Tickets = await _ticketStore.GetTicketsByUserIdAsync(_userManager.GetUserAsync(User).Result.Id, source.Token);
+                foreach(var t in tsm.Tickets)
+                {
+                    t.Flight = await _flightStore.GetFlightByIdAsync(t.FlightID, source.Token);
+                    t.Profile = _userManager.GetUserAsync(User).Result;
+                }
+                return View(tsm);
+            }
+            return View("../Home/Index", tsm);
         }
     }
 }

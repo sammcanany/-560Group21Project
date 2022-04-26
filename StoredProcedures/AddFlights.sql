@@ -28,12 +28,24 @@ CREATE PROCEDURE [Flights].[AddFlights]
 	(@ImportTable [Flights].[FlightTableType] READONLY)
 AS
 BEGIN
-	SET NOCOUNT ON;
-	INSERT INTO [Flights].[Flight](FlightNumber, DepartingAirportID, DestinationAirportID, AirlineID, DepartureDate, DepartureTime, ArrivalTime, Capacity,SeatsTaken,Price)
-	SELECT NF.[FlightNumber],DEP.[AirportID],DEST.[AirportID],A.[AirlineID],NF.[DepartureDate], NF.[DepartureTime], NF.[ArrivalTime], NF.[Capacity], NF.[SeatsTaken], NF.[Price]
-	FROM @ImportTable NF
-	INNER JOIN [Flights].[Airport] DEP ON DEP.[AirportCode] = NF.[DepartingAirportCode]
-	INNER JOIN [Flights].[Airport] DEST ON DEST.[AirportCode] = NF.[DestinationAirportCode]
-	INNER JOIN [Flights].[Airline] A ON A.[Name] = NF.[Airline]
-END
+	BEGIN TRY
+		SET NOCOUNT ON;
+		INSERT INTO [Flights].[Flight](FlightNumber, DepartingAirportID, DestinationAirportID, AirlineID, DepartureDate, DepartureTime, ArrivalTime, Capacity,SeatsTaken,Price)
+		SELECT NF.[FlightNumber],DEP.[AirportID],DEST.[AirportID],A.[AirlineID],NF.[DepartureDate], NF.[DepartureTime], NF.[ArrivalTime], NF.[Capacity], NF.[SeatsTaken], NF.[Price]
+		FROM @ImportTable NF
+		INNER JOIN [Flights].[Airport] DEP ON DEP.[AirportCode] = NF.[DepartingAirportCode]
+		INNER JOIN [Flights].[Airport] DEST ON DEST.[AirportCode] = NF.[DestinationAirportCode]
+		INNER JOIN [Flights].[Airline] A ON A.[Name] = NF.[Airline];
+		SELECT N'success';
+	END TRY
+	BEGIN CATCH
+		SELECT  
+            ERROR_NUMBER() AS ErrorNumber  
+            ,ERROR_SEVERITY() AS ErrorSeverity  
+            ,ERROR_STATE() AS ErrorState  
+            ,ERROR_PROCEDURE() AS ErrorProcedure  
+            ,ERROR_LINE() AS ErrorLine  
+            ,ERROR_MESSAGE() AS ErrorMessage;
+	END CATCH
+END;
 GO

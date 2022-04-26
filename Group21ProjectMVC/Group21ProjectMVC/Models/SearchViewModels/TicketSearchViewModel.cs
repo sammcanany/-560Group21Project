@@ -2,5 +2,6 @@
 {
     public class TicketSearchViewModel
     {
+        public IEnumerable<ApplicationTicket> Tickets { get; set; }
     }
 }

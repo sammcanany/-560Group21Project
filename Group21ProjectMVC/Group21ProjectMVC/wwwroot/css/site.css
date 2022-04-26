@@ -210,7 +210,7 @@ invalid-feedback-details.visible {
 }
 
     .btn-matrix > .btn {
-        background-color:orange;
+        background-color: orange;
         width: 40px !important;
         max-width: 100% !important;
         max-height: 100% !important;
@@ -219,20 +219,29 @@ invalid-feedback-details.visible {
         padding: 0px;
         font-size: 12px;
     }
-    .btn-matrix > .btn.btn-none:disabled {
-        background-color: transparent;
-        color:black;
-        font-weight:bold;
-    }
-        .btn-matrix > .btn.taken:disabled {
-            
+
+        .btn-matrix > .btn:checked {
+            color: red;
+            font-family: FontAwesome;
+            content: "\f00d";
+            font-size: 2.2em;
         }
-            .btn-matrix > .btn.taken:disabled::after {
-                color: red;
-                font-family: FontAwesome;
-                content: "\f00d";
-                font-size: 2.2em;
-            }
+
+        .btn-matrix > .btn.btn-none {
+            background-color: transparent !important;
+            color: black !important;
+            font-weight: bold !important;
+        }
+
+        .btn-matrix > .btn.taken:disabled {
+        }
+
+        .btn-matrix > .btn.taken::after {
+            color: red;
+            font-family: FontAwesome;
+            content: "\f00d";
+            font-size: 2.2em;
+        }
 
         .btn-matrix > .btn:nth-child(7n + 8) {
             margin-left: 0;
@@ -241,6 +250,7 @@ invalid-feedback-details.visible {
         .btn-matrix > .btn:nth-child(n + 8) {
             margin-top: -1px;
         }
+
         .btn-matrix > .btn:first-child {
             border-bottom-left-radius: 0;
         }

@@ -1,20 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
-namespace Group21ProjectMVC.Models.FlightViewModels
+namespace Group21ProjectMVC.Models.CheckoutViewModels
 {
     public class CheckoutViewModel
     {
-        public int DepartureFlightID { get; set; }
+        [BindProperty]
+        public List<ApplicationTicket> Tickets { get; set; }
 
-        public int ReturnFlightID { get; set; } = 0;
-
-        public int SeatsRequired { get; set; }
-
-        public IEnumerable<ApplicationFlight> Flights { get; set; }
-
-        public IEnumerable<string> FirstNames { get; set; }
-
-        public IEnumerable<string> LastNames { get; set; }
+        public bool ReturnFlights { get; set; }
 
         [CreditCard]
         public string CardNumber { get; set; }

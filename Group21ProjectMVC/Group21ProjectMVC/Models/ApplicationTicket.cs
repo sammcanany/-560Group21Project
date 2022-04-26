@@ -2,9 +2,13 @@
 {
     public class ApplicationTicket
     {
-        public ApplicationUser ProfileID { get; set; }
+        public int ProfileID { get; set; }
 
-        public ApplicationFlight FlightID { get; set; }
+        public int FlightID { get; set; }
+
+        public ApplicationUser Profile { get; set; }
+
+        public ApplicationFlight Flight { get; set; }
 
         public string FirstName { get; set; }
 

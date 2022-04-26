@@ -9,6 +9,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddTransient<IUserStore<ApplicationUser>, UserStore>();
 builder.Services.AddTransient<IRoleStore<ApplicationRole>, RoleStore>();
 builder.Services.AddTransient<IFlightStore<ApplicationFlight>, FlightStore>();
+builder.Services.AddTransient<ITicketStore<ApplicationTicket>, TicketStore>();
 
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddDefaultTokenProviders();
