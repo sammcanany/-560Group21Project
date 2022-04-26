@@ -282,6 +282,23 @@ namespace Group21ProjectMVC.Controllers
             StatusMessage = "Flights have been added.";
             return RedirectToAction(nameof(AddFlights)); ;
         }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteUser()
+        {
+            return View(new DeleteUserViewModel { StatusMessage = StatusMessage });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteUser(DeleteUserViewModel dvm)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            await _userManager.DeleteAsync(user);
+            return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+
+
         private IActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))

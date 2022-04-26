@@ -17,11 +17,15 @@ namespace Group21ProjectMVC.Views.Manage
 
         public static string AddFlights => "AddFlights";
 
+        public static string DeleteUser => "DeleteUser";
+
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 
         public static string ChangePasswordNavClass(ViewContext viewContext) => PageNavClass(viewContext, ChangePassword);
 
         public static string AddFlightsNavClass(ViewContext viewContext) => PageNavClass(viewContext, AddFlights);
+
+        public static string DeleteUserNavClass(ViewContext viewContext) => PageNavClass(viewContext, DeleteUser);
 
         public static string PageNavClass(ViewContext viewContext, string page)
         {

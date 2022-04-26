@@ -8,6 +8,7 @@
 <ul class="nav nav-pills flex-column">
     <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-action="Index">Profile</a></li>
     <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" asp-action="ChangePassword">Password</a></li>
+    <li class="nav-item"><a class="nav-link @ManageNavPages.DeleteUserNavClass(ViewContext)" asp-action="DeleteUser">Delete User</a></li>
     @if (isAdmin)
     {
         <li class="nav-item"><a class="nav-link @ManageNavPages.AddFlightsNavClass(ViewContext)" asp-action="Addflights">Add Flights</a></li>
