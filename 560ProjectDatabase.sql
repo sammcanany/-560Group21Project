@@ -250,14 +250,15 @@ BEGIN
 END
 INSERT INTO Flights.TicketInfo(ProfileID, FlightID, FirstName, LastName, SeatNumber)
 VALUES
-	('1', '1','Quamar','Roy', '70'),
-	('2', '1','Calista','Hill', '71'),
-	('3', '2', 'Salvador','Huffman', '10'),
-	('4', '3','Slade','Martin', '20'),
-	('5', '4','Hollee','Pruitt', '30'),
-	('6', '5','Hilda','Snow', '40'),
-	('7', '6', 'Alexandra','Kaufman', '50'),
-	('8', '7','Jillian','Hicks', '60'),
-	('9', '8','Drew','Henson', '70'),
-	('10', '9','Jelani','Franks', '80');
+	('1', '1','Sam','McAnany', '1'),
+	('2', '1','Quamar','Roy', '70'),
+	('3', '1','Calista','Hill', '71'),
+	('4', '2', 'Salvador','Huffman', '10'),
+	('5', '3','Slade','Martin', '20'),
+	('6', '4','Hollee','Pruitt', '30'),
+	('7', '5','Hilda','Snow', '40'),
+	('8', '6', 'Alexandra','Kaufman', '50'),
+	('9', '7','Jillian','Hicks', '60'),
+	('10', '8','Drew','Henson', '70'),
+	('11', '9','Jelani','Franks', '80');
 GO

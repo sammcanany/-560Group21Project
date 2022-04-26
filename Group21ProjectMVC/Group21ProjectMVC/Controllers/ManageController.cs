@@ -234,7 +234,7 @@ namespace Group21ProjectMVC.Controllers
         }
 
         [HttpGet]
-        public IActionResult AddFlights()
+        public async Task<IActionResult> AddFlights()
         {
             List<string> times = new() { "6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM" };
             List<string> airports = new() { "ATL", "DFW", "DEN", "ORD", "LAX", "CLT", "LAS", "PHX", "MCO", "MHK" };
@@ -248,9 +248,8 @@ namespace Group21ProjectMVC.Controllers
             {
                 Airports.Add(new SelectListItem { Text = airports[j], Value = j.ToString() });
             }
-            var model = new AddFlightsViewModel { Times = Times, Airports = Airports };
-
-            return View(model);
+            var airlines = await _flightStore.GetAirlinesAsync(source.Token);
+            return View(new AddFlightsViewModel { Times = Times, Airports = Airports, StatusMessage = StatusMessage, Airlines = airlines });
         }
 
         [HttpPost]
@@ -280,6 +279,7 @@ namespace Group21ProjectMVC.Controllers
             {
                 throw new ApplicationException($"Unable to add flights.");
             }
+            StatusMessage = "Flights have been added.";
             return RedirectToAction(nameof(AddFlights)); ;
         }
         private IActionResult RedirectToLocal(string returnUrl)

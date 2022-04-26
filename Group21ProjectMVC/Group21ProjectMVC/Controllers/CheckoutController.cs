@@ -166,7 +166,7 @@ namespace Group21ProjectMVC.Controllers
             var success = await _ticketStore.AddTicketsAsync(cvm.Tickets, source.Token);
             if (success != "success")
             {
-                throw new ApplicationException($"Unable to add flights.");
+                throw new ApplicationException($"Unable to add tickets.");
             }
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }

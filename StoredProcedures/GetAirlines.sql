@@ -1,0 +1,21 @@
+USE [560Project]
+GO
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE OR ALTER   PROCEDURE [Flights].[GetAirlines]
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT 
+		A.[Name]
+	FROM [Flights].[Airline] A
+END
+GO
+
+

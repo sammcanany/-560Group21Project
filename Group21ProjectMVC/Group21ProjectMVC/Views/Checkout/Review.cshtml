@@ -20,7 +20,7 @@
                 string formatted = string.Format(CultureInfo.CurrentCulture, "{0}h {1}m", diff.Hours, diff.Minutes);
                 <li id="@flight.FlightNumber" class="pt-4">
                     <div class="row border-bottom pb-4 ps-4 pe-4">
-                        <div class="col">
+                        <div class="col-8">
                             <div class="row">
                                 <div class="col">
                                     <p class="medium-text mb-0">@flight.DepartingAirportCode</p>
@@ -41,11 +41,12 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <p class="small-text">@flight.FlightNumber</p>
+                                <p class="small-text">Flight Number</p>
+                                <p class="medium-text">@flight.FlightNumber</p>
                             </div>
 
                         </div>
-                        <div class="col-lg">
+                        <div class="col-lg-4">
                             <button class="w-100 h-100 btn btn-light rounded border border-dark d-block">
                                 <p class="medium-text">Round Trip</p>
                                 <p class="large-text text-primary">@String.Format("{0:C0}",flight.Price)</p>

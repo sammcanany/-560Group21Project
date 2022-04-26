@@ -94,6 +94,26 @@ namespace Group21ProjectMVC.Data
             return response;
         }
 
+        public async Task<List<string>> GetAirlinesAsync(CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            using var connection = new SqlConnection(_connectionString);
+            using SqlCommand cmd = new("Flights.GetAirlines", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            List<string> response = new();
+            await connection.OpenAsync(cancellationToken);
+            using (var reader = await cmd.ExecuteReaderAsync(cancellationToken))
+            {
+                while (await reader.ReadAsync(cancellationToken))
+                {
+                    response.Add(reader["Name"].ToString());
+                }
+            }
+
+            return response;
+        }
+
         public void Dispose()
         {
             // Nothing to dispose.

@@ -8,6 +8,7 @@
 <h1>AddFlights</h1>
 
 <hr />
+@Html.Partial("_StatusMessage", Model.StatusMessage)
 <div class="row">
     <div class="col-md-8">
         <form asp-action="AddFlights">
@@ -34,9 +35,16 @@
             </div>
             <div class="row mb-3">
                 <div class="col-12 form-group">
-                    <label asp-for="Airline" class="control-label"></label>
-                    <input asp-for="Airline" class="form-control" />
-                    <span asp-validation-for="Airline" class="text-danger"></span>
+                    <div class="form-group">
+                        <label asp-for="Airline"></label>
+                        <select asp-for="Airline" class="form-select" name="Airline">
+                            @foreach(var airline in Model.Airlines)
+                            {
+                                <option>@airline</option>
+                            }
+                        </select>
+                        <span asp-validation-for="Airline" class="text-danger"></span>
+                    </div>
                 </div>
             </div>
 

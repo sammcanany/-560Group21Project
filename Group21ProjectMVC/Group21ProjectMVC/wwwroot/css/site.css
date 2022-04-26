@@ -204,17 +204,16 @@ invalid-feedback-details.visible {
 
 @import "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css";
 
-/* Arrange buttons */
 .btn-matrix {
-    flex-wrap: wrap; /* allow buttons to jump to another row */
+    flex-wrap: wrap;
 }
 
     .btn-matrix > .btn {
         background-color: orange;
-        width: 40px !important;
+        width: 30px !important;
         max-width: 100% !important;
         max-height: 100% !important;
-        height: 40px !important;
+        height: 30px !important;
         text-align: center;
         padding: 0px;
         font-size: 12px;
@@ -224,7 +223,7 @@ invalid-feedback-details.visible {
             color: red;
             font-family: FontAwesome;
             content: "\f00d";
-            font-size: 2.2em;
+            font-size: 1.6em;
         }
 
         .btn-matrix > .btn.btn-none {
@@ -240,10 +239,10 @@ invalid-feedback-details.visible {
             color: red;
             font-family: FontAwesome;
             content: "\f00d";
-            font-size: 2.2em;
+            font-size: 1.6em;
         }
 
-        .btn-matrix > .btn:nth-child(7n + 8) {
+        .btn-matrix > .btn:nth-child(6n + 7) {
             margin-left: 0;
         }
 
@@ -269,5 +268,5 @@ invalid-feedback-details.visible {
 
 .btn-matrix {
     margin: 20px;
-    max-width: 280px;
+    max-width: 210px;
 }
