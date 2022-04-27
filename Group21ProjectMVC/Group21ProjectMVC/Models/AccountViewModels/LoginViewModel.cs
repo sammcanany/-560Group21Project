@@ -9,7 +9,7 @@ namespace Group21ProjectMVC.Models.AccountViewModels
     public class LoginViewModel
     {
         [Required]
-        [EmailAddress]
+        [Display(Name = "Username or Email")]
         public string Email { get; set; }
 
         [Required]

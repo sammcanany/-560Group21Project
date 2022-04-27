@@ -208,7 +208,7 @@ namespace Group21ProjectMVC.Data
             using var connection = new SqlConnection(_connectionString);
             using SqlCommand cmd = new("Flights.FindUserByEmail", connection);
             cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("NormalizedUserName", normalizedEmail);
+            cmd.Parameters.AddWithValue("NormalizedEmail", normalizedEmail);
             ApplicationUser? response = null;
             await connection.OpenAsync(cancellationToken);
             using (var reader = await cmd.ExecuteReaderAsync(cancellationToken))
@@ -318,11 +318,6 @@ namespace Group21ProjectMVC.Data
             }
 
             return roles;
-            /*await connection.OpenAsync(cancellationToken);
-            var queryResults = await connection.QueryAsync<string>("SELECT r.[Name] FROM [ApplicationRole] r INNER JOIN [ApplicationUserRole] ur ON ur.[RoleId] = r.Id " +
-                "WHERE ur.UserId = @userId", new { userId = user.Id });
-
-            return queryResults.ToList();*/
         }
 
         public async Task<bool> IsInRoleAsync(ApplicationUser user, string roleName, CancellationToken cancellationToken)

@@ -294,7 +294,13 @@ namespace Group21ProjectMVC.Controllers
         public async Task<IActionResult> DeleteUser(DeleteUserViewModel dvm)
         {
             var user = await _userManager.GetUserAsync(User);
-            await _userManager.DeleteAsync(user);
+            var result = await _userManager.DeleteAsync(user);
+            if (!result.Succeeded)
+            {
+                throw new InvalidOperationException($"Unexpected error occurred deleting user.");
+            }
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation("User logged out.");
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 

@@ -1,38 +1,47 @@
 ﻿@model Group21ProjectMVC.Models.ManageViewModels.DeleteUserViewModel
 
 @{
-    ViewData["Title"] = "AddFlights";
+    ViewData["Title"] = "Delete Account";
     ViewData["ActivePage"] = ManageNavPages.DeleteUser;
 }
 
-<h4>@ViewData["Title"]</h4>
-@Html.Partial("_StatusMessage", Model.StatusMessage)
-<div class="row">
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-Danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Delete Account
-    </button>
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+<div class="card">
+    <div class="card-header">
+        <h4>@ViewData["Title"]</h4>
+        @Html.Partial("_StatusMessage", Model.StatusMessage)
+        <p class="mb-0">Delete your account permanently.</p>
+    </div>
+    <div class="card-body p-4">
+        <span class="text-danger h4">Warning</span>
+        <p>
+            Are you sure you want to delete your account? If you delete your account, you will permanently lose access to your profile.
+        </p>
+        <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmModal">
+            Close My Account
+        </button>
+    </div>
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <h5 class="modal-title" id="confirmModalLabel">Delete Account?</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    ...
+                    <div class="alert alert-danger" role="alert">
+                        Warning: this cannot be undone!
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <form asp-action="DeleteUser">
+                        <button type="submit" class="btn btn-danger">Delete Account</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 @section Scripts {
 <script type="text/javascript">
     var myModal = document.getElementById('myModal')

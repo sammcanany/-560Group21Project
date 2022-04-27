@@ -1,34 +1,48 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
-
-<ul class="navbar-nav">
+@{
+    var user = UserManager.GetUserAsync(User).Result;
+}
+<ul class="navbar-nav navbar-right-wrap ms-auto d-none d-lg-block">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item dropdown">
+        <li class="dropdown ms-2 d-inline-block">
             @if (UserManager.GetUserAsync(User).Result != null)
             {
-                <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Hello @UserManager.GetUserAsync(User).Result.FirstName
+                <a class="nav-link show dropdown-toggle" href="#" id="navbarScrollingDropdown" data-bs-toggle="dropdown" data-bs-display="static">
+                    @(user.FirstName + " " + user.LastName)
                 </a>
             }
             else
             {
-                <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="nav-link show dropdown-toggle" href="#" id="navbarScrollingDropdown" data-bs-toggle="dropdown" data-bs-display="static">
                     Hello @User.Identity?.Name
                 </a>
             }
-
-            <ul class="dropdown-menu list" aria-labelledby="navbarScrollingDropdown">
-                <li><a class="dropdown-item" asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Manage</a></li>
-                <li><a class="dropdown-item" asp-area="" asp-controller="Search" asp-action="TicketsByUserId" title="My Tickets">My Tickets</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li>
-                    <form class="form-inline" asp-area="" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                        <button type="submit" class="btn btn-link text-dark">Logout</button>
-                    </form>
-                </li>
-            </ul>
+            <div class="dropdown-menu dropdown-menu-end show" data-bs-popper="none">
+                <div class="dropdown-item">
+                    <div class="d-flex">
+                        <div class="ms-3 lh-1">
+                            <h6 class="mb-1">@(user.FirstName + " " + user.LastName)</h6>
+                            <p class="mb-0 text-muted">@user.UserName</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="dropdown-divider"></div>
+                <ul class="list-unstyled">
+                    <li><a class="dropdown-item" asp-area="" asp-controller="Manage" asp-action="Index" title="Manage"><i class="fa-solid fa-user pe-2"></i>Profile</a></li>
+                    <li><a class="dropdown-item" asp-area="" asp-controller="Search" asp-action="TicketsByUserId" title="My Tickets"><i class="fa-solid fa-ticket pe-2"></i>My Tickets</a></li>
+                </ul>
+                <div class="dropdown-divider"></div>
+                <ul class="list-unstyled">
+                    <li>
+                        <form class="form-inline" asp-area="" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            <button type="submit" class="btn btn-link text-dark"><i class="fa-solid fa-power-off pe-2"></i>Logout</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
         </li>
     }
     else

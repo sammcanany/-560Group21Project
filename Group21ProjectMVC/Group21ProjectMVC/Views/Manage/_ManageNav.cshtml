@@ -5,13 +5,23 @@
     var isAdmin = User.IsInRole("Admin");
 }
 
-<ul class="nav nav-pills flex-column">
-    <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-action="Index">Profile</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" asp-action="ChangePassword">Password</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.DeleteUserNavClass(ViewContext)" asp-action="DeleteUser">Delete User</a></li>
-    @if (isAdmin)
-    {
-        <li class="nav-item"><a class="nav-link @ManageNavPages.AddFlightsNavClass(ViewContext)" asp-action="Addflights">Add Flights</a></li>
-    }
-</ul>
-
+<nav class="navbar navbar-expand-md navbar-light shadow-sm mb-4 mb-lg-0 sidenav">
+    <p class="d-xl-none d-lg-none d-md-none text-inherit fw-bold pt-2 ps-2">Menu</p>
+    <button class="navbar-toggler d-md-none icon-shape icon-sm rounded bg-primary text-light" type="button" data-bs-toggle="collapse" data-bs-target="#sidenav" aria-controls="sidenav" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="sidenav">
+        <div class="navbar-nav flex-column">
+            <span class="navbar-header mb-2">Account Settings</span>
+            <ul class="list-unstyled ms-n2 mb-0">
+                <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-action="Index"><i class="fa-solid fa-gear pe-2"></i>Edit Profile</a></li>
+                <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" asp-action="ChangePassword"><i class="fa-solid fa-lock pe-2"></i>Password</a></li>
+                <li class="nav-item"><a class="nav-link @ManageNavPages.DeleteUserNavClass(ViewContext)" asp-action="DeleteUser"><i class="fa-solid fa-trash pe-2"></i>Delete Account</a></li>
+                @if (isAdmin)
+                {
+                    <li class="nav-item"><a class="nav-link @ManageNavPages.AddFlightsNavClass(ViewContext)" asp-action="Addflights"><i class="fa-solid fa-plane pe-2"></i>Add Flights</a></li>
+                }
+            </ul>
+        </div>
+    </div>
+</nav>

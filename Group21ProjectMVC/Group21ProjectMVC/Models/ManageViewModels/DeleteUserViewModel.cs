@@ -3,7 +3,5 @@
     public class DeleteUserViewModel
     {
         public string StatusMessage { get; set; }
-
-        public string nameEntered { get; set; }
     }
 }

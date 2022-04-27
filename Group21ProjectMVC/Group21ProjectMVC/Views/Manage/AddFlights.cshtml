@@ -5,12 +5,12 @@
     ViewData["ActivePage"] = ManageNavPages.AddFlights;
 }
 
-<h1>AddFlights</h1>
-
-<hr />
-@Html.Partial("_StatusMessage", Model.StatusMessage)
-<div class="row">
-    <div class="col-md-8">
+<div class="card">
+    <div class="card-header">
+        <h4>@ViewData["Title"]</h4>
+        @Html.Partial("_StatusMessage", Model.StatusMessage)
+    </div>
+    <div class="card-body p-4">
         <form asp-action="AddFlights">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row mb-3">
@@ -55,7 +55,6 @@
     </div>
 </div>
 @section Scripts {
-
 <script type="text/javascript">
         $('.MultiSelectListBox').multiselect({
             includeSelectAllOption: true,

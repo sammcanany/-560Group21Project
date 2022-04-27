@@ -59,9 +59,27 @@ namespace Group21ProjectMVC.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
+                ApplicationUser user;
+                if (model.Email.Contains("@"))
+                {
+                    user = await _userManager.FindByEmailAsync(model.Email.ToUpper());
+                }
+                else
+                {
+                    user = await _userManager.FindByNameAsync(model.Email.ToUpper());
+                }
+
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                Microsoft.AspNetCore.Identity.SignInResult result;
+                if (user == null)
+                {
+                    result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                }
+                else
+                {
+                    result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
+                }
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
@@ -106,7 +124,7 @@ namespace Group21ProjectMVC.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, PhoneNumber = model.PhoneNumber};//, new Claim("FullName", user.FirstName + " " + user.LastName) 
+                var user = new ApplicationUser { UserName = model.Email.Split('@')[0], Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, PhoneNumber = model.PhoneNumber};//, new Claim("FullName", user.FirstName + " " + user.LastName) 
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
