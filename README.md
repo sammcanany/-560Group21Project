@@ -29,7 +29,7 @@ SELECT
 U.Id AS 'UserId',
 R.Id AS 'RoleId'
 FROM [Flights].[ApplicationUser] U,[Flights].[ApplicationRole] R
-WHERE U.[UserName] = '** EMAIL HERE **'
+WHERE U.[Email] = '** EMAIL HERE **'
 AND R.[Name] = 'Admin'
 )
 INSERT INTO Flights.[ApplicationUserRole]([RoleId], [UserId])
