@@ -14,86 +14,6 @@ namespace Group21ProjectMVC.Data
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
-        /*public async Task<bool> AddFlightsAsync(IEnumerable<ApplicationFlight> flights, CancellationToken cancellationToken = default)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            using var connection = new SqlConnection(_connectionString);
-            using SqlCommand cmd = new("Flights.AddFlights", connection);
-            cmd.CommandType = CommandType.StoredProcedure;
-            SqlParameter sqlParameter = cmd.Parameters.AddWithValue("@ImportTable", ConvertData(flights.ToList()));
-            sqlParameter.SqlDbType = SqlDbType.Structured;
-            await connection.OpenAsync(cancellationToken);
-            await cmd.ExecuteScalarAsync(cancellationToken);
-            return true;
-        }
-
-        public async Task<IEnumerable<ApplicationFlight>> GetFlightsAsync(string FromLocation, string ToLocation, int SeatsRequired, DateTime? DepartureDate, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            using var connection = new SqlConnection(_connectionString);
-            using SqlCommand cmd = new("Flights.FlightSearch", connection);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("FromLocation", FromLocation);
-            cmd.Parameters.AddWithValue("ToLocation", ToLocation);
-            cmd.Parameters.AddWithValue("SeatsRequired", SeatsRequired);
-            cmd.Parameters.AddWithValue("DepartureDate", DepartureDate);
-            IList<ApplicationFlight> response = new List<ApplicationFlight>();
-            await connection.OpenAsync(cancellationToken);
-            using (var reader = await cmd.ExecuteReaderAsync(cancellationToken))
-            {
-                while (await reader.ReadAsync(cancellationToken))
-                {
-                    response.Add(MapToValue(reader));
-                }
-            }
-
-            return response;
-        }
-
-        public async Task<ApplicationFlight> GetFlightByIdAsync(int ID, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            using var connection = new SqlConnection(_connectionString);
-            using SqlCommand cmd = new("Flights.GetFlightByID", connection);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("FlightID", ID);
-            ApplicationFlight response = new();
-            await connection.OpenAsync(cancellationToken);
-            using (var reader = await cmd.ExecuteReaderAsync(cancellationToken))
-            {
-                while (await reader.ReadAsync(cancellationToken))
-                {
-                    response = MapToValue(reader);
-                }
-            }
-
-            return response;
-        }
-
-        public async Task<IEnumerable<int>> GetSeatsAvailableByFlightIdAsync(int ID, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            using var connection = new SqlConnection(_connectionString);
-            using SqlCommand cmd = new("Flights.GetSeatsAvailableByFlightId", connection);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("FlightID", ID);
-            IList<int> response = new List<int>();
-            await connection.OpenAsync(cancellationToken);
-            using (var reader = await cmd.ExecuteReaderAsync(cancellationToken))
-            {
-                while (await reader.ReadAsync(cancellationToken))
-                {
-                    response.Add((int)reader["SeatNumber"]);
-                }
-            }
-
-            return response;
-        }*/
-
         public async Task<string> AddTicketsAsync(IEnumerable<ApplicationTicket> Tickets, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -148,20 +68,9 @@ namespace Group21ProjectMVC.Data
                 ProfileID = (int)reader["ProfileID"],
                 FlightID = (int)reader["FlightID"],
                 FirstName = reader["FirstName"].ToString(),
-                LastName = reader["FirstName"].ToString(),
+                LastName = reader["LastName"].ToString(),
                 SeatNumber = (int)reader["SeatNumber"]
             };
-            /*Id = (int)reader["Id"],
-                FlightNumber = reader["FlightNumber"].ToString(),
-                DepartingAirportCode = reader["DepartingAirportCode"].ToString(),
-                DestinationAirportCode = reader["DestinationAirportCode"].ToString(),
-                Airline = reader["Airline"].ToString(),
-                DepartureDate = Convert.ToDateTime(reader["DepartureDate"].ToString()),
-                DepartureTime = Convert.ToDateTime(reader["DepartureTime"].ToString()),
-                ArrivalTime = Convert.ToDateTime(reader["ArrivalTime"].ToString()),
-                Capacity = (int)reader["Capacity"],
-                SeatsTaken = (int)reader["SeatsTaken"],
-                Price = (decimal)reader["Price"]*/
         }
 
         public static DataTable ConvertData(List<ApplicationTicket> ValuesList)
