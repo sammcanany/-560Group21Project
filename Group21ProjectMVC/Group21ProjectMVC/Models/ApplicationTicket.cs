@@ -2,6 +2,8 @@
 {
     public class ApplicationTicket
     {
+        public int Id { get; set; }
+
         public int ProfileID { get; set; }
 
         public int FlightID { get; set; }

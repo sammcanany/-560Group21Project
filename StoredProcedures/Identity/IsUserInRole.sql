@@ -5,11 +5,13 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE OR ALTER PROCEDURE [Flights].[IsUserInRole]
-	@RoleId INT,
+	@RoleName NVARCHAR(256),
 	@UserId INT
 AS
 BEGIN
 	SET NOCOUNT ON;
-	SELECT COUNT(*) FROM [ApplicationUserRole] WHERE [UserId] = @UserId AND [RoleId] = @RoleId
+	SELECT COUNT(*) FROM [Flights].[ApplicationUserRole] AUR
+	INNER JOIN [Flights].[ApplicationRole] AR ON AR.Id = AUR.RoleId 
+	WHERE [UserId] = @UserId AND [Name] = @RoleName
 END
 GO

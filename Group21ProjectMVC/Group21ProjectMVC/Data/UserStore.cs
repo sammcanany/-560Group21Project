@@ -325,26 +325,13 @@ namespace Group21ProjectMVC.Data
             cancellationToken.ThrowIfCancellationRequested();
 
             using var connection = new SqlConnection(_connectionString);
-            int? roleId = 0;
-            int matchingRoles = 0;
-            using (SqlCommand cmd = new("Flights.FindRoleByName", connection))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("NormalizedName", roleName.ToUpper());
-                await connection.OpenAsync(cancellationToken);
-                roleId = (int?)await cmd.ExecuteScalarAsync(cancellationToken);
-            }
-            if (roleId == default(int)) return false;
-            using (SqlCommand cmd = new("IsUserInRole", connection))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("RoleId", roleId);
-                cmd.Parameters.AddWithValue("UserId", user.Id);
-                await connection.OpenAsync(cancellationToken);
-                matchingRoles = (int)await cmd.ExecuteScalarAsync(cancellationToken);
-            }
-
-            return matchingRoles > 0;
+            using SqlCommand cmd = new("Flights.IsUserInRole", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("RoleName", roleName);
+            cmd.Parameters.AddWithValue("UserId", user.Id);
+            await connection.OpenAsync(cancellationToken);
+            var matchingRoles = await cmd.ExecuteScalarAsync(cancellationToken);
+            return (int)matchingRoles > 0;
         }
 
         public async Task<IList<ApplicationUser>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)

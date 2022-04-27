@@ -139,7 +139,7 @@ namespace Group21ProjectMVC.Data
 
         public static DataTable ConvertData(List<ApplicationFlight> ValuesList)
         {
-            DataTable dtData = new DataTable();
+            DataTable dtData = new();
             var objectReference = ValuesList.GetType().GetGenericArguments()[0];
             var properties = objectReference.GetProperties();
             foreach (var prop in properties)

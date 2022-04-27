@@ -1,0 +1,19 @@
+USE [560Project]
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE OR ALTER PROCEDURE [Flights].[DeleteTicket]
+	@Id INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	DELETE 
+	FROM [Flights].[TicketInfo] 
+	WHERE [TicketInfoID] = @Id
+END
+GO
+
+
+

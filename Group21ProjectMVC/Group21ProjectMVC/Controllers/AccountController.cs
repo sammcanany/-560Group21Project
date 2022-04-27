@@ -60,7 +60,7 @@ namespace Group21ProjectMVC.Controllers
             if (ModelState.IsValid)
             {
                 ApplicationUser user;
-                if (model.Email.Contains("@"))
+                if (model.Email.Contains('@'))
                 {
                     user = await _userManager.FindByEmailAsync(model.Email.ToUpper());
                 }

@@ -25,6 +25,7 @@ namespace Group21ProjectMVC.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IFlightStore<ApplicationFlight> _flightStore;
+        private readonly ITicketStore<ApplicationTicket> _ticketStore;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly UrlEncoder _urlEncoder;
@@ -32,12 +33,13 @@ namespace Group21ProjectMVC.Controllers
         private const string AuthenicatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
 
 
-        private CancellationTokenSource source = new CancellationTokenSource();
+        private readonly CancellationTokenSource source = new();
 
         public ManageController(
           UserManager<ApplicationUser> userManager,
           SignInManager<ApplicationUser> signInManager,
           IFlightStore<ApplicationFlight> flightStore,
+          ITicketStore<ApplicationTicket> ticketStore,
           IEmailSender emailSender,
           ILogger<ManageController> logger,
           UrlEncoder urlEncoder)
@@ -45,6 +47,7 @@ namespace Group21ProjectMVC.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _flightStore = flightStore;
+            _ticketStore = ticketStore;
             _emailSender = emailSender;
             _logger = logger;
             _urlEncoder = urlEncoder;
@@ -284,7 +287,7 @@ namespace Group21ProjectMVC.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> DeleteUser()
+        public IActionResult DeleteUser()
         {
             return View(new DeleteUserViewModel { StatusMessage = StatusMessage });
         }
@@ -294,7 +297,14 @@ namespace Group21ProjectMVC.Controllers
         public async Task<IActionResult> DeleteUser(DeleteUserViewModel dvm)
         {
             var user = await _userManager.GetUserAsync(User);
-            var result = await _userManager.DeleteAsync(user);
+            
+            var result = await _userManager.RemoveFromRolesAsync(user, await _userManager.GetRolesAsync(user));
+            if (!result.Succeeded)
+            {
+                throw new InvalidOperationException($"Unexpected error occurred removing roles from user.");
+            }
+            await _ticketStore.DeleteAllUserTicketsAsync(user.Id, source.Token);
+            result = await _userManager.DeleteAsync(user);
             if (!result.Succeeded)
             {
                 throw new InvalidOperationException($"Unexpected error occurred deleting user.");
@@ -303,7 +313,6 @@ namespace Group21ProjectMVC.Controllers
             _logger.LogInformation("User logged out.");
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
-
 
         private IActionResult RedirectToLocal(string returnUrl)
         {
@@ -317,7 +326,7 @@ namespace Group21ProjectMVC.Controllers
             }
         }
         #region Helpers
-        private static Random random = new Random();
+        private static readonly Random random = new();
 
         public static string RandomString(int length)
         {
@@ -329,7 +338,7 @@ namespace Group21ProjectMVC.Controllers
         {
             IList<ApplicationFlight> Flights = new List<ApplicationFlight>();
             List<string> Airports = model.AirportsSelected.ToList();
-            Dictionary<string, double> dic = new Dictionary<string, double>
+            Dictionary<string, double> dic = new()
             {
                 { "ATLToDFW", 1.30725572451624 },
                 { "ATLToDEN", 2.14277369488298 },
@@ -422,7 +431,7 @@ namespace Group21ProjectMVC.Controllers
                 { "MHKToPHX", 1.68049203295766 },
                 { "MHKToMCO", 2.05550742495893 }
             };
-            Random r = new Random();
+            Random r = new();
             foreach (DateTime day in EachDay(model.StartingDate, model.EndingDate))
             {
                 int rInt = r.Next(100, 999);

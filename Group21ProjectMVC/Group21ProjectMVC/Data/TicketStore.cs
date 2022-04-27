@@ -56,22 +56,50 @@ namespace Group21ProjectMVC.Data
             return response;
         }
 
+        public async Task<string> DeleteTicketAsync(ApplicationTicket ticket, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                using SqlCommand cmd = new("Flights.DeleteUser", connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("Id", ticket.Id);
+                await connection.OpenAsync(cancellationToken);
+                await cmd.ExecuteNonQueryAsync(cancellationToken);
+                await connection.CloseAsync();
+                await connection.DisposeAsync();
+            }
+            return "success";
+        }
+
+        public async Task<string> DeleteAllUserTicketsAsync(int UserId, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            using var connection = new SqlConnection(_connectionString);
+            using SqlCommand cmd = new("Flights.DeleteAllUserTickets", connection);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.AddWithValue("ProfileId", UserId);
+            await connection.OpenAsync(cancellationToken);
+            await cmd.ExecuteNonQueryAsync(cancellationToken);
+            return "success";
+        }
+
         public void Dispose()
         {
             // Nothing to dispose.
         }
         #region Helpers
-        private static ApplicationTicket MapToValue(SqlDataReader reader)
+        private static ApplicationTicket MapToValue(SqlDataReader reader) => new()
         {
-            return new ApplicationTicket()
-            {
-                ProfileID = (int)reader["ProfileID"],
-                FlightID = (int)reader["FlightID"],
-                FirstName = reader["FirstName"].ToString(),
-                LastName = reader["LastName"].ToString(),
-                SeatNumber = (int)reader["SeatNumber"]
-            };
-        }
+            Id = (int)reader["ProfileID"],
+            ProfileID = (int)reader["ProfileID"],
+            FlightID = (int)reader["FlightID"],
+            FirstName = reader["FirstName"].ToString(),
+            LastName = reader["LastName"].ToString(),
+            SeatNumber = (int)reader["SeatNumber"]
+        };
 
         public static DataTable ConvertData(List<ApplicationTicket> ValuesList)
         {
@@ -80,7 +108,7 @@ namespace Group21ProjectMVC.Data
             var properties = objectReference.GetProperties();
             foreach (var prop in properties)
             {
-                if (prop.Name != "Profile" && prop.Name != "Flight")
+                if (prop.Name != "Profile" && prop.Name != "Flight" && prop.Name != "Id")
                 {
                     dtData.Columns.Add(prop.Name, prop.PropertyType);
                 }
@@ -91,7 +119,7 @@ namespace Group21ProjectMVC.Data
                 var dataArray = new List<object>();
                 foreach (var prop in properties)
                 {
-                    if (prop.Name != "Profile" && prop.Name != "Flight")
+                    if (prop.Name != "Profile" && prop.Name != "Flight" && prop.Name != "Id")
                     {
                         dataArray.Add(prop.GetValue(item));
                     }

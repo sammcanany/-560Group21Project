@@ -28,9 +28,14 @@ namespace Group21ProjectMVC.Controllers
         private readonly ITicketStore<ApplicationTicket> _ticketStore;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        private CancellationTokenSource source = new CancellationTokenSource();
+        private readonly CancellationTokenSource source = new();
 
-        public CheckoutController(ILogger<SearchController> logger, IConfiguration Configuration, IFlightStore<ApplicationFlight> flightStore, ITicketStore<ApplicationTicket> ticketStore, UserManager<ApplicationUser> userManager)
+        public CheckoutController(
+            ILogger<SearchController> logger,
+            IConfiguration Configuration,
+            IFlightStore<ApplicationFlight> flightStore,
+            ITicketStore<ApplicationTicket> ticketStore,
+            UserManager<ApplicationUser> userManager)
         {
             _logger = logger;
             _configuration = Configuration;
@@ -62,7 +67,7 @@ namespace Group21ProjectMVC.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> PassengerDetails(int DepartureFlightID, int ReturnFlightID, int SeatsRequired)
+        public IActionResult PassengerDetails(int DepartureFlightID, int ReturnFlightID, int SeatsRequired)
         {
             return View(new PassengerDetailsViewModel
             {
@@ -98,7 +103,7 @@ namespace Group21ProjectMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SeatSelection(SeatSelectionViewModel ssvm)
+        public IActionResult SeatSelection(SeatSelectionViewModel ssvm)
         {
             if (!ModelState.IsValid)
             {
@@ -110,7 +115,7 @@ namespace Group21ProjectMVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Checkout(List<int> DepartureFlightSeats, List<int> ReturnFlightSeats, List<string> FirstNames, List<string> LastNames, int DepartureFlightID, int ReturnFlightID, int SeatsRequired)
         {
-            List<ApplicationTicket> tickets = new List<ApplicationTicket>();
+            List<ApplicationTicket> tickets = new();
             ApplicationFlight departureFlights = await _flightStore.GetFlightByIdAsync(DepartureFlightID, source.Token);
             ApplicationFlight returnFlights;
             bool AreReturnFlights = false;

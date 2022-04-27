@@ -8,7 +8,7 @@
 <div class="card">
     <div class="card-header">
         <h4>@ViewData["Title"]</h4>
-        @Html.Partial("_StatusMessage", Model.StatusMessage)
+        <partial name="_StatusMessage" for="@(Model.StatusMessage)"/>
         <p class="mb-0">Delete your account permanently.</p>
     </div>
     <div class="card-body p-4">

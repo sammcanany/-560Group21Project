@@ -26,7 +26,7 @@ namespace Group21ProjectMVC.Controllers
         private readonly ITicketStore<ApplicationTicket> _ticketStore;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        private CancellationTokenSource source = new CancellationTokenSource();
+        private readonly CancellationTokenSource source = new();
 
         public SearchController(ILogger<SearchController> logger, IConfiguration Configuration, IFlightStore<ApplicationFlight> flightStore, ITicketStore<ApplicationTicket> ticketStore, UserManager<ApplicationUser> userManager)
         {
