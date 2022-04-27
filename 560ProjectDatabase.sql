@@ -138,7 +138,7 @@ BEGIN
 END
 INSERT INTO Flights.Flight(FlightNumber, DepartingAirportID, DestinationAirportID, AirlineID, DepartureDate, DepartureTime, ArrivalTime, Capacity,SeatsTaken,Price)
 VALUES
-	('IGTGD', '1', '2', 1, '2021-10-03','12:00:00','1:52:00',261,0,125),
+	('IGTGD', '1', '2', 1, '2021-10-03','12:00:00','13:52:00',261,0,125),
 	('JTRLT', '1', '3', 1, '2023-02-07','12:00:00','23:08:00',262,0,125),
 	('JQOWL', '1', '4', 2, '2021-12-08','12:00:00','12:22:00',147,0,125),
 	('PJVFY', '1', '5', 2, '2022-10-18','12:00:00','10:51:00',223,0,125),
