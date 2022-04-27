@@ -24,8 +24,16 @@
                 <div class="dropdown-item">
                     <div class="d-flex">
                         <div class="ms-3 lh-1">
-                            <h6 class="mb-1">@(user.FirstName + " " + user.LastName)</h6>
-                            <p class="mb-0 text-muted">@user.UserName</p>
+                            @if (UserManager.GetUserAsync(User).Result != null)
+                            {
+                                <h6 class="mb-1">@(user.FirstName + " " + user.LastName)</h6>
+                                <p class="mb-0 text-muted">@user.UserName</p>
+                            }
+                            else
+                            {
+                                <h6 class="mb-1">--</h6>
+                                <p class="mb-0 text-muted">--</p>
+                            }
                         </div>
                     </div>
                 </div>

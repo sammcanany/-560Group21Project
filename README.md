@@ -24,15 +24,16 @@ Change to:
 4. Replace ** EMAIL HERE ** with the email you used and run the script
 
 ```
+DECLARE @Email AS NVARCHAR(256) = '** EMAIL HERE **';
 WITH CTE AS(
 SELECT
 U.Id AS 'UserId',
 R.Id AS 'RoleId'
 FROM [Flights].[ApplicationUser] U,[Flights].[ApplicationRole] R
-WHERE U.[UserName] = '** EMAIL HERE **'
+WHERE U.[Email] = @Email
 AND R.[Name] = 'Admin'
 )
-INSERT INTO Flights.[ApplicationUserRole]([RoleId], [UserId])
+INSERT INTO Flights.[ApplicationUserRole]([UserId],[RoleId])
 SELECT * FROM CTE
 GO
 ```

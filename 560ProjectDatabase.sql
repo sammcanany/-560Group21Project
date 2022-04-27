@@ -230,7 +230,7 @@ WITH CTE AS(
 	WHERE U.[UserName] = 'sammcanany@ksu.edu'
 	AND R.[Name] = 'Admin'
 )
-INSERT INTO Flights.[ApplicationUserRole]([RoleId], [UserId])
+INSERT INTO Flights.[ApplicationUserRole]([UserId], [RoleId])
 SELECT * FROM CTE
 GO
 -- Checks that table doesn't already exist, then creates it
