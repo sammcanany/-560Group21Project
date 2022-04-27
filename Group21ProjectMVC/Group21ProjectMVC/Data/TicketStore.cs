@@ -60,15 +60,18 @@ namespace Group21ProjectMVC.Data
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            using (var connection = new SqlConnection(_connectionString))
+            try
             {
+                using var connection = new SqlConnection(_connectionString);
                 using SqlCommand cmd = new("Flights.DeleteUser", connection);
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("Id", ticket.Id);
                 await connection.OpenAsync(cancellationToken);
                 await cmd.ExecuteNonQueryAsync(cancellationToken);
-                await connection.CloseAsync();
-                await connection.DisposeAsync();
+            }
+            catch (SqlException ex)
+            {
+                return ex.Message;
             }
             return "success";
         }
@@ -77,12 +80,19 @@ namespace Group21ProjectMVC.Data
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            using var connection = new SqlConnection(_connectionString);
-            using SqlCommand cmd = new("Flights.DeleteAllUserTickets", connection);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("ProfileId", UserId);
-            await connection.OpenAsync(cancellationToken);
-            await cmd.ExecuteNonQueryAsync(cancellationToken);
+            try
+            {
+                using var connection = new SqlConnection(_connectionString);
+                using SqlCommand cmd = new("Flights.DeleteAllUserTickets", connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("ProfileId", UserId);
+                await connection.OpenAsync(cancellationToken);
+                await cmd.ExecuteNonQueryAsync(cancellationToken);
+            }
+            catch (SqlException ex)
+            {
+                return ex.Message;
+            }
             return "success";
         }
 
