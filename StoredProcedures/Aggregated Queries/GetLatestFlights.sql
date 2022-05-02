@@ -1,4 +1,3 @@
-/*Gets number of Tickets sold*/
 USE [560Project]
 GO
 
@@ -8,7 +7,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE OR ALTER PROCEDURE [Flights].[FlightSearch]
+CREATE OR ALTER PROCEDURE [Flights].[GetLatestFlights]
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -27,6 +26,7 @@ BEGIN
 
 END
 GO
+
 
 SELECT 
 	A.[Name] AS AirlineName,
