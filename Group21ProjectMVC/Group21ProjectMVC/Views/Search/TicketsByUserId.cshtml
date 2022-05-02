@@ -16,6 +16,14 @@
             <li class="pt-4">
                 <div class="row border-bottom pb-4 ps-4 pe-4">
                     <div class="col-8">
+                            <div class="row">
+                                <div class="col">
+                                    <p class="large-text text-primary">@ticket.Flight.Airline</p>
+                                </div>
+                                <div class="col">
+                                    <p class="medium-text">@ticket.Flight.FlightNumber</p>
+                                </div>
+                            </div>
                         <div class="row">
                             <div class="col">
                                 <p class="medium-text mb-0">@ticket.Flight.DepartingAirportCode</p>
@@ -37,10 +45,6 @@
                         </div>
                         <div class="row">
                             <div class="col">
-                                <p class="small-text">Flight Number</p>
-                                <p class="medium-text">@ticket.Flight.FlightNumber</p>
-                            </div>
-                            <div class="col">
                                 <p class="small-text">Passenger Name</p>
                                 <p class="medium-text">@(ticket.FirstName + " " + ticket.LastName)</p>
                             </div>
@@ -50,14 +54,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
-                        <button class="w-100 h-100 btn btn-light rounded border border-dark d-block" type="button">
-                            <p class="medium-text">Round Trip</p>
-                            <p class="large-text text-primary">@String.Format("{0:C0}",ticket.Flight.Price)</p>
-                        </button>
-                    </div>
                 </div>
-
             </li>
         }
     </ul>

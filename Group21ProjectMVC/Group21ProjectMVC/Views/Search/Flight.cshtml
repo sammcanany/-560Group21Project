@@ -19,6 +19,14 @@
                         <div class="col-8">
                             <div class="row">
                                 <div class="col">
+                                    <p class="large-text text-primary">@flight.Airline</p>
+                                </div>
+                                <div class="col">
+                                    <p class="medium-text">@flight.FlightNumber</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
                                     <p class="medium-text mb-0">@flight.DepartingAirportCode</p>
                                     <p class="large-text">@flight.DepartureTime.ToString("hh:mm tt")</p>
                                 </div>
@@ -34,12 +42,6 @@
                                 </div>
                                 <div class="col">
                                     <p class="medium-text text-center">Nonstop</p>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <p class="small-text">Flight Number</p>
-                                    <p class="medium-text">@flight.FlightNumber</p>
                                 </div>
                             </div>
 
@@ -86,6 +88,14 @@
                     <li id="@flight.FlightNumber" class="pt-4 list-group-item">
                         <div class="row pb-4 ps-4 pe-4">
                             <div class="col-8">
+                            <div class="row">
+                                <div class="col">
+                                    <p class="large-text text-primary">@flight.Airline</p>
+                                </div>
+                                <div class="col">
+                                    <p class="medium-text">@flight.FlightNumber</p>
+                                </div>
+                            </div>
                                 <div class="row">
                                     <div class="col">
                                         <p class="medium-text mb-0">@flight.DepartingAirportCode</p>
@@ -105,13 +115,6 @@
                                         <p class="medium-text text-center">Nonstop</p>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <p class="small-text">Flight Number</p>
-                                        <p class="medium-text">@flight.FlightNumber</p>
-                                    </div>
-                                </div>
-
                             </div>
                             <div class="col-lg-4">
                                 <form class="w-100 h-100">
