@@ -1,4 +1,3 @@
-/*Gets number of Tickets sold*/
 USE [560Project]
 GO
 
@@ -8,7 +7,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE OR ALTER PROCEDURE [Flights].[FlightSearch]
+CREATE OR ALTER PROCEDURE [Flights].[GetEarliestFlights]
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -26,11 +25,11 @@ BEGIN
 END
 GO
 
-SELECT 
-	A.[Name] AS AirlineName,
-	DEP.[Name],
-	MIN(F.[DepartureDate]) AS EarliestFlightDate,
-	MIN(F.[DepartureTime]) AS EarliestFlightTime
+	SELECT 
+		A.[Name] AS AirlineName,
+		DEP.[Name],
+		MIN(F.[DepartureDate]) AS EarliestFlightDate,
+		MIN(F.[DepartureTime]) AS EarliestFlightTime
 	FROM [Flights].[Flight] F
 	INNER JOIN [Flights].[Airport] DEP ON DEP.[AirportID] = F.[DepartingAirportID]
 	INNER JOIN [Flights].[Airline] A ON A.[AirlineID] = F.[AirlineID]
