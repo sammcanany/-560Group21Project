@@ -11,5 +11,7 @@
         Task<IEnumerable<int>> GetSeatsAvailableByFlightIdAsync(int ID, CancellationToken cancellationToken);
 
         Task<List<string>> GetAirlinesAsync(CancellationToken cancellationToken);
+
+        Task<string> SetSeatsTakenByFlightIdAsync(int ID, CancellationToken cancellationToken);
     }
 }

@@ -5,80 +5,17 @@
     ViewData["Title"] = "Flight";
 }
 <div id="departure-flights">
-    <h2 class="text-center">Departure Flights</h2>
-    <ul>
-        @foreach (ApplicationFlight flight in Model.DepartureFlights)
-        {
-
-            TimeSpan diff = flight.ArrivalTime - flight.DepartureTime;
-            string formatted = string.Format(CultureInfo.CurrentCulture, "{0}h {1}m", diff.Hours, diff.Minutes);
-            <li id="@flight.Id" class="pt-4">
-                <div class="row border-bottom pb-4 ps-4 pe-4">
-                    <div class="col-8">
-                        <div class="row">
-                            <div class="col">
-                                <p class="medium-text mb-0">@flight.DepartingAirportCode</p>
-                                <p class="large-text">@flight.DepartureTime.ToString("hh:mm tt")</p>
-                            </div>
-                            <div class="col">
-                                <i class="fas fa-arrow-right fa-xl"></i>
-                            </div>
-                            <div class="col">
-                                <p class="medium-text mb-0">@flight.DestinationAirportCode</p>
-                                <p class="large-text">@flight.ArrivalTime.ToString("hh:mm tt")</p>
-                            </div>
-                            <div class="col">
-                                <p class="medium-text">@formatted</p>
-                            </div>
-                            <div class="col">
-                                <p class="medium-text text-center">Nonstop</p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <p class="small-text">Flight Number</p>
-                                <p class="medium-text">@flight.FlightNumber</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-lg-4">
-                        @if (@Model.ReturnDate != null)
-                        {
-                            <button class="w-100 h-100 btn btn-light rounded border border-dark d-block" onclick="SwitchFlightView(@flight.Id)">
-                                <p class="medium-text">Round Trip</p>
-                                <p class="large-text text-primary">@String.Format("{0:C0}",flight.Price * Model.SeatsRequired)</p>
-                            </button>
-                        }
-                        else
-                        {
-                            <form class="w-100 h-100">
-                                <input type="hidden" value="@flight.Id" name="DepartureFlightID" />
-                                <input type="hidden" value="@Model.SeatsRequired" name="SeatsRequired" />
-                                <button class="w-100 h-100 btn btn-light rounded border border-dark d-block" type="submit" asp-controller="Checkout" asp-action="Review">
-                                    <p class="medium-text">One Way</p>
-                                    <p class="large-text text-primary">@String.Format("{0:C0}",flight.Price * Model.SeatsRequired)</p>
-                                </button>
-                            </form>
-                        }
-                    </div>
-                </div>
-            </li>
-        }
-    </ul>
-</div>
-@if (@Model.ReturnDate != null)
-{
-    <div style="display: none;" id="return-flights">
-        <h2 class="text-center">Return Flights</h2>
-        <ul>
-            @foreach (ApplicationFlight flight in Model.ReturnFlights)
+    <div class="card">
+        <div class="card-header">
+            <h1 class="text-center">Departure Flights</h1>
+        </div>
+        <ul class="list-group">
+            @foreach (ApplicationFlight flight in Model.DepartureFlights)
             {
-
                 TimeSpan diff = flight.ArrivalTime - flight.DepartureTime;
                 string formatted = string.Format(CultureInfo.CurrentCulture, "{0}h {1}m", diff.Hours, diff.Minutes);
-                <li id="@flight.FlightNumber" class="pt-4">
-                    <div class="row border-bottom pb-4 ps-4 pe-4">
+                <li id="@flight.Id" class="pt-4 list-group-item">
+                    <div class="row pb-4 ps-4 pe-4">
                         <div class="col-8">
                             <div class="row">
                                 <div class="col">
@@ -108,20 +45,90 @@
 
                         </div>
                         <div class="col-lg-4">
-                            <form class="w-100 h-100">
-                                <input type="hidden" class="departureFlightID" value="" name="DepartureFlightID" />
-                                <input type="hidden" value="@flight.Id" name="ReturnFlightID" />
-                                <input type="hidden" value="@Model.SeatsRequired" name="SeatsRequired" />
-                                <button class="w-100 h-100 btn btn-light rounded border border-dark d-block" type="submit" asp-controller="Checkout" asp-action="Review">
+                            @if (@Model.ReturnDate != null)
+                            {
+                                <button class="w-100 h-100 bg-transparent border-0 d-block stretched-link" onclick="SwitchFlightView(@flight.Id)">
                                     <p class="medium-text">Round Trip</p>
-                                    <p class="large-text text-primary">@String.Format("{0:C0}",flight.Price * Model.SeatsRequired)</p>
+                                    <p class="large-text text-success">@String.Format("{0:C0}",flight.Price * Model.SeatsRequired)</p>
                                 </button>
-                            </form>
+                            }
+                            else
+                            {
+                                <form class="w-100 h-100">
+                                    <input type="hidden" value="@flight.Id" name="DepartureFlightID" />
+                                    <input type="hidden" value="@Model.SeatsRequired" name="SeatsRequired" />
+                                    <button class="w-100 h-100 bg-transparent border-0 d-block stretched-link" type="submit" asp-controller="Checkout" asp-action="Review">
+                                        <p class="medium-text">One Way</p>
+                                        <p class="large-text text-primary">@String.Format("{0:C0}",flight.Price * Model.SeatsRequired)</p>
+                                    </button>
+                                </form>
+                            }
                         </div>
                     </div>
                 </li>
             }
         </ul>
+    </div>
+</div>
+@if (@Model.ReturnDate != null)
+{
+    <div style="display: none;" id="return-flights">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="text-center">Return Flights</h1>
+            </div>
+            <ul class="list-group">
+                @foreach (ApplicationFlight flight in Model.ReturnFlights)
+                {
+
+                    TimeSpan diff = flight.ArrivalTime - flight.DepartureTime;
+                    string formatted = string.Format(CultureInfo.CurrentCulture, "{0}h {1}m", diff.Hours, diff.Minutes);
+                    <li id="@flight.FlightNumber" class="pt-4 list-group-item">
+                        <div class="row pb-4 ps-4 pe-4">
+                            <div class="col-8">
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="medium-text mb-0">@flight.DepartingAirportCode</p>
+                                        <p class="large-text">@flight.DepartureTime.ToString("hh:mm tt")</p>
+                                    </div>
+                                    <div class="col">
+                                        <i class="fas fa-arrow-right fa-xl"></i>
+                                    </div>
+                                    <div class="col">
+                                        <p class="medium-text mb-0">@flight.DestinationAirportCode</p>
+                                        <p class="large-text">@flight.ArrivalTime.ToString("hh:mm tt")</p>
+                                    </div>
+                                    <div class="col">
+                                        <p class="medium-text">@formatted</p>
+                                    </div>
+                                    <div class="col">
+                                        <p class="medium-text text-center">Nonstop</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <p class="small-text">Flight Number</p>
+                                        <p class="medium-text">@flight.FlightNumber</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-4">
+                                <form class="w-100 h-100">
+                                    <input type="hidden" class="departureFlightID" value="" name="DepartureFlightID" />
+                                    <input type="hidden" value="@flight.Id" name="ReturnFlightID" />
+                                    <input type="hidden" value="@Model.SeatsRequired" name="SeatsRequired" />
+                                    <button class="w-100 h-100 d-block bg-transparent border-0 stretched-link" type="submit" asp-controller="Checkout" asp-action="Review">
+                                        <p class="medium-text">Round Trip</p>
+                                        <p class="large-text text-primary">@String.Format("{0:C0}",flight.Price * Model.SeatsRequired)</p>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
     </div>
 }
 

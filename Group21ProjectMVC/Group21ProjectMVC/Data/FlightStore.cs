@@ -66,7 +66,7 @@ namespace Group21ProjectMVC.Data
             {
                 while (await reader.ReadAsync(cancellationToken))
                 {
-                    response=MapToValue(reader);
+                    response = MapToValue(reader);
                 }
             }
 
@@ -90,8 +90,27 @@ namespace Group21ProjectMVC.Data
                     response.Add((int)reader["SeatNumber"]);
                 }
             }
-
             return response;
+        }
+
+        public async Task<string> SetSeatsTakenByFlightIdAsync(int ID, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            try
+            {
+                using var connection = new SqlConnection(_connectionString);
+                using SqlCommand cmd = new("Flights.SetSeatsTakenByFlightId", connection);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("FlightID", ID);
+                IList<int> response = new List<int>();
+                await connection.OpenAsync(cancellationToken);
+                await cmd.ExecuteScalarAsync(cancellationToken);
+            }
+            catch (SqlException ex)
+            {
+                return ex.Message;
+            }
+            return "success";
         }
 
         public async Task<List<string>> GetAirlinesAsync(CancellationToken cancellationToken)

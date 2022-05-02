@@ -6,8 +6,6 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-
-
 CREATE OR ALTER     PROCEDURE [Flights].[GetSeatsAvailableByFlightId]
 	@FlightID INT
 AS

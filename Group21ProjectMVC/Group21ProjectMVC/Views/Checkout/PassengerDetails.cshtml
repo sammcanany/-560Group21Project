@@ -1,101 +1,136 @@
-﻿@model Group21ProjectMVC.Models.CheckoutViewModels.PassengerDetailsViewModel
+﻿@using Group21ProjectMVC.Models
+@using Group21ProjectMVC.Models.CheckoutViewModels
+@using Microsoft.AspNetCore.Identity
+@model PassengerDetailsViewModel
 @inject UserManager<ApplicationUser> UserManager
 @{
     ViewData["Title"] = "PassengerDetails";
+    var firstname = "";
+    var lastname = "";
 }
 
-<div class="row">
-    <div class="col-md-4">
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <h4 class="end-0">Passenger Details</h4>
+        <hr />
     </div>
-</div>
-<div id="passengerdetails">
-    <form>
-        <div class="row">
-            <h4 class="end-0">Passenger Details</h4>
-            <hr />
-        </div>
-        <div class="row mb-5" id="needs-validation-details">
-            @for (int i = 0; i < Model.SeatsRequired; i++)
+    <div class="row mb-5">
+        @for (int i = 0; i < Model.SeatsRequired; i++)
+        {
+            if (Model.FirstNames.Count() > 0 && i != 0)
             {
-                <h5>Passenger @(i+1)</h5>
-                if (i == 0)
+                if (Model.FirstNames[i] != null)
                 {
-                    <div class="col-12 mb-3">
-                        <div class="row">
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                <div class="form-floating">
-                                    <input asp-for="FirstNames" type="text" class="input form-control" placeholder="First" required="" value="@UserManager.GetUserAsync(User).Result.FirstName" />
-                                    <label asp-for="FirstNames">First</label>
-                                    <div class="invalid-feedback-details"> Please enter your city. </div>
-                                </div>
-                                <div class="form-floating">
-                                    <input asp-for="LastNames" type="text" class="input form-control" placeholder="Last" required="" value="@UserManager.GetUserAsync(User).Result.LastName" />
-                                    <label asp-for="LastNames">Last</label>
-                                    <div class="invalid-feedback-details"> Please enter your city. </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col ms-2">
-                                <span asp-validation-for="FirstNames" class="text-danger"></span>
-                            </div>
-                            <div class="col">
-                                <span asp-validation-for="LastNames" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
-                }
-                else
-                {
-                    <div class="col-12 mb-3">
-                        <div class="row">
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="fas fa-user"></i></span>
-                                <div class="form-floating">
-                                    <input asp-for="FirstNames" type="text" class="input form-control" placeholder="First" required="" />
-                                    <label asp-for="FirstNames">First</label>
-                                    <div class="invalid-feedback-details"> Please enter your city. </div>
-                                </div>
-                                <div class="form-floating">
-                                    <input asp-for="LastNames" type="text" class="input form-control" placeholder="Last" required="" />
-                                    <label asp-for="LastNames">Last</label>
-                                    <div class="invalid-feedback-details"> Please enter your city. </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col ms-2">
-                                <span asp-validation-for="FirstNames" class="text-danger"></span>
-                            </div>
-                            <div class="col">
-                                <span asp-validation-for="LastNames" class="text-danger"></span>
-                            </div>
-                        </div>
-                    </div>
+                    firstname = Model.FirstNames[i];
                 }
             }
-            @if (@Model.ReturnFlightId != 0)
+            if (Model.LastNames.Count() > 0 && i != 0)
             {
-                <input type="hidden" value="@Model.DepartureFlightId" name="DepartureFlightID" />
-                <input type="hidden" value="@Model.ReturnFlightId" name="ReturnFlightID" />
-                <input type="hidden" value="@Model.SeatsRequired" name="SeatsRequired" />
+                if (Model.LastNames[i] != null)
+                {
+                    lastname = Model.LastNames[i];
+                }
+            }
+            <h5>Passenger @(i+1)</h5>
+            if (i == 0)
+            {
+                <div class="col-12 mb-3">
+                    <div class="row">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <div class="form-floating">
+                                <input asp-for="FirstNames" type="text" class="input form-control" placeholder="First" required="" value="@UserManager.GetUserAsync(User).Result.FirstName" />
+                                <label asp-for="FirstNames">First</label>
+                            </div>
+                            <div class="form-floating">
+                                <input asp-for="LastNames" type="text" class="input form-control" placeholder="Last" required="" value="@UserManager.GetUserAsync(User).Result.LastName" />
+                                <label asp-for="LastNames">Last</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col ms-2">
+                            <span asp-validation-for="FirstNames" class="text-danger"></span>
+                        </div>
+                        <div class="col">
+                            <span asp-validation-for="LastNames" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
             }
             else
             {
-                <input type="hidden" value="@Model.DepartureFlightId" name="DepartureFlightID" />
-                <input type="hidden" value="@Model.SeatsRequired" name="SeatsRequired" />
+                <div class="col-12 mb-3">
+                    <div class="row">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <div class="form-floating">
+                                <input asp-for="FirstNames" type="text" class="input form-control" placeholder="First" value="@(firstname)" />
+                                <label asp-for="FirstNames">First</label>
+                            </div>
+                            <div class="form-floating">
+                                <input asp-for="LastNames" type="text" class="input form-control" placeholder="Last" value="@(lastname)" />
+                                <label asp-for="LastNames">Last</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col ms-2">
+                            <span asp-validation-for="FirstNames" class="text-danger"></span>
+                        </div>
+                        <div class="col">
+                            <span asp-validation-for="LastNames" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
             }
+            firstname = "";
+            lastname = "";
+        }
+        @if (@Model.ReturnFlightId != 0)
+        {
+            <input type="hidden" value="@Model.DepartureFlightId" name="DepartureFlightID" />
+            <input type="hidden" value="@Model.ReturnFlightId" name="ReturnFlightID" />
+            <input type="hidden" value="@Model.SeatsRequired" name="SeatsRequired" />
+        }
+        else
+        {
+            <input type="hidden" value="@Model.DepartureFlightId" name="DepartureFlightID" />
+            <input type="hidden" value="@Model.SeatsRequired" name="SeatsRequired" />
+        }
+    </div>
+    <div class="row">
+        <div class="col-md-12 position-relative">
+            <button type="submit" class="btn btn-primary position-absolute bottom-0 end-0">Continue</button>
         </div>
-        <div class="row">
-            <div class="col-md-12 position-relative">
-                <button type="submit" class="btn btn-primary position-absolute bottom-0 end-0" asp-controller="Checkout" asp-action="SeatSelection">Continue</button>
-            </div>
-        </div>
-    </form>
-</div>
+    </div>
+</form>
 @section Scripts {
     @{
     await Html.RenderPartialAsync("_ValidationScriptsPartial");
 }
+<script>
+    $.validator.addMethod(
+        'ensureminimumelements',
+        function(value, element, params) {
+            console.debug(element);
+            if (!this.optional(element)) {
+                var otherProperty = $('#' + params.otherproperty)
+                return (otherProperty.val() != value);
+            }
+            return true;
+        });
+
+    $.validator.unobtrusive.adapters.add(
+        'ensureminimumelements', ['otherproperty', 'otherpropertyname'],
+        function(options) {
+            var params = {
+                otherproperty: options.params.otherproperty,
+                otherpropertyname: options.params.otherpropertyname
+            };
+            options.rules['ensureminimumelements'] = params;
+            options.messages['ensureminimumelements'] = options.message;
+        });
+</script>
 }

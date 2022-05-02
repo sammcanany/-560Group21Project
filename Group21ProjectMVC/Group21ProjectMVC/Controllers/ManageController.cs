@@ -297,7 +297,7 @@ namespace Group21ProjectMVC.Controllers
         public async Task<IActionResult> DeleteUser(DeleteUserViewModel dvm)
         {
             var user = await _userManager.GetUserAsync(User);
-            
+
             var result = await _userManager.RemoveFromRolesAsync(user, await _userManager.GetRolesAsync(user));
             if (!result.Succeeded)
             {
@@ -338,7 +338,8 @@ namespace Group21ProjectMVC.Controllers
         {
             IList<ApplicationFlight> Flights = new List<ApplicationFlight>();
             List<string> Airports = model.AirportsSelected.ToList();
-            Dictionary<string, double> dic = new()
+            //Flight time between 2 airports 
+            Dictionary<string, double> FlightTimes = new()
             {
                 { "ATLToDFW", 1.30725572451624 },
                 { "ATLToDEN", 2.14277369488298 },
@@ -444,7 +445,11 @@ namespace Group21ProjectMVC.Controllers
                             foreach (var time in model.TimesSelected)
                             {
                                 r.Next(100, 999);
-                                dic.TryGetValue(airport + "To" + Airports[i], out double flightTime);
+                                FlightTimes.TryGetValue(airport + "To" + Airports[i], out double flightTime);
+                                decimal price = (decimal)(200 * flightTime);
+                                if (flightTime < 1) price += (decimal)(300 - (100 * flightTime));
+                                if (flightTime > 1 && flightTime < 2) price += (decimal)(200 - (100 * (flightTime - 1)));
+                                if (flightTime > 2 && flightTime < 3) price += (decimal)(100 * (flightTime - 2));
                                 Flights.Add(new ApplicationFlight
                                 {
                                     FlightNumber = RandomString(3) + rInt,
@@ -456,7 +461,7 @@ namespace Group21ProjectMVC.Controllers
                                     ArrivalTime = time.AddHours(flightTime),
                                     Capacity = 126,
                                     SeatsTaken = 0,
-                                    Price = 175
+                                    Price = price/2
                                 });
                             }
                         }

@@ -15,6 +15,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Group21ProjectMVC.Models.CheckoutViewModels;
+using Microsoft.AspNetCore.WebUtilities;
+using System.Text;
 
 namespace Group21ProjectMVC.Controllers
 {
@@ -77,8 +79,27 @@ namespace Group21ProjectMVC.Controllers
             });
         }
 
+        [HttpPost]
+        public IActionResult PassengerDetails(PassengerDetailsViewModel pdvm)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(pdvm);
+            }
+            StringBuilder sb = new(Request.QueryString.ToString());
+            foreach (var name in pdvm.FirstNames)
+            {
+                sb.Append("&FirstNames=" + name);
+            }
+            foreach (var name in pdvm.LastNames)
+            {
+                sb.Append("&LastNames=" + name);
+            }
+            return Redirect(Url.Action("SeatSelection") + sb.ToString());
+        }
+
         [HttpGet]
-        public async Task<IActionResult> SeatSelection(List<string> FirstNames, List<string> LastNames, int DepartureFlightID, int ReturnFlightID, int SeatsRequired)
+        public async Task<IActionResult> SeatSelection(int DepartureFlightID, int ReturnFlightID, int SeatsRequired, List<string> FirstNames, List<string> LastNames)
         {
             IList<ApplicationFlight> flights = new List<ApplicationFlight>();
             ApplicationFlight departureFlights = await _flightStore.GetFlightByIdAsync(DepartureFlightID, source.Token);
@@ -96,6 +117,7 @@ namespace Group21ProjectMVC.Controllers
                 SeatsRequired = SeatsRequired,
                 DepartureFlightId = DepartureFlightID,
                 ReturnFlightId = ReturnFlightID,
+                checkif = ReturnFlightID != 0,
                 FirstNames = FirstNames,
                 LastNames = LastNames
             });
@@ -103,13 +125,37 @@ namespace Group21ProjectMVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult SeatSelection(SeatSelectionViewModel ssvm)
+        public async Task<IActionResult> SeatSelection(SeatSelectionViewModel ssvm)
         {
             if (!ModelState.IsValid)
             {
+                //return Redirect(Url.Action("SeatSelection") + Request.QueryString.ToString());
+                IList<ApplicationFlight> flights = new List<ApplicationFlight>();
+                ApplicationFlight departureFlights = await _flightStore.GetFlightByIdAsync(ssvm.DepartureFlightId, source.Token);
+                departureFlights.SeatsNotAvailable = await _flightStore.GetSeatsAvailableByFlightIdAsync(ssvm.DepartureFlightId, source.Token);
+                flights.Add(departureFlights);
+                if (ssvm.ReturnFlightId != 0)
+                {
+                    var returnFlights = await _flightStore.GetFlightByIdAsync(ssvm.ReturnFlightId, source.Token);
+                    returnFlights.SeatsNotAvailable = await _flightStore.GetSeatsAvailableByFlightIdAsync(ssvm.ReturnFlightId, source.Token);
+                    flights.Add(returnFlights);
+                }
+                ssvm.Flights = flights;
                 return View(ssvm);
             }
-            return View("Checkout", ssvm);
+            StringBuilder sb = new(Request.QueryString.ToString());
+            foreach (var seat in ssvm.DepartureFlightSeats)
+            {
+                sb.Append("&DepartureFlightSeats=" + seat);
+            }
+            if (ssvm.ReturnFlightId != 0)
+            {
+                foreach (var seat in ssvm.ReturnFlightSeats)
+                {
+                    sb.Append("&ReturnFlightSeats=" + seat);
+                }
+            }
+            return Redirect(Url.Action("Checkout") + sb.ToString());
         }
 
         [HttpGet]
@@ -168,8 +214,17 @@ namespace Group21ProjectMVC.Controllers
             {
                 return View(cvm);
             }
-            var success = await _ticketStore.AddTicketsAsync(cvm.Tickets, source.Token);
-            if (success != "success")
+            var response = "";
+            foreach (var ticket in cvm.Tickets)
+            {
+                response = await _flightStore.SetSeatsTakenByFlightIdAsync(ticket.FlightID, source.Token);
+                if (response != "success")
+                {
+                    throw new ApplicationException($"Unable to add tickets.");
+                }
+            }
+            response = await _ticketStore.AddTicketsAsync(cvm.Tickets, source.Token);
+            if (response != "success")
             {
                 throw new ApplicationException($"Unable to add tickets.");
             }

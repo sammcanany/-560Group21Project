@@ -12,15 +12,15 @@
         <div class="card-header">
             <div class="nav nav-tabs card-header-tabs" data-bs-tabs="tabs">
                 <a class="nav-link active" aria-current="true" data-bs-toggle="tab" href="#findflights">Find Flights</a>
-                @*<a class="nav-link" aria-current="true" data-bs-toggle="tab" href="#mytrips">My Trips</a>
-                <a class="nav-link" aria-current="true" data-bs-toggle="tab" href="#checkin">Check-In</a>
-                <a class="nav-link" data-bs-toggle="tab" href="#flightstatus">Flight Status</a>*@
+                <a class="nav-link" aria-current="true" data-bs-toggle="tab" href="#mytrips">My Trips</a>
+                @*<a class="nav-link" aria-current="true" data-bs-toggle="tab" href="#checkin">Check-In</a>
+                    <a class="nav-link" data-bs-toggle="tab" href="#flightstatus">Flight Status</a>*@
             </div>
         </div>
         <div class="card-body tab-content">
             <div class="tab-pane active" id="findflights">
                 <div class="row ps-3">
-                    <div class="nav nav-pills">
+                    <div class="nav nav-pills mb-2">
                         <a class="nav-link active" asp-for="TripType" value=0 data-bs-toggle="tab" href="#roundtrip">Round Trip</a>
                         <a class="nav-link" asp-for="TripType" value=1 data-bs-toggle="tab" href="#oneway">One Way</a>
                     </div>
@@ -34,13 +34,11 @@
                                             <label asp-for="FromLocation">From</label>
                                             <input asp-for="FromLocation" type="text" class="form-control typeahead tt-query" aria-describedby="From"
                                                    placeholder="City or Airport" name="FromLocation" id="FromLBL">
-                                            <span asp-validation-for="FromLocation" class="text-danger"></span>
                                         </div>
                                         <div class="col-md autocomplete form-group">
                                             <label asp-for="ToLocation">To</label>
                                             <input asp-for="ToLocation" type="text" class="form-control typeahead tt-query" aria-describedby="To"
                                                    placeholder="City or Airport" name="ToLocation" id="ToLBL">
-                                            <span asp-validation-for="ToLocation" class="text-danger"></span>
                                         </div>
                                         <div class="col-md">
                                             <div class="form-group">
@@ -59,6 +57,18 @@
                                                 <span asp-validation-for="SeatsRequired" class="text-danger"></span>
                                             </div>
                                         </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <span asp-validation-for="ToLocation" class="text-danger"></span>
+                                        </div>
+                                        <div class="col">
+                                            <span asp-validation-for="FromLocation" class="text-danger"></span>
+                                        </div>
+                                        <div class="col">
+
+                                        </div>
                                     </div>
                                     <div class="row pt-2">
                                         <div class="col-md form-group">
@@ -71,7 +81,7 @@
                                                       data-td-toggle='datetimepicker'>
                                                     <span class='fas fa-calendar'></span>
                                                 </span>
-                                                <span asp-validation-for="DepartureDate" class="text-danger"></span>
+
                                             </div>
                                         </div>
                                         <div class="col-md form-group">
@@ -86,12 +96,13 @@
                                                 </span>
 
                                             </div>
-                                            <span asp-validation-for="ReturnDate" class="text-danger"></span>
                                             <input asp-for="TabName" value="roundtrip" type="hidden" />
                                         </div>
                                         <div class="col-md pt-4">
                                             <button class="btn btn-primary w-100" type="submit" asp-controller="Search" asp-action="Flight">Search</button>
                                         </div>
+                                        <span asp-validation-for="ReturnDate" class="text-danger"></span>
+                                        <span asp-validation-for="DepartureDate" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <script>
@@ -108,13 +119,11 @@
                                             <label asp-for="FromLocation">From</label>
                                             <input asp-for="FromLocation" type="text" class="form-control typeahead tt-query" aria-describedby="From"
                                                    placeholder="City or Airport" name="FromLocation" id="FromLBL1W">
-                                            <span asp-validation-for="FromLocation" class="text-danger"></span>
                                         </div>
                                         <div class="col-md autocomplete form-group">
                                             <label asp-for="ToLocation">To</label>
                                             <input asp-for="ToLocation" type="text" class="form-control typeahead tt-query" aria-describedby="To"
                                                    placeholder="City or Airport" name="ToLocation" id="ToLBL1W">
-                                            <span asp-validation-for="ToLocation" class="text-danger"></span>
                                         </div>
                                         <div class="col-md">
                                             <div class="form-group">
@@ -134,6 +143,17 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <span asp-validation-for="ToLocation" class="text-danger"></span>
+                                        </div>
+                                        <div class="col">
+                                            <span asp-validation-for="FromLocation" class="text-danger"></span>
+                                        </div>
+                                        <div class="col">
+
+                                        </div>
+                                    </div>
                                     <div class="row pt-2">
                                         <div class="col-md form-group">
                                             <label asp-for="DepartureDate">Depart</label>
@@ -145,7 +165,6 @@
                                                       data-td-toggle='datetimepicker'>
                                                     <span class='fas fa-calendar'></span>
                                                 </span>
-                                                <span asp-validation-for="DepartureDate" class="text-danger"></span>
                                             </div>
                                         </div>
                                         <div class="col-md">
@@ -154,6 +173,7 @@
                                         <div class="col-md pt-4">
                                             <button class="btn btn-primary w-100" type="submit" asp-controller="Search" asp-action="Flight">Search</button>
                                         </div>
+                                        <span asp-validation-for="DepartureDate" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <script>
@@ -246,11 +266,23 @@
 <script src="https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/js/tempus-dominus.js"
         crossorigin="anonymous"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
+
+<script type="text/javascript">
+    $(function () {
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+    var target = $(e.target).attr("href")
+    document.getElementById('<%= hf_MyValue.ClientID %>').value = target;
+    });
+    })
+</script>
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 <script>
                 $.validator.addMethod(
         'unlike',
         function (value, element, params) {
-            console.debug(element);
+            console.log(element);
             if (!this.optional(element)) {
                 var otherProperty = $('#' + params.otherproperty)
                 return (otherProperty.val() != value);
@@ -268,15 +300,4 @@
             options.messages['unlike'] = options.message;
         });
 </script>
-<script type="text/javascript">
-    $(function () {
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-    var target = $(e.target).attr("href")
-    document.getElementById('<%= hf_MyValue.ClientID %>').value = target;
-    });
-    })
-</script>
-    @{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
-}
 }

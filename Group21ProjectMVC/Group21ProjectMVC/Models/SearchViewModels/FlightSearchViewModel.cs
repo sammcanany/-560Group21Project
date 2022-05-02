@@ -29,10 +29,12 @@ namespace Group21ProjectMVC.Models.FlightViewModels
 
         public int SeatsRequired { get; set; } = 0;
 
+        [DisplayName("Departure date")]
         [Required(ErrorMessage = "Departure date is required!")]
         public DateTime DepartureDate { get; set; }
 
-        [Unlike(nameof(DepartureDate),"departure date")]
+        [DisplayName("Return date")]
+        [Unlike(nameof(DepartureDate),"Departure date")]
         public DateTime? ReturnDate { get; set; } = null;
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

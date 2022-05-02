@@ -15,7 +15,8 @@ html {
 
 body {
     margin-bottom: 60px;
-    background: whitesmoke;
+    background: #D1D1D1;
+    color:#000;
 }
 
 .autocomplete {
@@ -202,8 +203,6 @@ invalid-feedback-details.visible {
     color: #dc3545;
 }
 
-@import "https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css";
-
 .btn-matrix {
     flex-wrap: wrap;
 }
@@ -265,7 +264,13 @@ invalid-feedback-details.visible {
         .btn-matrix > .btn:last-child {
             border-top-right-radius: 0;
         }
-
+.nav-link:hover, .nav-link:focus {
+    background-color: rgba(65,32,109,0.5);
+    color: #fff;
+    -webkit-border-radius: 0.25rem;
+    -moz-border-radius: 0.25rem;
+    border-radius: 0.25rem;
+}
 .btn-matrix {
     margin: 20px;
     max-width: 210px;
@@ -333,8 +338,8 @@ invalid-feedback-details.visible {
         color: #18113c;
         font-size: .875rem;
         line-height: 1.2rem;
-        margin: 1.125rem 0;
-        padding: 1rem 0;
+        margin-top: 1.125rem 0;
+        padding-top: 1rem 0;
         top: 26px
     }
 
@@ -431,7 +436,6 @@ invalid-feedback-details.visible {
 }
 
     .navbar-default .navbar-nav .nav-item .nav-link {
-        color: #18113c;
         font-size: .875rem;
         font-weight: 500;
         padding: .3125rem .5rem
@@ -455,7 +459,7 @@ invalid-feedback-details.visible {
 }
 
 .navbar-default .navbar-nav .nav-item .nav-link:hover {
-    color: #754ffe
+    /*color: #754ffe*/
 }
 
 .navbar-dark .navbar-brand {
@@ -485,8 +489,8 @@ invalid-feedback-details.visible {
     }
 
 .navbar-dark .navbar-nav .nav-link {
+    color:#fff;
     border-bottom: transparent;
-    color: #beb9cd;
     font-weight: 500;
     padding: .3125rem .35rem
 }
@@ -506,36 +510,41 @@ invalid-feedback-details.visible {
 }
 
 .navbar-light .navbar-toggler {
-    border-color: #ecebf1
+    /*border-color: #ecebf1*/
 }
 
     .navbar-light .navbar-toggler .icon-bar {
-        background-color: #ecebf1
+        /*background-color: #ecebf1*/
     }
 
     .navbar-light .navbar-toggler.collapsed .top-bar {
-        background-color: #ecebf1;
+        /*background-color: #ecebf1;*/
         transform: rotate(0)
     }
 
     .navbar-light .navbar-toggler.collapsed .middle-bar {
-        opacity: 1
+        opacity: 1;
     }
 
     .navbar-light .navbar-toggler.collapsed .bottom-bar {
-        background-color: #ecebf1;
-        transform: rotate(0)
+        /*background-color: #ecebf1;*/
+        transform: rotate(0);
     }
 
 .navbar-light .navbar-nav .nav-item .nav-link {
     border-bottom: transparent;
-    color: #413c5e;
     font-weight: 500;
-    padding: .3125rem .35rem
+    padding: .3125rem .35rem;
+    color: #000;
 }
 
+    .navbar-light .navbar-nav .nav-item .nav-link.active {
+        color: #fff;
+        /*background-color: #0d6efd;*/
+    }
     .navbar-light .navbar-nav .nav-item .nav-link.active, .navbar-light .navbar-nav .nav-item .nav-link:hover {
-        color: #18113c
+        /*color: #fff;
+        background-color: #0d6efd;*/
     }
 
 .navbar-light .navbar-nav .nav-divider {
@@ -546,7 +555,7 @@ invalid-feedback-details.visible {
     background-color: transparent;
     position: absolute;
     width: 100%;
-    z-index: 1
+    z-index: 1;
 }
 
 @media (max-width: 768px) {
@@ -560,14 +569,14 @@ invalid-feedback-details.visible {
 }
 
 .nav-footer .nav-link {
-    color: #5c5776;
+    /*color: #5c5776;*/
     font-size: .875rem;
     line-height: 1.5rem;
     padding: .2rem 1rem
 }
 
     .nav-footer .nav-link:hover {
-        color: #754ffe
+       /* color: #754ffe*/
     }
 
 .nav-x-0 .nav-link {
@@ -606,7 +615,6 @@ invalid-feedback-details.visible {
     .nav-lb-tab .nav-item .nav-link {
         border-bottom: 2px solid transparent;
         border-radius: 0;
-        color: #79758f;
         font-weight: 500;
         margin-bottom: -1px;
         padding: 16px 0;
@@ -616,7 +624,6 @@ invalid-feedback-details.visible {
         .nav-lb-tab .nav-item .nav-link.active, .nav-lb-tab .nav-item .nav-link:hover {
             background-color: transparent;
             border-bottom: 2px solid #754ffe;
-            color: #754ffe
         }
 
 .nav-lt-tab {
@@ -693,7 +700,6 @@ invalid-feedback-details.visible {
 
 .nav-line-bottom .nav-item .nav-link {
     border-radius: 0;
-    color: #79758f;
     font-weight: 500;
     margin-bottom: -1px;
     padding: 1.2rem;
@@ -709,7 +715,6 @@ invalid-feedback-details.visible {
 .nav-line-bottom .nav-item .nav-link.active {
     background-color: transparent;
     border-bottom: 1px solid #754ffe;
-    color: #754ffe
 }
 
 @media (max-width: 576px) {
@@ -721,7 +726,6 @@ invalid-feedback-details.visible {
 .nav-line-bottom .nav-item .nav-link:hover {
     background-color: transparent;
     border-bottom: 1px solid #754ffe;
-    color: #754ffe
 }
 
 .nav-line-bottom .nav-item .nav-link .badge {
@@ -735,7 +739,6 @@ invalid-feedback-details.visible {
     .nav-top-line-tab.nav .nav-item .nav-link {
         border: 1px solid transparent;
         border-radius: 0;
-        color: #79758f;
         font-weight: 500;
         margin-top: -1px;
         padding: 1.2rem 1.5rem
@@ -750,7 +753,6 @@ invalid-feedback-details.visible {
 .nav-top-line-tab.nav .nav-item .nav-link.active {
     background-color: transparent;
     border-top: 1px solid #754ffe;
-    color: #754ffe
 }
 
 @media (max-width: 576px) {
@@ -762,7 +764,6 @@ invalid-feedback-details.visible {
 .nav-top-line-tab.nav .nav-item .nav-link:hover {
     background-color: transparent;
     border-top: 1px solid #754ffe;
-    color: #754ffe
 }
 
 .nav-top-line-tab.nav .nav-item .nav-link .badge {
@@ -785,4 +786,761 @@ invalid-feedback-details.visible {
     background-color: #754ffe;
     border-color: #754ffe;
     color: #fff
+}
+
+
+ul#passengerList {
+    border: 0px;
+    box-sizing: border-box;
+    color: #36495a;
+    font-family: inherit;
+    font-size: 100%;
+    font-stretch: inherit;
+    font-style: inherit;
+    font-variant: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+    vertical-align: baseline;
+}
+
+li.delta.passenger.swiper-slide.selected {
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    align-items: center;
+    background: #ffffff;
+    background-color: #ffffff;
+    border: 1px solid #9da6ab;
+    bottom: 0px;
+    box-sizing: border-box;
+    color: #36495a;
+    display: flex;
+    flex-shrink: 0;
+    font-family: AmericanSans, Helvetica, Arial, sans-serif;
+    font-size: 17.9999px;
+    font-stretch: inherit;
+    font-style: inherit;
+    font-variant: inherit;
+    font-weight: inherit;
+    height: 100%;
+    justify-content: center;
+    left: 0px;
+    line-height: 24px;
+    list-style: outside none none;
+    margin: 0px;
+    margin-bottom: 10px;
+    min-width: 80px;
+    padding: 0px;
+    position: relative;
+    right: 0px;
+    text-align: center;
+    top: 0px;
+    vertical-align: baseline;
+    width: 100%;
+}
+
+button#passenger1 {
+    appearance: none;
+    background-color: #ffffff;
+    border: 2px solid #0078d2;
+    border-bottom-left-radius: 4.00001px;
+    border-bottom-right-radius: 4.00001px;
+    border-radius: 0.25em;
+    border-top-left-radius: 4.00001px;
+    border-top-right-radius: 4.00001px;
+    box-sizing: border-box;
+    color: #36495a;
+    display: block;
+    font-family: AmericanSans, Helvetica, Arial, sans-serif;
+    font-size: 1.14286rem;
+    height: 100%;
+    list-style: outside none none;
+    overflow: visible;
+    padding: 0px 1px;
+    padding-left: 0px;
+    padding-right: 0px;
+    text-decoration: none;
+    width: 100%;
+}
+
+    button#passenger1:focus {
+        border: 2px solid #0078d2;
+        box-shadow: #b0d1e8 0px 0px 6px;
+        outline: none;
+    }
+
+    button#passenger1:hover {
+        box-shadow: #9da6ab 0px 0px 3px;
+    }
+
+div.row-noBreak {
+    border: 0px;
+    border-left: 1px solid #9da6ab;
+    bottom: 0px;
+    box-sizing: border-box;
+    color: #36495a;
+    cursor: default;
+    font-family: inherit;
+    font-size: 100%;
+    font-stretch: inherit;
+    font-style: inherit;
+    font-variant: inherit;
+    font-weight: inherit;
+    left: 0px;
+    line-height: inherit;
+    list-style: outside none none;
+    margin: 0px;
+    margin-left: -2.13178%;
+    padding: 8px;
+    position: relative;
+    right: 0px;
+    text-align: center;
+    top: 0px;
+    vertical-align: baseline;
+}
+
+    div.row-noBreak:focus {
+        outline: rgb(176, 209, 232) solid 2px;
+    }
+
+    div.row-noBreak:first-child {
+        border: none;
+        text-align: left;
+    }
+
+    div.row-noBreak::after {
+        clear: both;
+        content: "";
+        display: table;
+    }
+
+    div.row-noBreak::before {
+        content: "";
+        display: table;
+    }
+
+div.span8.passengerName {
+    border: 0px;
+    border-left: 1px solid #9da6ab;
+    box-sizing: border-box;
+    color: #36495a;
+    cursor: default;
+    float: left;
+    font-family: inherit;
+    font-size: 100%;
+    font-stretch: inherit;
+    font-style: inherit;
+    font-variant: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    list-style: outside none none;
+    margin: 0px;
+    margin-left: 2.13178%;
+    overflow: hidden;
+    padding: 8px;
+    text-align: center;
+    vertical-align: baseline;
+    white-space: nowrap;
+    width: 64.5349%;
+}
+
+    div.span8.passengerName:focus {
+        outline: rgb(176, 209, 232) solid 2px;
+    }
+
+    div.span8.passengerName:first-child {
+        border: none;
+        text-align: left;
+    }
+
+img {
+    border: 0px;
+    box-sizing: border-box;
+    color: #36495a;
+    cursor: default;
+    font-family: inherit;
+    font-size: 100%;
+    font-stretch: inherit;
+    font-style: inherit;
+    font-variant: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    list-style: outside none none;
+    margin: -4px 0px 0px -6px;
+    max-width: 100%;
+    padding: 0px;
+    text-align: left;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: 25px;
+}
+
+span {
+    border: 0px;
+    box-sizing: border-box;
+    color: #36495a;
+    cursor: default;
+    font-family: inherit;
+    font-size: 100%;
+    font-stretch: inherit;
+    font-style: inherit;
+    font-variant: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    list-style: outside none none;
+    margin: 0px;
+    padding: 0px;
+    text-align: left;
+    vertical-align: baseline;
+    white-space: nowrap;
+}
+
+    span:focus {
+        outline: rgb(176, 209, 232) solid 2px;
+    }
+
+div.span2.pushLeft.seatNumber {
+    border: 0px;
+    border-left: 1px solid #9da6ab;
+    box-sizing: border-box;
+    color: #36495a;
+    cursor: default;
+    float: left;
+    font-family: inherit;
+    font-size: 100%;
+    font-stretch: inherit;
+    font-style: inherit;
+    font-variant: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    list-style: outside none none;
+    margin: 0px;
+    margin-left: 0px;
+    padding: 8px;
+    text-align: center;
+    vertical-align: baseline;
+    width: 16.6667%;
+}
+
+    div.span2.pushLeft.seatNumber:focus {
+        outline: rgb(176, 209, 232) solid 2px;
+    }
+
+div.span2.pushLeft.priceDisplay {
+    border: 0px;
+    border-left: 1px solid #9da6ab;
+    box-sizing: border-box;
+    color: #36495a;
+    cursor: default;
+    float: left;
+    font-family: inherit;
+    font-size: 100%;
+    font-stretch: inherit;
+    font-style: inherit;
+    font-variant: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    list-style: outside none none;
+    margin: 0px;
+    margin-left: 0px;
+    padding: 8px;
+    padding-right: 1px;
+    text-align: center;
+    vertical-align: baseline;
+    width: 16.6667%;
+}
+
+    div.span2.pushLeft.priceDisplay:focus {
+        outline: rgb(176, 209, 232) solid 2px;
+    }
+
+span.cashValue {
+    border: 0px;
+    box-sizing: border-box;
+    color: #36495a;
+    cursor: default;
+    font-family: inherit;
+    font-size: 100%;
+    font-stretch: inherit;
+    font-style: inherit;
+    font-variant: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    list-style: outside none none;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+    vertical-align: baseline;
+}
+
+    span.cashValue:focus {
+        outline: rgb(176, 209, 232) solid 2px;
+    }
+
+span.milesValue {
+    border: 0px;
+    box-sizing: border-box;
+    color: #36495a;
+    cursor: default;
+    display: none;
+    font-family: inherit;
+    font-size: 100%;
+    font-stretch: inherit;
+    font-style: inherit;
+    font-variant: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    list-style: outside none none;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+    vertical-align: baseline;
+}
+
+    span.milesValue:focus {
+        outline: rgb(176, 209, 232) solid 2px;
+    }
+
+div.hidden-accessible {
+    border: 0px;
+    border-left: 1px solid #9da6ab;
+    bottom: -14px;
+    box-sizing: border-box;
+    clip: rect(0px, 0px, 0px, 0px);
+    color: #36495a;
+    cursor: default;
+    font-family: inherit;
+    font-size: 100%;
+    font-stretch: inherit;
+    font-style: inherit;
+    font-variant: inherit;
+    font-weight: inherit;
+    height: 1px;
+    left: 2px;
+    line-height: inherit;
+    list-style: outside none none;
+    margin: -1px;
+    overflow: hidden;
+    padding: 8px;
+    position: absolute;
+    right: 390.8px;
+    text-align: center;
+    top: 55px;
+    vertical-align: baseline;
+    width: 1px;
+}
+
+    div.hidden-accessible:focus {
+        outline: rgb(176, 209, 232) solid 2px;
+    }
+
+span.js-a11yPassengerInfo {
+    border: 0px;
+    box-sizing: border-box;
+    color: #36495a;
+    cursor: default;
+    font-family: inherit;
+    font-size: 100%;
+    font-stretch: inherit;
+    font-style: inherit;
+    font-variant: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    list-style: outside none none;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+    vertical-align: baseline;
+}
+
+    span.js-a11yPassengerInfo:focus {
+        outline: rgb(176, 209, 232) solid 2px;
+    }
+
+li.delta.passenger.swiper-slide {
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    align-items: center;
+    background: #ffffff;
+    background-color: #ffffff;
+    border: 1px solid #9da6ab;
+    bottom: 0px;
+    box-sizing: border-box;
+    color: #36495a;
+    display: flex;
+    flex-shrink: 0;
+    font-family: AmericanSans, Helvetica, Arial, sans-serif;
+    font-size: 17.9999px;
+    font-stretch: inherit;
+    font-style: inherit;
+    font-variant: inherit;
+    font-weight: inherit;
+    height: 100%;
+    justify-content: center;
+    left: 0px;
+    line-height: 24px;
+    list-style: outside none none;
+    margin: 0px;
+    margin-bottom: 10px;
+    min-width: 80px;
+    padding: 0px;
+    position: relative;
+    right: 0px;
+    text-align: center;
+    top: 0px;
+    vertical-align: baseline;
+    width: 100%;
+}
+
+button#passenger2 {
+    appearance: none;
+    background-color: #ffffff;
+    border: 1px solid #9da6ab;
+    border-bottom-left-radius: 4.00001px;
+    border-bottom-right-radius: 4.00001px;
+    border-radius: 0.25em;
+    border-top-left-radius: 4.00001px;
+    border-top-right-radius: 4.00001px;
+    box-sizing: border-box;
+    color: #36495a;
+    display: block;
+    font-family: AmericanSans, Helvetica, Arial, sans-serif;
+    font-size: 1.14286rem;
+    height: 100%;
+    list-style: outside none none;
+    overflow: visible;
+    padding: 0px 1px;
+    text-decoration: none;
+    width: 100%;
+}
+
+    button#passenger2:focus {
+        border: 1px solid #d0dae0;
+        outline: none;
+    }
+
+    button#passenger2:hover {
+        box-shadow: #9da6ab 0px 0px 3px;
+    }
+
+#passenger2 .row-noBreak {
+    border: 0px;
+    border-left: 1px solid #9da6ab;
+    bottom: 0px;
+    box-sizing: border-box;
+    color: #36495a;
+    cursor: default;
+    font-family: inherit;
+    font-size: 100%;
+    font-stretch: inherit;
+    font-style: inherit;
+    font-variant: inherit;
+    font-weight: inherit;
+    left: 0px;
+    line-height: inherit;
+    list-style: outside none none;
+    margin: 0px;
+    margin-left: -2.13178%;
+    padding: 8px;
+    position: relative;
+    right: 0px;
+    text-align: center;
+    top: 0px;
+    vertical-align: baseline;
+}
+
+    #passenger2 .row-noBreak:focus {
+        outline: rgb(176, 209, 232) solid 2px;
+    }
+
+    #passenger2 .row-noBreak:first-child {
+        border: none;
+        text-align: left;
+    }
+
+    #passenger2 .row-noBreak::after {
+        clear: both;
+        content: "";
+        display: table;
+    }
+
+    #passenger2 .row-noBreak::before {
+        content: "";
+        display: table;
+    }
+
+#passenger2 .span8 {
+    border: 0px;
+    border-left: 1px solid #9da6ab;
+    box-sizing: border-box;
+    color: #36495a;
+    cursor: default;
+    float: left;
+    font-family: inherit;
+    font-size: 100%;
+    font-stretch: inherit;
+    font-style: inherit;
+    font-variant: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    list-style: outside none none;
+    margin: 0px;
+    margin-left: 2.13178%;
+    overflow: hidden;
+    padding: 8px;
+    text-align: center;
+    vertical-align: baseline;
+    white-space: nowrap;
+    width: 64.5349%;
+}
+
+    #passenger2 .span8:focus {
+        outline: rgb(176, 209, 232) solid 2px;
+    }
+
+    #passenger2 .span8:first-child {
+        border: none;
+        text-align: left;
+    }
+
+[src='\/content\/images\/seatMap\/seats\/pax_grey2\@2x\.png'] {
+    border: 0px;
+    box-sizing: border-box;
+    color: #36495a;
+    cursor: default;
+    font-family: inherit;
+    font-size: 100%;
+    font-stretch: inherit;
+    font-style: inherit;
+    font-variant: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    list-style: outside none none;
+    margin: -4px 0px 0px -6px;
+    max-width: 100%;
+    padding: 0px;
+    text-align: left;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: 25px;
+}
+
+#passenger2 .span8 span {
+    border: 0px;
+    box-sizing: border-box;
+    color: #36495a;
+    cursor: default;
+    font-family: inherit;
+    font-size: 100%;
+    font-stretch: inherit;
+    font-style: inherit;
+    font-variant: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    list-style: outside none none;
+    margin: 0px;
+    padding: 0px;
+    text-align: left;
+    vertical-align: baseline;
+    white-space: nowrap;
+}
+
+    #passenger2 .span8 span:focus {
+        outline: rgb(176, 209, 232) solid 2px;
+    }
+
+#passenger2 .seatNumber {
+    border: 0px;
+    border-left: 1px solid #9da6ab;
+    box-sizing: border-box;
+    color: #36495a;
+    cursor: default;
+    float: left;
+    font-family: inherit;
+    font-size: 100%;
+    font-stretch: inherit;
+    font-style: inherit;
+    font-variant: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    list-style: outside none none;
+    margin: 0px;
+    margin-left: 0px;
+    padding: 8px;
+    text-align: center;
+    vertical-align: baseline;
+    width: 16.6667%;
+}
+
+    #passenger2 .seatNumber:focus {
+        outline: rgb(176, 209, 232) solid 2px;
+    }
+
+#passenger2 .priceDisplay {
+    border: 0px;
+    border-left: 1px solid #9da6ab;
+    box-sizing: border-box;
+    color: #36495a;
+    cursor: default;
+    float: left;
+    font-family: inherit;
+    font-size: 100%;
+    font-stretch: inherit;
+    font-style: inherit;
+    font-variant: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    list-style: outside none none;
+    margin: 0px;
+    margin-left: 0px;
+    padding: 8px;
+    padding-right: 1px;
+    text-align: center;
+    vertical-align: baseline;
+    width: 16.6667%;
+}
+
+    #passenger2 .priceDisplay:focus {
+        outline: rgb(176, 209, 232) solid 2px;
+    }
+
+#passenger2 .cashValue {
+    border: 0px;
+    box-sizing: border-box;
+    color: #36495a;
+    cursor: default;
+    font-family: inherit;
+    font-size: 100%;
+    font-stretch: inherit;
+    font-style: inherit;
+    font-variant: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    list-style: outside none none;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+    vertical-align: baseline;
+}
+
+    #passenger2 .cashValue:focus {
+        outline: rgb(176, 209, 232) solid 2px;
+    }
+
+#passenger2 .milesValue {
+    border: 0px;
+    box-sizing: border-box;
+    color: #36495a;
+    cursor: default;
+    display: none;
+    font-family: inherit;
+    font-size: 100%;
+    font-stretch: inherit;
+    font-style: inherit;
+    font-variant: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    list-style: outside none none;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+    vertical-align: baseline;
+}
+
+    #passenger2 .milesValue:focus {
+        outline: rgb(176, 209, 232) solid 2px;
+    }
+
+#passenger2 .hidden-accessible {
+    border: 0px;
+    border-left: 1px solid #9da6ab;
+    bottom: -13px;
+    box-sizing: border-box;
+    clip: rect(0px, 0px, 0px, 0px);
+    color: #36495a;
+    cursor: default;
+    font-family: inherit;
+    font-size: 100%;
+    font-stretch: inherit;
+    font-style: inherit;
+    font-variant: inherit;
+    font-weight: inherit;
+    height: 1px;
+    left: 2px;
+    line-height: inherit;
+    list-style: outside none none;
+    margin: -1px;
+    overflow: hidden;
+    padding: 8px;
+    position: absolute;
+    right: 390.8px;
+    text-align: center;
+    top: 54px;
+    vertical-align: baseline;
+    width: 1px;
+}
+
+    #passenger2 .hidden-accessible:focus {
+        outline: rgb(176, 209, 232) solid 2px;
+    }
+
+#passenger2 .js-a11yPassengerInfo {
+    border: 0px;
+    box-sizing: border-box;
+    color: #36495a;
+    cursor: default;
+    font-family: inherit;
+    font-size: 100%;
+    font-stretch: inherit;
+    font-style: inherit;
+    font-variant: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    list-style: outside none none;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+    vertical-align: baseline;
+}
+
+    #passenger2 .js-a11yPassengerInfo:focus {
+        outline: rgb(176, 209, 232) solid 2px;
+    }
+
+@media screen and (max-width: 767px) {
+    div.span8.passengerName {
+        float: left;
+        margin-left: 2.13178%;
+    }
+
+    div.span2.pushLeft.seatNumber {
+        float: left;
+        margin-left: 0px;
+    }
+
+    div.span2.pushLeft.priceDisplay {
+        float: left;
+        margin-left: 0px;
+    }
+
+    #passenger2 .span8 {
+        float: left;
+        margin-left: 2.13178%;
+    }
+
+    #passenger2 .seatNumber {
+        float: left;
+        margin-left: 0px;
+    }
+
+    #passenger2 .priceDisplay {
+        float: left;
+        margin-left: 0px;
+    }
+}
+
+.passengerList li.selected {
+    border: 2px solid #0078d2;
 }

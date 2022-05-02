@@ -18,8 +18,8 @@
         <div class="row mb-5">
             <div class="col-md-4 order-md-2 mb-4">
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="text-muted">Your cart</span>
-                    <span class="badge badge-secondary badge-pill">@Model.Tickets.Count()</span>
+                    <span class="text-black">Your cart</span>
+                    <span class="badge bg-primary badge-pill">@Model.Tickets.Count()</span>
                 </h4>
                 <ul class="list-group mb-3 sticky-top">
                     @foreach (var tickets in Model.Tickets)
@@ -30,7 +30,7 @@
                                 <h6 class="my-0">Trip @tickets.Flight.DepartingAirportCode / @tickets.Flight.DestinationAirportCode</h6>
                                 <small class="text-muted">Ticket for @(tickets.FirstName + " " +tickets.LastName)</small>
                             </div>
-                            <span class="text-muted">$ @((tickets.Flight.Price).ToString("0.00"))</span>
+                            <span class="text-success">$ @((tickets.Flight.Price).ToString("0.00"))</span>
                         </li>
                     }
                     @{
@@ -42,12 +42,13 @@
                     <li class="list-group-item d-flex justify-content-between lh-condensed">
                         <div>
                             <h6 class="my-0">Taxes</h6>
+                                <small class="text-muted">6.5%</small>
                         </div>
-                        <span class="text-muted">$@tax.ToString("0.00")</span>
+                        <span class="text-success">$@tax.ToString("0.00")</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between">
                         <span>Total (USD)</span>
-                        <strong>$@total.ToString("0.00")</strong>
+                        <strong class="text-success">$@total.ToString("0.00")</strong>
                     </li>
                 </ul>
             </div>
