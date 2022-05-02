@@ -1,4 +1,16 @@
-# Running Group21ProjectMVC
+# CIS560 Group 21 Database Project
+
+## File Structure
+### Database
+	Tables.sql: /Database/Tables.sql
+	Data.sql: /Database/Data.sql
+	Procedures/SQL Operations:  /Database/StoredProcedures
+### Application Code
+	VS Project File: /Group21ProjectMVC/Group21ProjectMVC.sln
+	Other files: /Group21ProjectMVC/Group21ProjectMVC
+
+## Running Group21ProjectMVC
+
 1. Change FILENAME on line 35 and 37 in 560ProjectDatabase.sql to be the location you want the database stored.
 For Example:
 ```
@@ -14,10 +26,10 @@ Change to:
 ```
 
 2. Execute 560ProjectDatabase.sql
-3. Execute All files in StoredProcedures and StoredProcedures/Identity
+3. Execute All files in StoredProcedures and subfolders
 4. Open and run Group21ProjectMVC
 
-## Setting yourself as Admin
+### Setting yourself as Admin
 1. Run Group21ProjectMVC
 2. Click Login -> Click Don't have an account? [Sign Up]
 3. Register an account
