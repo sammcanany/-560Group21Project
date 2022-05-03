@@ -10,6 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\scss\**" />
+    <Content Remove="wwwroot\scss\**" />
+    <EmbeddedResource Remove="wwwroot\scss\**" />
+    <None Remove="wwwroot\scss\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="C:\Users\Sam\.nuget\packages\bootstrap\5.1.3\contentFiles\any\any\wwwroot\css\bootstrap-grid.css" />
     <Content Remove="C:\Users\Sam\.nuget\packages\bootstrap\5.1.3\contentFiles\any\any\wwwroot\css\bootstrap-grid.css.map" />
     <Content Remove="C:\Users\Sam\.nuget\packages\bootstrap\5.1.3\contentFiles\any\any\wwwroot\css\bootstrap-grid.min.css" />
@@ -87,10 +94,6 @@
     <PackageReference Include="Microsoft.Data.SqlClient" Version="4.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\scss\" />
   </ItemGroup>
 
 </Project>

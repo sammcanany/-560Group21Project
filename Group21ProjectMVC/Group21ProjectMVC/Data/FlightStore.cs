@@ -133,6 +133,21 @@ namespace Group21ProjectMVC.Data
             return response;
         }
 
+        public async Task<DataSet> FlightCountAsync(DateTime date, CancellationToken cancellationToken)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            using SqlCommand cmd = new("Flights.GetFlightCount", connection);
+            cmd.Parameters.AddWithValue("DepartureDate", date);
+            cmd.CommandType = CommandType.StoredProcedure;
+            var ds = new DataSet();
+            await connection.OpenAsync(cancellationToken);
+            using (SqlDataAdapter sda = new(cmd))
+            {
+                sda.Fill(ds);
+            }
+            return ds;
+        }
+
         public void Dispose()
         {
             // Nothing to dispose.

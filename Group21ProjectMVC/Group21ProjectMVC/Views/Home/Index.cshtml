@@ -3,17 +3,15 @@
 @{
     ViewData["Title"] = "Home page";
 }
-
 <link href="https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/css/tempus-dominus.css"
       rel="stylesheet" crossorigin="anonymous">
-
 <div class="col-md-8 py-5 px-3 mx-auto">
     <div class="card">
         <div class="card-header">
             <div class="nav nav-tabs card-header-tabs" data-bs-tabs="tabs">
                 <a class="nav-link active" aria-current="true" data-bs-toggle="tab" href="#findflights">Find Flights</a>
-                <a class="nav-link" aria-current="true" data-bs-toggle="tab" href="#mytrips">My Trips</a>
-                @*<a class="nav-link" aria-current="true" data-bs-toggle="tab" href="#checkin">Check-In</a>
+                @*<a class="nav-link" aria-current="true" data-bs-toggle="tab" href="#mytrips">My Trips</a>
+                    <a class="nav-link" aria-current="true" data-bs-toggle="tab" href="#checkin">Check-In</a>
                     <a class="nav-link" data-bs-toggle="tab" href="#flightstatus">Flight Status</a>*@
             </div>
         </div>
@@ -67,13 +65,12 @@
                                             <span asp-validation-for="FromLocation" class="text-danger"></span>
                                         </div>
                                         <div class="col">
-
                                         </div>
                                     </div>
                                     <div class="row pt-2">
                                         <div class="col-md form-group">
                                             <label asp-for="DepartureDate">Depart</label>
-                                            <div class='input-group' id='datetimepicker1' data-td-target-input='nearest'
+                                            <div class='input-group datetimepicker' id='datetimepicker1' data-td-target-input='nearest'
                                                  data-td-target-toggle='nearest'>
                                                 <input asp-for="DepartureDate" id='datetimepicker1Input' type='text' class='form-control'
                                                        data-td-target='#datetimepicker1' name="DepartureDate" />
@@ -86,7 +83,7 @@
                                         </div>
                                         <div class="col-md form-group">
                                             <label asp-for="ReturnDate">Return</label>
-                                            <div class='input-group' id='datetimepicker2' data-td-target-input='nearest'
+                                            <div class='input-group datetimepicker' id='datetimepicker2' data-td-target-input='nearest'
                                                  data-td-target-toggle='nearest'>
                                                 <input asp-for="ReturnDate" id='datetimepicker2Input' type='text' class='form-control'
                                                        data-td-target='#datetimepicker2' name="ReturnDate" />
@@ -151,13 +148,12 @@
                                             <span asp-validation-for="FromLocation" class="text-danger"></span>
                                         </div>
                                         <div class="col">
-
                                         </div>
                                     </div>
                                     <div class="row pt-2">
                                         <div class="col-md form-group">
                                             <label asp-for="DepartureDate">Depart</label>
-                                            <div class='input-group' id='datetimepicker3' data-td-target-input='nearest'
+                                            <div class='input-group datetimepicker' id='datetimepicker3' data-td-target-input='nearest'
                                                  data-td-target-toggle='nearest'>
                                                 <input asp-for="DepartureDate" id='datetimepicker3Input' type='text' class='form-control'
                                                        data-td-target='#datetimepicker3' name="DepartureDate" />
@@ -185,88 +181,85 @@
                 </div>
             </div>
 
-            <div class="tab-pane" id="mytrips">
+            @*<div class="tab-pane" id="mytrips">
                 <form class="needs-validation" novalidate>
-                    <div class="row">
-                        <div class="col-md">
-                            <label for="FnLBL">Passenger First Name</label>
-                            <input type="text" class="form-control" id="FnLBL" aria-describedby="First Name" required>
-                        </div>
-                        <div class="col-md">
-                            <label for="LnLBL">Passenger Last Name</label>
-                            <input type="text" class="form-control" id="LnLBL" aria-describedby="Last Name" required>
-                        </div>
-                        <div class="col-md">
-                            <label for="RefIDLBL">Booking Reference</label>
-                            <input type="text" class="form-control" id="RefIDLBL" aria-describedby="Booking Reference ID" required>
-                        </div>
-                    </div>
-                    <div class="row pt-4">
-                        <button class="btn btn-primary" type="submit">Find Your Trip</button>
-                    </div>
+                <div class="row">
+                <div class="col-md">
+                <label for="FnLBL">Passenger First Name</label>
+                <input type="text" class="form-control" id="FnLBL" aria-describedby="First Name" required>
+                </div>
+                <div class="col-md">
+                <label for="LnLBL">Passenger Last Name</label>
+                <input type="text" class="form-control" id="LnLBL" aria-describedby="Last Name" required>
+                </div>
+                <div class="col-md">
+                <label for="RefIDLBL">Booking Reference</label>
+                <input type="text" class="form-control" id="RefIDLBL" aria-describedby="Booking Reference ID" required>
+                </div>
+                </div>
+                <div class="row pt-4">
+                <button class="btn btn-primary" type="submit">Find Your Trip</button>
+                </div>
                 </form>
-            </div>
-            <div class="tab-pane" id="checkin">
+                </div>
+                <div class="tab-pane" id="checkin">
                 <form class="needs-validation" novalidate>
-                    <div class="row">
-                        <div class="col-md">
-                            <label for="FnLBL">Passenger First Name</label>
-                            <input type="text" class="form-control" id="FnLBL" aria-describedby="First Name" required>
-                        </div>
-                        <div class="col-md">
-                            <label for="LnLBL">Passenger Last Name</label>
-                            <input type="text" class="form-control" id="LnLBL" aria-describedby="Last Name" required>
-                        </div>
-                        <div class="col-md">
-                            <label for="RefIDLBL">Booking Reference</label>
-                            <input type="text" class="form-control" id="RefIDLBL" aria-describedby="Booking Reference ID" required>
-                        </div>
-                    </div>
-                    <div class="row pt-4">
-                        <button class="btn btn-primary" type="submit">Check-In</button>
-                    </div>
+                <div class="row">
+                <div class="col-md">
+                <label for="FnLBL">Passenger First Name</label>
+                <input type="text" class="form-control" id="FnLBL" aria-describedby="First Name" required>
+                </div>
+                <div class="col-md">
+                <label for="LnLBL">Passenger Last Name</label>
+                <input type="text" class="form-control" id="LnLBL" aria-describedby="Last Name" required>
+                </div>
+                <div class="col-md">
+                <label for="RefIDLBL">Booking Reference</label>
+                <input type="text" class="form-control" id="RefIDLBL" aria-describedby="Booking Reference ID" required>
+                </div>
+                </div>
+                <div class="row pt-4">
+                <button class="btn btn-primary" type="submit">Check-In</button>
+                </div>
                 </form>
-            </div>
-            <div class="tab-pane" id="flightstatus">
+                </div>
+                <div class="tab-pane" id="flightstatus">
                 <form class="needs-validation" novalidate autocomplete="off">
-                    <div class="row">
-                        <div class="col-md autocomplete">
-                            <label for="FromLBLFS">From</label>
-                            <input type="text" class="form-control" id="FromLBLFS" aria-describedby="From"
-                                   placeholder="City or Airport" required>
-                        </div>
-                        <div class="col-md autocomplete">
-                            <label for="ToLBLFS">To</label>
-                            <input type="text" class="form-control" id="ToLBLFS" aria-describedby="To"
-                                   placeholder="City or Airport" required>
-                        </div>
-                        <div class="col-md">
-                            <label for="datetimepicker4Input">Date</label>
-                            <div class='input-group' id='datetimepicker4' data-td-target-input='nearest'
-                                 data-td-target-toggle='nearest'>
-                                <input id='datetimepicker4Input' type='text' class='form-control' data-td-target='#datetimepicker4'
-                                       required />
-                                <span class='input-group-text' data-td-target='#datetimepicker4' data-td-toggle='datetimepicker'>
-                                    <span class='fas fa-calendar'></span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row pt-4">
-                        <button class="btn btn-primary" type="submit">Search</button>
-                    </div>
+                <div class="row">
+                <div class="col-md autocomplete">
+                <label for="FromLBLFS">From</label>
+                <input type="text" class="form-control" id="FromLBLFS" aria-describedby="From"
+                placeholder="City or Airport" required>
+                </div>
+                <div class="col-md autocomplete">
+                <label for="ToLBLFS">To</label>
+                <input type="text" class="form-control" id="ToLBLFS" aria-describedby="To"
+                placeholder="City or Airport" required>
+                </div>
+                <div class="col-md">
+                <label for="datetimepicker4Input">Date</label>
+                <div class='input-group' id='datetimepicker4' data-td-target-input='nearest'
+                data-td-target-toggle='nearest'>
+                <input id='datetimepicker4Input' type='text' class='form-control' data-td-target='#datetimepicker4'
+                required />
+                <span class='input-group-text' data-td-target='#datetimepicker4' data-td-toggle='datetimepicker'>
+                <span class='fas fa-calendar'></span>
+                </span>
+                </div>
+                </div>
+                </div>
+                <div class="row pt-4">
+                <button class="btn btn-primary" type="submit">Search</button>
+                </div>
                 </form>
-            </div>
+                </div>*@
         </div>
     </div>
 </div>
 @section Scripts {
-<script src="https://cdn.jsdelivr.net/npm/&#64;popperjs/core&#64;2.11.2/dist/umd/popper.min.js"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/js/tempus-dominus.js"
-        crossorigin="anonymous"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
-
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 <script type="text/javascript">
     $(function () {
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
@@ -275,9 +268,16 @@
     });
     })
 </script>
-    @{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
-}
+<script type="text/javascript">
+    autocomplete(document.getElementById("FromLBL"), airports);
+    autocomplete(document.getElementById("ToLBL"), airports);
+    autocomplete(document.getElementById("FromLBL1W"), airports);
+    autocomplete(document.getElementById("ToLBL1W"), airports);
+    /*autocomplete(document.getElementById("FromLBLFS"), airports);
+    autocomplete(document.getElementById("ToLBLFS"), airports);*/
+    newConnectedDatePicker('datetimepicker1','datetimepicker2');
+    newDatePicker('datetimepicker3');
+</script>
 <script>
                 $.validator.addMethod(
         'unlike',

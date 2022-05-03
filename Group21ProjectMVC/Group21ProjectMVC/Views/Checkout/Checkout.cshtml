@@ -187,10 +187,10 @@
     </div>
 </div>
 
-
-
 @section Scripts {
-
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 <script type="text/javascript">
         (function () {
       'use strict'
@@ -209,7 +209,4 @@
       }, false)
     }())
 </script>
-    @{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
-}
 }

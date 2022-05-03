@@ -34,6 +34,8 @@ BEGIN
 	AND DEST.[AirportCode] = @ToLocation
 	AND (F.[Capacity] - F.[SeatsTaken]) >= @SeatsRequired
 	AND F.[DepartureDate] = @DepartureDate
+	GROUP BY F.[FlightID],F.[FlightNumber],DEP.[AirportCode],DEST.[AirportCode],A.[Name], F.[DepartureDate],
+	F.[DepartureTime],F.[ArrivalTime],F.[Capacity],F.[SeatsTaken],F.[Price]
 END
 GO
 

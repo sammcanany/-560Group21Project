@@ -22,7 +22,7 @@
                                     <p class="large-text text-primary">@flight.Airline</p>
                                 </div>
                                 <div class="col">
-                                    <p class="medium-text">@flight.FlightNumber</p>
+                                    <p class="large-text">@flight.FlightNumber</p>
                                 </div>
                             </div>
                             <div class="row">
@@ -61,7 +61,7 @@
                                     <input type="hidden" value="@Model.SeatsRequired" name="SeatsRequired" />
                                     <button class="w-100 h-100 bg-transparent border-0 d-block stretched-link" type="submit" asp-controller="Checkout" asp-action="Review">
                                         <p class="medium-text">One Way</p>
-                                        <p class="large-text text-primary">@String.Format("{0:C0}",flight.Price * Model.SeatsRequired)</p>
+                                        <p class="large-text text-success">@String.Format("{0:C0}",flight.Price * Model.SeatsRequired)</p>
                                     </button>
                                 </form>
                             }

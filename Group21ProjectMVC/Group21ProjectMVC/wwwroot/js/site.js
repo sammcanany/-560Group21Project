@@ -1,39 +1,39 @@
-﻿new tempusDominus.TempusDominus(document.getElementById('datetimepicker1'), {
-    display: {
-        viewMode: 'calendar',
-        components: {
-            clock: false
-        },
-    },
-    allowInputToggle: true
-});
+﻿function newDatePicker(id) {
+    new tempusDominus.TempusDominus(document.getElementById(id), {
+        display: {
+            viewMode: 'calendar',
+            components: {
+                clock: false
+            }
+        }, allowInputToggle: true
+    });
+}
 
-new tempusDominus.TempusDominus(document.getElementById('datetimepicker2'), {
-    display: {
-        viewMode: 'calendar',
-        components: {
-            clock: false
-        }
-    }, allowInputToggle: true
-});
-
-new tempusDominus.TempusDominus(document.getElementById('datetimepicker3'), {
-    display: {
-        viewMode: 'calendar',
-        components: {
-            clock: false
-        }
-    }, allowInputToggle: true
-});
-
-new tempusDominus.TempusDominus(document.getElementById('datetimepicker4'), {
-    display: {
-        viewMode: 'calendar',
-        components: {
-            clock: false
-        }
-    }, allowInputToggle: true
-});
+function newConnectedDatePicker(id, id2) {
+    var linkedPicker1Element = new tempusDominus.TempusDominus(document.getElementById(id), {
+        display: {
+            viewMode: 'calendar',
+            components: {
+                clock: false
+            }
+        }, allowInputToggle: true
+    });
+    var linkedPicker2Element = new tempusDominus.TempusDominus(document.getElementById(id2), {
+        display: {
+            viewMode: 'calendar',
+            components: {
+                clock: false
+            }
+        }, allowInputToggle: true
+    });
+    linkedPicker1Element.subscribe(tempusDominus.Namespace.events.change, (e) => {
+        linkedPicker2Element.updateOptions({
+            restrictions: {
+                minDate: e.date
+            }
+        });
+    });
+}
 
 var airports = ["ATL - Hartsfield-Jackson International Airport, GA", "DFW - Dallas/Fort Worth International Airport, TX", "DEN - Denver International Airport, CO", "ORD - O'Hare International Airport, IL", "LAX - Los Angeles International Airport, CA", "CLT - Charlotte Douglas International Airport, NC", "LAS - Harry Reid International Airport, NV", "PHX - Phoenix Sky Harbor International Airport, AZ", "MCO - Orlando International Airport, FL", "MHK - Manhattan Regional Airport, KS"];
 
@@ -133,10 +133,3 @@ function autocomplete(inp, arr) {
         closeAllLists(e.target);
     });
 }
-
-autocomplete(document.getElementById("FromLBL"), airports);
-autocomplete(document.getElementById("ToLBL"), airports);
-autocomplete(document.getElementById("FromLBL1W"), airports);
-autocomplete(document.getElementById("ToLBL1W"), airports);
-autocomplete(document.getElementById("FromLBLFS"), airports);
-autocomplete(document.getElementById("ToLBLFS"), airports);

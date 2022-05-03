@@ -1,0 +1,84 @@
+﻿@using System.Data
+@model Group21ProjectMVC.Models.ManageViewModels.FlightCountViewModel
+
+@{
+    ViewData["Title"] = "FlightCount";
+    ViewData["ActivePage"] = ManageNavPages.FlightCount;
+}
+
+<link href="https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/css/tempus-dominus.css"
+      rel="stylesheet" crossorigin="anonymous">
+<div class="card">
+    <div class="card-header">
+        <h4>@ViewData["Title"]</h4>
+    </div>
+    <div class="card-body p-4">
+        <form asp-action="FlightCount">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row mb-3">
+                <div class="col form-group">
+                    <label asp-for="StartingDate" class="control-label"></label>
+                    <div class='input-group datetimepicker' id='datetimepicker1' data-td-target-input='nearest'
+                         data-td-target-toggle='nearest'>
+                        <input asp-for="StartingDate" id='datetimepicker1Input' type='text' class='form-control'
+                               data-td-target='#datetimepicker1' name="DepartureDate" />
+                        <span class='input-group-text' data-td-target='#datetimepicker1'
+                              data-td-toggle='datetimepicker'>
+                            <span class='fas fa-calendar'></span>
+                        </span>
+                    </div>
+                    <span asp-validation-for="StartingDate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+    <div class="card-footer">
+        @if (Model?.ds != null)
+        {
+            <table class="table mt-4" id="countTable">
+                <thead>
+                    <tr>
+                        <th>
+                            FlightCount
+                        </th>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            DepartureDate
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (DataRow row in Model.ds.Tables[0].Rows)
+                    {
+                        <tr>
+                            <td>@row["FlightCount"]</td>
+                            <td>@row["Name"]</td>
+                            <td>@row["DepartureDate"]</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+@if (Model?.ds != null){
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#countTable').dataTable({});
+});
+</script>
+}
+<script type="text/javascript">
+    newDatePicker('datetimepicker1');
+</script>
+}

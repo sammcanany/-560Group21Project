@@ -314,6 +314,20 @@ namespace Group21ProjectMVC.Controllers
             return RedirectToAction(nameof(HomeController.Index), "Home");
         }
 
+        [HttpGet]
+        public IActionResult FlightCount()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> FlightCount(FlightCountViewModel model)
+        {
+            model.ds = await _flightStore.FlightCountAsync(model.StartingDate, source.Token);
+            return View(model);
+        }
+
         private IActionResult RedirectToLocal(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
